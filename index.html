@@ -1,1 +1,109 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#101114">
+  <meta name="description" content="Клиентские модификации Minecraft от RqJey.">
+  <title>RqJey — Minecraft Mods</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="page-shell">
+    <header class="topbar">
+      <a class="brand" href="#" aria-label="RqJey home">
+        <span class="brand-mark">r<span>q</span></span>
+        <span class="brand-name">rqjey<span class="brand-muted"> / mods</span></span>
+      </a>
+      <nav class="nav">
+        <a class="nav-link active" href="#projects">Проекты</a>
+        <a class="nav-link" href="#about">О сайте</a>
+        <a class="github-link" id="githubProfile" href="https://github.com" target="_blank" rel="noreferrer">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 .9a11.1 11.1 0 0 0-3.51 21.63c.55.1.76-.24.76-.54v-2.1c-3.1.67-3.75-1.32-3.75-1.32-.5-1.28-1.23-1.62-1.23-1.62-1.01-.69.08-.68.08-.68 1.12.08 1.71 1.15 1.71 1.15 1 .1.75 2.18 3.35 1.56.1-.72.4-1.22.72-1.5-2.48-.28-5.09-1.24-5.09-5.52 0-1.22.44-2.22 1.15-3-.12-.28-.5-1.42.11-2.96 0 0 .94-.3 3.05 1.15a10.6 10.6 0 0 1 5.55 0c2.12-1.45 3.05-1.15 3.05-1.15.61 1.54.23 2.68.11 2.96.72.78 1.15 1.78 1.15 3 0 4.29-2.61 5.23-5.1 5.51.4.35.76 1.03.76 2.08v3.08c0 .3.2.65.77.54A11.1 11.1 0 0 0 12 .9Z"/></svg>
+          GitHub <span class="external">↗</span>
+        </a>
+      </nav>
+      <button class="mobile-menu" id="mobileMenu" aria-label="Открыть меню">☰</button>
+    </header>
 
+    <main>
+      <section class="intro">
+        <div class="eyebrow"><span class="eyebrow-dot"></span> MINECRAFT · FABRIC · CLIENT-SIDE</div>
+        <h1>Небольшие моды.<br><span>Больше удобства.</span></h1>
+        <p class="intro-copy">Подборка клиентских модификаций для Minecraft — инструменты, которые делают игру немного комфортнее.</p>
+        <div class="intro-meta">
+          <span><i class="meta-dot"></i><b id="projectCount">5</b> проектов</span>
+          <span class="meta-divider"></span>
+          <span>Minecraft 26.2–26.3</span>
+          <span class="meta-divider"></span>
+          <span>Обновления через GitHub</span>
+        </div>
+      </section>
+
+      <section class="projects-section" id="projects">
+        <div class="section-heading">
+          <div>
+            <div class="section-kicker">КАТАЛОГ</div>
+            <h2>Мои проекты</h2>
+          </div>
+          <div class="project-tools">
+            <label class="search-box">
+              <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="10.8" cy="10.8" r="6.8"/><path d="m16 16 5 5"/></svg>
+              <input id="searchInput" type="search" placeholder="Найти мод..." autocomplete="off">
+            </label>
+            <span class="project-total" id="visibleCount">05 / 05</span>
+          </div>
+        </div>
+        <div class="project-grid" id="projectGrid" aria-live="polite"></div>
+        <div class="empty-state hidden" id="emptyState">Ничего не найдено. Попробуй другое название.</div>
+      </section>
+
+      <section class="about-strip" id="about">
+        <div class="about-symbol">r.</div>
+        <div class="about-text">
+          <div class="section-kicker">О ПРОЕКТЕ</div>
+          <h2>Сделано для своей игры.</h2>
+          <p>Все модификации разрабатываются с упором на удобство и совместимость с обычными Minecraft-серверами. Новые версии и исходный код — на GitHub.</p>
+        </div>
+        <a class="text-link" id="sourceLink" href="https://github.com" target="_blank" rel="noreferrer">Исходный код <span>↗</span></a>
+      </section>
+    </main>
+
+    <footer class="footer">
+      <span>© <span id="year"></span> RqJey</span>
+      <span class="footer-center">Minecraft mods · made with care</span>
+      <a href="#top" onclick="window.scrollTo({top:0,behavior:'smooth'});return false;">Наверх ↑</a>
+    </footer>
+  </div>
+
+  <div class="modal-backdrop hidden" id="modalBackdrop">
+    <section class="release-modal" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+      <button class="modal-close" id="modalClose" aria-label="Закрыть">×</button>
+      <div class="modal-kicker">PROJECT DETAILS</div>
+      <div class="modal-title-row">
+        <div class="modal-icon" id="modalIcon"></div>
+        <div><h2 id="modalTitle">Project</h2><p id="modalSubtitle"></p></div>
+      </div>
+      <p class="modal-description" id="modalDescription"></p>
+      <div class="modal-divider"></div>
+      <div class="release-label-row">
+        <label for="versionSelect">Версия для скачивания</label>
+        <span id="releaseStatus" class="release-status">Загрузка...</span>
+      </div>
+      <select id="versionSelect" class="version-select"></select>
+      <div class="release-info" id="releaseInfo"></div>
+      <a class="download-button disabled" id="downloadButton" href="#" aria-disabled="true">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3v12m0 0 4.5-4.5M12 15l-4.5-4.5M4 19.5h16"/></svg>
+        <span>Скачать .jar</span><span class="download-size" id="downloadSize"></span>
+      </a>
+      <a class="release-notes-link" id="releaseNotes" href="#" target="_blank" rel="noreferrer">Посмотреть релиз на GitHub ↗</a>
+    </section>
+  </div>
+  <div class="toast" id="toast" role="status"></div>
+  <script src="config.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
