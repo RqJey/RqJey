@@ -5,6 +5,8 @@
   const projectMetadata = config.projects || [];
   const grid = document.getElementById("projectGrid");
   const search = document.getElementById("searchInput");
+  const categoryFilter = document.getElementById("categoryFilter");
+  const sortSelect = document.getElementById("sortSelect");
   const modal = document.getElementById("modalBackdrop");
   const select = document.getElementById("versionSelect");
   const fileSelect = document.getElementById("fileSelect");
@@ -21,6 +23,43 @@
   };
   const fallbackIcons = ["✳", "⌖", "◇", "⌘", "↗", "✦", "◈"];
   const accents = ["violet", "blue", "green", "purple", "orange"];
+  const translations = {
+    ru: {navCatalog:"Каталог",navAbout:"О проекте",notifications:"Уведомления",themeSystem:"Системная",themeLight:"Светлая",themeDark:"Тёмная",heroTitle:"Прокачай свой<br><span>Minecraft.</span>",heroCopy:"Набор полезных клиентских модификаций, созданных, чтобы сделать игру удобнее. Выбирай инструмент, изучай версии и скачивай последнюю сборку в пару кликов.",exploreMods:"Исследовать моды",openGithub:"Открыть GitHub",library:"БИБЛИОТЕКА МОДОВ",chooseTool:"Выбери свой инструмент",libraryCopy:"Все актуальные сборки и история релизов в одном месте.",category:"Категория",allCategories:"Все категории",sort:"Сортировка",sortName:"По названию",sortLatest:"Сначала новые",empty:"Ничего не найдено. Попробуй изменить запрос или фильтр.",aboutKicker:"ЗА КАЖДЫМ МОДОМ — ИДЕЯ",aboutTitle:"Меньше рутины. Больше игры.",aboutCopy:"RqJey Mods — коллекция небольших инструментов для Minecraft. Новые версии автоматически появляются здесь после публикации релиза на GitHub.",sourceCode:"Исходный код",footerTag:"Made for better Minecraft sessions",backTop:"Наверх ↑",downloadCenter:"· ЦЕНТР СКАЧИВАНИЯ",chooseVersion:"Выбери версию",buildFile:"Файл сборки",downloadBuild:"Скачать сборку",viewRelease:"Посмотреть релиз на GitHub",searchPlaceholder:"Поиск по названию, категории...",details:"Подробнее",files:"файлов",releases:"релизов",published:"Опубликовано",noRelease:"Нет релизов с .jar файлами",noBuilds:"Нет сборок",chooseRelease:"Сначала выбери релиз",notifyEnabled:"Уведомления включены",notifyDenied:"Разреши уведомления в настройках браузера",notifyUnsupported:"Этот браузер не поддерживает уведомления",notifyPrompt:"Разрешить уведомления о новых релизах?",copied:"Ссылка скопирована",shareError:"Не удалось поделиться ссылкой",newBadge:"НОВЫЙ",updatedBadge:"ОБНОВЛЁН",share:"Поделиться",copyLink:"Копировать ссылку",popularBadge:"ПОПУЛЯРНЫЙ",noDescription:"Описание релиза не добавлено.",loading:"Загрузка...",loadError:"Не удалось загрузить релизы"},
+    en: {navCatalog:"Catalog",navAbout:"About",notifications:"Notifications",themeSystem:"System",themeLight:"Light",themeDark:"Dark",heroTitle:"Upgrade your<br><span>Minecraft.</span>",heroCopy:"A collection of useful client-side mods designed to make your game more convenient. Pick a tool, explore versions, and download the latest build in just a few clicks.",exploreMods:"Explore mods",openGithub:"Open GitHub",library:"MOD LIBRARY",chooseTool:"Choose your tool",libraryCopy:"All current builds and release history in one place.",category:"Category",allCategories:"All categories",sort:"Sort by",sortName:"Name",sortLatest:"Newest first",empty:"Nothing found. Try changing your search or filters.",aboutKicker:"AN IDEA BEHIND EVERY MOD",aboutTitle:"Less routine. More gameplay.",aboutCopy:"RqJey Mods is a collection of small tools for Minecraft. New versions appear here automatically after a GitHub release is published.",sourceCode:"Source code",footerTag:"Made for better Minecraft sessions",backTop:"Back to top ↑",downloadCenter:"· DOWNLOAD CENTER",chooseVersion:"Choose version",buildFile:"Build file",downloadBuild:"Download build",viewRelease:"View release on GitHub",searchPlaceholder:"Search by name or category...",details:"Details",files:"files",releases:"releases",published:"Published",noRelease:"No releases with .jar files",noBuilds:"No builds",chooseRelease:"Choose a release first",notifyEnabled:"Notifications enabled",notifyDenied:"Allow notifications in your browser settings",notifyUnsupported:"This browser does not support notifications",notifyPrompt:"Allow notifications about new releases?",copied:"Link copied",shareError:"Could not share this link",newBadge:"NEW",updatedBadge:"UPDATED",share:"Share",copyLink:"Copy link",popularBadge:"POPULAR",noDescription:"No release notes provided.",loading:"Loading...",loadError:"Could not load releases"}
+  };
+  let language = localStorage.getItem("rqjey-language") || "ru";
+  if (!translations[language]) language = "ru";
+  const tr = key => translations[language][key] || translations.ru[key] || key;
+  const projectTranslations = {
+    itemly: {category:"Personalization", description:"Rename items locally and customize the color of displayed names and backgrounds."},
+    nearyou: {category:"Navigation", description:"Find players on the server map, view their coordinates, and navigate to discovered players."},
+    dropguard: {category:"Protection", description:"Prevent accidental pickup of selected items and manage your personal block list."},
+    friendhub: {category:"Communication", description:"A friends list, private messages, and voice chat invitations in one convenient menu."},
+    fastcmd: {category:"Tools", description:"A quick-access command wheel, custom commands, and convenient page management."}
+  };
+  function projectField(project, field) {
+    return language === "en" ? (projectTranslations[project.id]?.[field] || project[field]) : project[field];
+  }
+  function applyLanguage() {
+    document.documentElement.lang = language;
+    document.querySelectorAll("[data-i18n]").forEach(el => { const key = el.dataset.i18n; el.textContent = tr(key); });
+    document.querySelectorAll("[data-i18n-html]").forEach(el => { el.innerHTML = tr(el.dataset.i18nHtml); });
+    search.placeholder = tr("searchPlaceholder");
+    document.getElementById("languageSelect").value = language;
+    const selectedCategory = categoryFilter.value;
+    const categoryOptions = [...categoryFilter.options].slice(1).map(option => option.value);
+    categoryFilter.innerHTML = `<option value="all">${escapeHtml(tr("allCategories"))}</option>` + categoryOptions.map(category => { const translated = language === "en" ? ({"Персонализация":"Personalization","Навигация":"Navigation","Защита":"Protection","Общение":"Communication","Инструменты":"Tools"}[category] || category) : category; return `<option value="${escapeHtml(category)}">${escapeHtml(translated)}</option>`; }).join("");
+    categoryFilter.value = selectedCategory;
+    renderProjects(search.value);
+  }
+  function applyTheme(theme) {
+    const selected = ["light", "dark", "system"].includes(theme) ? theme : "system";
+    document.documentElement.dataset.theme = selected;
+    document.getElementById("themeSelect").value = selected;
+    localStorage.setItem("rqjey-theme", selected);
+    const color = selected === "light" ? "#f4f5f8" : selected === "dark" ? "#0b0c10" : "#0b0c10";
+    document.querySelector('meta[name="theme-color"]').setAttribute("content", color);
+  }
 
   function escapeHtml(value) {
     return String(value ?? "").replace(/[&<>"']/g, c => ({ "&":"&amp;", "<":"&lt;", ">":"&gt;", '"':"&quot;", "'":"&#39;" }[c]));
@@ -137,14 +176,22 @@
 
   function renderProjects(filter = "") {
     const term = filter.trim().toLowerCase();
-    const visible = projects.filter(p => [p.name, p.category, p.description, p.minecraft].join(" ").toLowerCase().includes(term));
+    let ordered = projects.slice();
+    if (sortSelect?.value === "latest") {
+      ordered.sort((a, b) => compareReleasesByPublishedFile(a.releases.slice().sort(compareReleasesByPublishedFile)[0] || {}, b.releases.slice().sort(compareReleasesByPublishedFile)[0] || {}));
+    }
+    const category = categoryFilter?.value || "all";
+    const visible = ordered.filter(p =>
+      (category === "all" || p.category === category) &&
+      [p.name, p.category, p.description, projectField(p, "category"), projectField(p, "description"), p.minecraft, ...(p.features || [])].join(" ").toLowerCase().includes(term)
+    );
     grid.innerHTML = visible.map((p, i) => {
       const builds = allBuilds(p.releases);
       return `
-      <article class="project-card accent-${escapeHtml(p.accent)}" style="--delay:${i * 45}ms">
+      <article id="project-${escapeHtml(p.id)}" class="project-card accent-${escapeHtml(p.accent)}" style="--delay:${i * 45}ms">
         <div class="card-topline">
-          <span class="project-category">${escapeHtml(p.category)}</span>
-          <span class="card-index">${String(projects.indexOf(p) + 1).padStart(2,"0")}</span>
+          <span class="project-category">${escapeHtml(projectField(p, "category"))}</span>
+          <div class="card-top-actions">${getProjectBadge(p)}<span class="card-index">${String(projects.indexOf(p) + 1).padStart(2,"0")}</span></div>
         </div>
         <div class="card-main">
           <div class="project-icon">${escapeHtml(p.icon)}</div>
@@ -153,10 +200,10 @@
             <span class="mc-version">Minecraft ${escapeHtml(p.minecraft)}</span>
           </div>
         </div>
-        <p class="project-description">${escapeHtml(p.description)}</p>
+        <p class="project-description">${escapeHtml(projectField(p, "description"))}</p>
         <div class="card-bottom">
-          <span class="release-preview"><span class="tiny-dot"></span> ${builds.length} файлов · ${p.releases.length} релизов</span>
-          <button class="details-button" data-project="${escapeHtml(p.id)}">Подробнее ${iconSvg.arrow}</button>
+          <span class="release-preview"><span class="tiny-dot"></span> ${builds.length} ${tr("files")} · ${p.releases.length} ${tr("releases")}</span>
+          <div class="card-actions"><button class="icon-action" data-copy="${escapeHtml(p.id)}" title="${escapeHtml(tr("copyLink"))}" aria-label="${escapeHtml(tr("copyLink"))}">⧉</button><button class="icon-action" data-share="${escapeHtml(p.id)}" title="${escapeHtml(tr("share"))}" aria-label="${escapeHtml(tr("share"))}">↗</button><button class="details-button" data-project="${escapeHtml(p.id)}">${escapeHtml(tr("details"))} ${iconSvg.arrow}</button></div>
         </div>
       </article>`;
     }).join("");
@@ -164,6 +211,61 @@
     document.getElementById("emptyState").classList.toggle("hidden", visible.length !== 0);
     document.getElementById("projectCount").textContent = projects.length;
     grid.querySelectorAll("[data-project]").forEach(btn => btn.addEventListener("click", () => openProject(btn.dataset.project)));
+    grid.querySelectorAll("[data-copy]").forEach(btn => btn.addEventListener("click", () => copyProjectLink(btn.dataset.copy)));
+    grid.querySelectorAll("[data-share]").forEach(btn => btn.addEventListener("click", () => shareProject(btn.dataset.share)));
+  }
+
+  function getProjectBadge(project) {
+    const latest = project.releases.slice().sort(compareReleasesByPublishedFile)[0];
+    const date = Date.parse(latest?.published_at || latest?.created_at || 0) || 0;
+    const age = date ? Date.now() - date : Infinity;
+    if (age < 7 * 86400000) return `<span class="project-badge badge-new">${tr("newBadge")}</span>`;
+    if (age < 30 * 86400000) return `<span class="project-badge badge-updated">${tr("updatedBadge")}</span>`;
+    const totals = projects.map(p => p.releases.reduce((sum, release) => sum + (release.assets || []).reduce((n, asset) => n + (Number(asset.download_count) || 0), 0), 0));
+    const highest = Math.max(0, ...totals);
+    const current = project.releases.reduce((sum, release) => sum + (release.assets || []).reduce((n, asset) => n + (Number(asset.download_count) || 0), 0), 0);
+    return highest > 0 && current === highest ? `<span class="project-badge badge-popular">${tr("popularBadge")}</span>` : "";
+  }
+
+  function projectUrl(project) { return `${location.origin}${location.pathname}#project-${encodeURIComponent(project.id)}`; }
+  async function copyProjectLink(id) {
+    const project = projects.find(p => p.id === id); if (!project) return;
+    try { await navigator.clipboard.writeText(projectUrl(project)); showToast(tr("copied")); }
+    catch { showToast(tr("shareError")); }
+  }
+  async function shareProject(id) {
+    const project = projects.find(p => p.id === id); if (!project) return;
+    const url = projectUrl(project);
+    if (navigator.share) { try { await navigator.share({title:`${project.name} — RqJey Mods`, text:project.description, url}); } catch (e) { if (e.name !== "AbortError") showToast(tr("shareError")); } }
+    else copyProjectLink(id);
+  }
+
+  function setupNotifications() {
+    const button = document.getElementById("notifyButton");
+    if (!("Notification" in window)) { button.addEventListener("click", () => showToast(tr("notifyUnsupported"))); return; }
+    button.addEventListener("click", async () => {
+      if (Notification.permission === "granted") { showToast(tr("notifyEnabled")); return; }
+      if (Notification.permission === "denied") { showToast(tr("notifyDenied")); return; }
+      const permission = await Notification.requestPermission();
+      showToast(permission === "granted" ? tr("notifyEnabled") : tr("notifyDenied"));
+      if (permission === "granted") checkNewReleases(true);
+    });
+  }
+  function checkNewReleases(announce = false) {
+    if (!("Notification" in window)) return;
+    const latestIds = allReleases.map(r => `${r.id}:${(r.assets || []).map(a => `${a.id}-${a.created_at || a.updated_at || ""}`).join(",")}:${r.published_at || r.created_at || ""}`);
+    const storageKey = "rqjey-known-releases";
+    let known = [];
+    try { known = JSON.parse(localStorage.getItem(storageKey) || "[]"); } catch {}
+    if (known.length && Notification.permission === "granted") {
+      const fresh = allReleases.filter(r => !known.includes(`${r.id}:${(r.assets || []).map(a => `${a.id}-${a.created_at || a.updated_at || ""}`).join(",")}:${r.published_at || r.created_at || ""}`));
+      if (fresh.length) {
+        const first = fresh[0];
+        const mod = getModName(first) || first.name || "RqJey Mods";
+        new Notification("RqJey Mods", {body: `${mod}: ${language === "ru" ? "опубликован новый релиз" : "a new release is available"}`});
+      }
+    }
+    localStorage.setItem(storageKey, JSON.stringify(latestIds));
   }
 
   function showToast(message) {
@@ -183,11 +285,11 @@
       .sort(compareReleasesByPublishedFile);
     document.getElementById("modalIcon").textContent = project.icon;
     document.getElementById("modalTitle").textContent = project.name;
-    document.getElementById("modalSubtitle").textContent = `${project.category} · Minecraft ${project.minecraft}`;
-    document.getElementById("modalDescription").textContent = project.description;
+    document.getElementById("modalSubtitle").textContent = `${projectField(project, "category")} · Minecraft ${project.minecraft}`;
+    document.getElementById("modalDescription").textContent = projectField(project, "description");
     document.getElementById("releaseInfo").textContent = project.features.join("  ·  ");
     select.innerHTML = "";
-    fileSelect.innerHTML = '<option>Сначала выбери релиз</option>';
+    fileSelect.innerHTML = `<option>${tr("chooseRelease")}</option>`;
     fileSelect.disabled = true;
     status.textContent = `${allBuilds(activeReleases).length} файлов`;
     status.className = "release-status ready";
@@ -197,8 +299,8 @@
     document.body.classList.add("modal-open");
 
     if (!activeReleases.length) {
-      select.innerHTML = '<option value="">Нет релизов с .jar файлами</option>';
-      status.textContent = "Нет сборок";
+      select.innerHTML = `<option value="">${tr("noRelease")}</option>`;
+      status.textContent = tr("noBuilds");
       select.disabled = true;
       return;
     }
@@ -252,12 +354,12 @@
     const assets = jarAssets(release);
     const asset = assets[Number(fileSelect.value)] || assets[0];
     setDownload(asset);
-    const date = release.published_at ? new Date(release.published_at).toLocaleDateString("ru-RU") : "";
+    const date = release.published_at ? new Date(release.published_at).toLocaleDateString(language === "ru" ? "ru-RU" : "en-US") : "";
     const body = (release.body || "").trim();
     const releaseInfo = [
-      date ? `Опубликовано: ${date}` : "",
-      `${assets.length} ${assets.length === 1 ? "файл" : assets.length < 5 ? "файла" : "файлов"} в этом релизе`,
-      body ? body.slice(0, 500) : "Описание релиза не добавлено."
+      date ? `${tr("published")}: ${date}` : "",
+      `${assets.length} ${tr("files")} · ${activeProject?.releases.length || 0} ${tr("releases")}`,
+      body ? body.slice(0, 500) : tr("noDescription")
     ].filter(Boolean);
     document.getElementById("releaseInfo").textContent = releaseInfo.join(" · ");
   }
@@ -276,6 +378,18 @@
   }
 
   search.addEventListener("input", () => renderProjects(search.value));
+  document.getElementById("themeSelect").addEventListener("change", e => applyTheme(e.target.value));
+  document.getElementById("languageSelect").addEventListener("change", e => { language = e.target.value; localStorage.setItem("rqjey-language", language); applyLanguage(); if (activeProject) openProject(activeProject.id); });
+  setupNotifications();
+  applyTheme(localStorage.getItem("rqjey-theme") || "system");
+  applyLanguage();
+  categoryFilter?.addEventListener("change", () => renderProjects(search.value));
+  sortSelect?.addEventListener("change", () => renderProjects(search.value));
+  document.addEventListener("keydown", e => {
+    if (e.key === "/" && !/INPUT|TEXTAREA|SELECT/.test(document.activeElement.tagName) && !e.ctrlKey && !e.metaKey) {
+      e.preventDefault(); search.focus();
+    }
+  });
   select.addEventListener("change", updateSelectedRelease);
   fileSelect.addEventListener("change", updateSelectedFile);
   document.getElementById("modalClose").addEventListener("click", closeModal);
@@ -283,8 +397,14 @@
   document.addEventListener("keydown", e => { if (e.key === "Escape") closeModal(); });
   download.addEventListener("click", e => { if (download.classList.contains("disabled")) e.preventDefault(); });
   document.getElementById("mobileMenu").addEventListener("click", () => {
-    document.querySelector(".nav").classList.toggle("nav-open");
+    const nav = document.querySelector(".nav");
+    const opened = nav.classList.toggle("nav-open");
+    document.getElementById("mobileMenu").setAttribute("aria-expanded", String(opened));
   });
+  document.querySelectorAll(".nav a").forEach(link => link.addEventListener("click", () => {
+    document.querySelector(".nav").classList.remove("nav-open");
+    document.getElementById("mobileMenu").setAttribute("aria-expanded", "false");
+  }));
 
   async function init() {
     document.getElementById("year").textContent = new Date().getFullYear();
@@ -292,14 +412,18 @@
       const profile = `https://github.com/${encodeURIComponent(owner)}`;
       document.getElementById("githubProfile").href = profile;
       document.getElementById("sourceLink").href = profile;
+      document.getElementById("heroGithub").href = profile;
     }
     grid.innerHTML = '<div class="empty-state">Загрузка списка модов из GitHub Releases...</div>';
     try {
       allReleases = await getAllReleases();
       projects = buildProjects(allReleases);
+      const categories = [...new Set(projects.map(p => p.category).filter(Boolean))].sort((a, b) => a.localeCompare(b, "ru"));
+      categoryFilter.innerHTML = `<option value="all">${escapeHtml(tr("allCategories"))}</option>` + categories.map(category => { const translated = language === "en" ? ({"Персонализация":"Personalization","Навигация":"Navigation","Защита":"Protection","Общение":"Communication","Инструменты":"Tools"}[category] || category) : category; return `<option value="${escapeHtml(category)}">${escapeHtml(translated)}</option>`; }).join("");
       renderProjects();
+      checkNewReleases();
     } catch (err) {
-      grid.innerHTML = `<div class="empty-state">Не удалось загрузить релизы: ${escapeHtml(err.message)}. Проверь настройки config.js и публичный доступ к репозиторию.</div>`;
+      grid.innerHTML = `<div class="empty-state">${tr("loadError")}: ${escapeHtml(err.message)}. ${language === "ru" ? "Проверь настройки config.js и публичный доступ к репозиторию." : "Check config.js and public repository access."}</div>`;
       document.getElementById("projectCount").textContent = "0";
       document.getElementById("visibleCount").textContent = "00 / 00";
       showToast(err.message);
