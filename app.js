@@ -95,7 +95,13 @@
         features: metadata?.features || [],
         releases: group.releases
       };
-    }).sort((a,b) => a.name.localeCompare(b.name, "ru"));
+    }).sort((a,b) => {
+      // FriendHub всегда закреплён первым; остальные моды — по алфавиту.
+      const aPinned = a.name.toLowerCase() === "friendhub";
+      const bPinned = b.name.toLowerCase() === "friendhub";
+      if (aPinned !== bPinned) return aPinned ? -1 : 1;
+      return a.name.localeCompare(b.name, "ru");
+    });
   }
 
   function renderProjects(filter = "") {
