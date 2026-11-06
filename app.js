@@ -142,15 +142,37 @@
     showToast.timer = setTimeout(() => toast.classList.remove("show"), 2800);
   }
 
-  // Извлекает номер версии из тега/названия, например:
-  // FriendHub-1.0.2-Release -> [1, 0, 2]
+  // Ищет именно версию мода, а не номер Minecraft (например, MC26.3).
+  // Поддерживает форматы FriendHub-1.0.6-MC26.3,
+  // FriendHub-Mod-Release-1.0.6 и обычные v1.2.3.
   function getReleaseVersion(release) {
     const sources = [release.tag_name, release.name].filter(Boolean);
+    const candidates = [];
+
     for (const source of sources) {
-      const match = String(source).match(/(?:^|[^0-9])v?(\d+(?:\.\d+){1,3})(?=$|[^0-9])/i);
-      if (match) return match[1].split(".").map(part => Number(part));
+      const value = String(source);
+      const regex = /(?:^|[^0-9])v?(\d+(?:\.\d+){1,3})(?=$|[^0-9])/gi;
+      let match;
+      while ((match = regex.exec(value)) !== null) {
+        const before = value.slice(Math.max(0, match.index - 12), match.index);
+        // Пропускаем версии совместимости Minecraft.
+        if (/(?:mc|minecraft)\s*[-_ ]*$/i.test(before)) continue;
+        candidates.push({
+          version: match[1].split(".").map(part => Number(part)),
+          sourcePriority: source === release.tag_name ? 1 : 0,
+          position: match.index
+        });
+      }
     }
-    return null;
+
+    if (!candidates.length) return null;
+
+    // Обычно версия мода стоит ближе к концу тега/названия,
+    // а номер Minecraft помечен MC и уже исключён выше.
+    candidates.sort((a, b) =>
+      b.sourcePriority - a.sourcePriority || b.position - a.position
+    );
+    return candidates[0].version;
   }
 
   function compareReleasesByVersion(a, b) {
@@ -184,7 +206,7 @@
     activeProject = project;
     activeReleases = project.releases
       .filter(r => jarAssets(r).length > 0)
-      // Сначала максимальная версия по номеру (например, 1.0.2 выше 1.0.1).
+      // Во всех модах сначала показываем максимальную версию по номеру.
       .sort(compareReleasesByVersion);
     document.getElementById("modalIcon").textContent = project.icon;
     document.getElementById("modalTitle").textContent = project.name;
