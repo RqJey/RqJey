@@ -140,7 +140,14 @@
     const project = projects.find(p => p.id === id);
     if (!project) return;
     activeProject = project;
-    activeReleases = project.releases.filter(r => jarAssets(r).length > 0);
+    activeReleases = project.releases
+      .filter(r => jarAssets(r).length > 0)
+      // Сначала самые новые опубликованные версии.
+      .sort((a, b) => {
+        const dateA = Date.parse(a.published_at || a.created_at || 0) || 0;
+        const dateB = Date.parse(b.published_at || b.created_at || 0) || 0;
+        return dateB - dateA;
+      });
     document.getElementById("modalIcon").textContent = project.icon;
     document.getElementById("modalTitle").textContent = project.name;
     document.getElementById("modalSubtitle").textContent = `${project.category} · Minecraft ${project.minecraft}`;
