@@ -145,3 +145,5 @@ h1 span { color:#99929f; }
 @media (prefers-reduced-motion: reduce) {
   *,*::before,*::after { scroll-behavior:auto !important; animation-duration:.01ms !important; transition-duration:.01ms !important; }
 }
+
+.file-select-label { display:block; color:#d6d5db; font-size:11px; font-weight:600; margin:13px 0 8px; }

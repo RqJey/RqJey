@@ -5,12 +5,12 @@
   3. Загружай .jar в GitHub Releases — сайт сам подхватит версии.
 */
 window.SITE_CONFIG = {
-  owner: "YOUR_GITHUB_USERNAME",
+  owner: "itz_rqjey",
   projects: [
     {
       id: "itemly",
       name: "Itemly",
-      repo: "Itemly-Mod",
+      repo: "Itemly-Mod-release",
       icon: "✳",
       category: "Персонализация",
       description: "Локальное переименование предметов и изменение цвета отображаемого названия. Подходит и для предметов, и для фона.",
@@ -21,7 +21,7 @@ window.SITE_CONFIG = {
     {
       id: "nearyou",
       name: "NearYou",
-      repo: "NearYou",
+      repo: "NearYou-Mod-Release",
       icon: "⌖",
       category: "Навигация",
       description: "Поиск игроков на карте сервера, просмотр координат и удобная навигация по найденным игрокам.",
@@ -32,7 +32,7 @@ window.SITE_CONFIG = {
     {
       id: "dropguard",
       name: "DropGuard",
-      repo: "DropGuard",
+      repo: "DropGuard-Mod-release",
       icon: "◇",
       category: "Защита",
       description: "Защита от случайного подбора выбранных предметов и управление собственным списком блокировки.",
@@ -43,7 +43,7 @@ window.SITE_CONFIG = {
     {
       id: "friendhub",
       name: "FriendHub",
-      repo: "FriendHub",
+      repo: "FriendHub-GeneralMod-release",
       icon: "⌘",
       category: "Общение",
       description: "Система друзей, личные сообщения и приглашения в голосовой чат — всё в одном удобном меню.",
@@ -54,7 +54,7 @@ window.SITE_CONFIG = {
     {
       id: "fastcmd",
       name: "FastCmd",
-      repo: "FastCmd",
+      repo: "FastCmd-Mod-Release",
       icon: "↗",
       category: "Инструменты",
       description: "Колесо быстрого доступа к командам, собственные команды и удобное управление страницами.",

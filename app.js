@@ -6,6 +6,7 @@
   const search = document.getElementById("searchInput");
   const modal = document.getElementById("modalBackdrop");
   const select = document.getElementById("versionSelect");
+  const fileSelect = document.getElementById("fileSelect");
   const download = document.getElementById("downloadButton");
   const status = document.getElementById("releaseStatus");
   const toast = document.getElementById("toast");
@@ -14,7 +15,6 @@
   let activeReleases = [];
 
   const iconSvg = {
-    download: '<svg viewBox="0 0 24 24"><path d="M12 3v12m0 0 4.5-4.5M12 15l-4.5-4.5M4 19.5h16"/></svg>',
     arrow: '<svg viewBox="0 0 24 24"><path d="M7 17 17 7M7 7h10v10"/></svg>'
   };
 
@@ -22,8 +22,32 @@
     return String(value ?? "").replace(/[&<>"']/g, c => ({ "&":"&amp;", "<":"&lt;", ">":"&gt;", '"':"&quot;", "'":"&#39;" }[c]));
   }
 
-  function repoUrl(project) {
-    return `https://github.com/${encodeURIComponent(owner)}/${encodeURIComponent(project.repo)}`;
+  async function getReleases(project) {
+    if (cache.has(project.id)) return cache.get(project.id);
+    if (!owner || owner === "YOUR_GITHUB_USERNAME") throw new Error("Не указан GitHub username в config.js");
+    const url = `https://api.github.com/repos/${encodeURIComponent(owner)}/${encodeURIComponent(project.repo)}/releases?per_page=100`;
+    const response = await fetch(url, {
+      cache: "no-store",
+      headers: { "Accept": "application/vnd.github+json" }
+    });
+    if (!response.ok) {
+      if (response.status === 404) throw new Error(`Репозиторий ${project.repo} не найден или он приватный`);
+      if (response.status === 403) throw new Error("GitHub API временно ограничил запросы");
+      throw new Error(`GitHub вернул ошибку ${response.status}`);
+    }
+    const releases = await response.json();
+    cache.set(project.id, releases);
+    return releases;
+  }
+
+  function jarAssets(release) {
+    return (release.assets || []).filter(a => /\.jar$/i.test(a.name));
+  }
+
+  function allBuilds(releases) {
+    return releases.flatMap((release, releaseIndex) =>
+      jarAssets(release).map((asset, assetIndex) => ({ release, asset, releaseIndex, assetIndex }))
+    );
   }
 
   function renderProjects(filter = "") {
@@ -44,7 +68,7 @@
         </div>
         <p class="project-description">${escapeHtml(p.description)}</p>
         <div class="card-bottom">
-          <span class="release-preview" id="preview-${escapeHtml(p.id)}"><span class="tiny-dot"></span> Проверка версии...</span>
+          <span class="release-preview" id="preview-${escapeHtml(p.id)}"><span class="tiny-dot"></span> Проверка файлов...</span>
           <button class="details-button" data-project="${escapeHtml(p.id)}">Подробнее ${iconSvg.arrow}</button>
         </div>
       </article>`).join("");
@@ -54,35 +78,16 @@
     grid.querySelectorAll("[data-project]").forEach(btn => btn.addEventListener("click", () => openProject(btn.dataset.project)));
   }
 
-  async function getReleases(project) {
-    if (cache.has(project.id)) return cache.get(project.id);
-    if (!owner || owner === "YOUR_GITHUB_USERNAME") throw new Error("Укажи GitHub username в config.js");
-    const url = `https://api.github.com/repos/${encodeURIComponent(owner)}/${encodeURIComponent(project.repo)}/releases?per_page=30`;
-    const response = await fetch(url, { headers: { "Accept": "application/vnd.github+json" } });
-    if (!response.ok) {
-      if (response.status === 404) throw new Error("Репозиторий не найден или он приватный");
-      if (response.status === 403) throw new Error("GitHub API временно ограничил запросы");
-      throw new Error(`GitHub вернул ошибку ${response.status}`);
-    }
-    const releases = await response.json();
-    cache.set(project.id, releases);
-    return releases;
-  }
-
-  function jarAssets(release) {
-    return (release.assets || []).filter(a => /\.jar$/i.test(a.name));
-  }
-
   async function loadPreviews() {
     for (const project of projects) {
       const node = document.getElementById(`preview-${project.id}`);
       if (!node) continue;
       try {
         const releases = await getReleases(project);
-        const latest = releases.find(r => jarAssets(r).length);
-        node.innerHTML = latest
-          ? `<span class="tiny-dot"></span> ${escapeHtml(latest.tag_name || latest.name || "Релиз доступен")}`
-          : `<span class="tiny-dot muted"></span> Нет .jar релизов`;
+        const builds = allBuilds(releases);
+        node.innerHTML = builds.length
+          ? `<span class="tiny-dot"></span> ${builds.length} ${builds.length === 1 ? "сборка" : builds.length < 5 ? "сборки" : "сборок"} · ${releases.length} релизов`
+          : `<span class="tiny-dot muted"></span> Пока нет .jar файлов`;
       } catch (err) {
         node.innerHTML = `<span class="tiny-dot muted"></span> GitHub Releases`;
         node.title = err.message;
@@ -94,7 +99,7 @@
     toast.textContent = message;
     toast.classList.add("show");
     clearTimeout(showToast.timer);
-    showToast.timer = setTimeout(() => toast.classList.remove("show"), 2600);
+    showToast.timer = setTimeout(() => toast.classList.remove("show"), 2800);
   }
 
   function openProject(id) {
@@ -107,8 +112,10 @@
     document.getElementById("modalSubtitle").textContent = `${project.category} · Minecraft ${project.minecraft}`;
     document.getElementById("modalDescription").textContent = project.description;
     document.getElementById("releaseInfo").textContent = project.features.join("  ·  ");
-    select.innerHTML = '<option>Загрузка версий...</option>';
+    select.innerHTML = '<option>Загрузка релизов...</option>';
     select.disabled = true;
+    fileSelect.innerHTML = '<option>Сначала выбери релиз</option>';
+    fileSelect.disabled = true;
     status.textContent = "Загрузка...";
     status.className = "release-status";
     setDownload(null);
@@ -117,29 +124,32 @@
     document.body.classList.add("modal-open");
 
     getReleases(project).then(releases => {
-      activeReleases = releases.filter(r => jarAssets(r).length);
+      // Сохраняем каждый релиз, в котором есть хотя бы один .jar.
+      activeReleases = releases.filter(r => jarAssets(r).length > 0);
       select.innerHTML = "";
       if (!activeReleases.length) {
-        select.innerHTML = '<option value="">Нет доступных .jar файлов</option>';
+        select.innerHTML = '<option value="">Нет релизов с .jar файлами</option>';
         status.textContent = "Нет сборок";
         setDownload(null);
         return;
       }
-      activeReleases.forEach((r, i) => {
+      activeReleases.forEach((release, i) => {
         const option = document.createElement("option");
+        const tag = release.tag_name || release.name || `Релиз ${i + 1}`;
+        const count = jarAssets(release).length;
         option.value = String(i);
-        option.textContent = `${r.tag_name || r.name || "Без названия"}${r.prerelease ? " · prerelease" : ""}${r.draft ? " · draft" : ""}`;
+        option.textContent = `${tag} · ${count} ${count === 1 ? "файл" : count < 5 ? "файла" : "файлов"}`;
         select.appendChild(option);
       });
       select.disabled = false;
-      status.textContent = `${activeReleases.length} версий`;
+      status.textContent = `${allBuilds(releases).length} файлов`;
       status.className = "release-status ready";
       updateSelectedRelease();
     }).catch(err => {
-      select.innerHTML = '<option value="">Не удалось загрузить версии</option>';
+      select.innerHTML = '<option value="">Не удалось загрузить релизы</option>';
       status.textContent = "Ошибка";
       status.className = "release-status error";
-      document.getElementById("releaseInfo").textContent = `${err.message}. Проверь config.js и доступность репозитория.`;
+      document.getElementById("releaseInfo").textContent = `${err.message}. Проверь название репозитория и публичный доступ.`;
       showToast(err.message);
     });
   }
@@ -161,18 +171,35 @@
   function updateSelectedRelease() {
     const release = activeReleases[Number(select.value)];
     if (!release) return;
-    const asset = jarAssets(release)[0];
-    setDownload(asset);
+    const assets = jarAssets(release);
+    fileSelect.innerHTML = "";
+    assets.forEach((asset, i) => {
+      const option = document.createElement("option");
+      option.value = String(i);
+      option.textContent = asset.name;
+      fileSelect.appendChild(option);
+    });
+    fileSelect.disabled = assets.length <= 1;
     const notes = document.getElementById("releaseNotes");
     notes.href = release.html_url;
     notes.classList.remove("hidden");
+    updateSelectedFile();
+  }
+
+  function updateSelectedFile() {
+    const release = activeReleases[Number(select.value)];
+    if (!release) return;
+    const assets = jarAssets(release);
+    const asset = assets[Number(fileSelect.value)] || assets[0];
+    setDownload(asset);
     const date = release.published_at ? new Date(release.published_at).toLocaleDateString("ru-RU") : "";
     const body = (release.body || "").trim();
-    document.getElementById("releaseInfo").textContent = [
+    const releaseInfo = [
       date ? `Опубликовано: ${date}` : "",
-      asset ? `Файл: ${asset.name}` : "",
+      `${assets.length} .jar ${assets.length === 1 ? "файл" : assets.length < 5 ? "файла" : "файлов"} в этом релизе`,
       body ? body.slice(0, 500) : "Описание релиза не добавлено."
-    ].filter(Boolean).join(" · ");
+    ].filter(Boolean);
+    document.getElementById("releaseInfo").textContent = releaseInfo.join(" · ");
   }
 
   function formatBytes(bytes) {
@@ -190,18 +217,17 @@
 
   search.addEventListener("input", () => renderProjects(search.value));
   select.addEventListener("change", updateSelectedRelease);
+  fileSelect.addEventListener("change", updateSelectedFile);
   document.getElementById("modalClose").addEventListener("click", closeModal);
   modal.addEventListener("click", e => { if (e.target === modal) closeModal(); });
   document.addEventListener("keydown", e => { if (e.key === "Escape") closeModal(); });
-  download.addEventListener("click", e => {
-    if (download.classList.contains("disabled")) e.preventDefault();
-  });
+  download.addEventListener("click", e => { if (download.classList.contains("disabled")) e.preventDefault(); });
   document.getElementById("mobileMenu").addEventListener("click", () => {
     document.querySelector(".nav").classList.toggle("nav-open");
   });
 
   document.getElementById("year").textContent = new Date().getFullYear();
-  if (owner && owner !== "YOUR_GITHUB_USERNAME") {
+  if (owner) {
     const profile = `https://github.com/${encodeURIComponent(owner)}`;
     document.getElementById("githubProfile").href = profile;
     document.getElementById("sourceLink").href = profile;
