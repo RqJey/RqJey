@@ -136,18 +136,50 @@
     showToast.timer = setTimeout(() => toast.classList.remove("show"), 2800);
   }
 
+  // Извлекает номер версии из тега/названия, например:
+  // FriendHub-1.0.2-Release -> [1, 0, 2]
+  function getReleaseVersion(release) {
+    const sources = [release.tag_name, release.name].filter(Boolean);
+    for (const source of sources) {
+      const match = String(source).match(/(?:^|[^0-9])v?(\d+(?:\.\d+){1,3})(?=$|[^0-9])/i);
+      if (match) return match[1].split(".").map(part => Number(part));
+    }
+    return null;
+  }
+
+  function compareReleasesByVersion(a, b) {
+    const versionA = getReleaseVersion(a);
+    const versionB = getReleaseVersion(b);
+
+    // Если версии есть у обоих релизов, сравниваем именно числа,
+    // а не строки: 1.0.10 будет новее 1.0.2.
+    if (versionA && versionB) {
+      const length = Math.max(versionA.length, versionB.length);
+      for (let i = 0; i < length; i++) {
+        const partA = versionA[i] || 0;
+        const partB = versionB[i] || 0;
+        if (partA !== partB) return partB - partA;
+      }
+    } else if (versionA || versionB) {
+      // Релизы с распознанной версией ставим выше тех,
+      // у которых номер версии в теге/названии не найден.
+      return versionA ? -1 : 1;
+    }
+
+    // При одинаковых/отсутствующих версиях — более новый по дате выше.
+    const dateA = Date.parse(a.published_at || a.created_at || 0) || 0;
+    const dateB = Date.parse(b.published_at || b.created_at || 0) || 0;
+    return dateB - dateA;
+  }
+
   function openProject(id) {
     const project = projects.find(p => p.id === id);
     if (!project) return;
     activeProject = project;
     activeReleases = project.releases
       .filter(r => jarAssets(r).length > 0)
-      // Сначала самые новые опубликованные версии.
-      .sort((a, b) => {
-        const dateA = Date.parse(a.published_at || a.created_at || 0) || 0;
-        const dateB = Date.parse(b.published_at || b.created_at || 0) || 0;
-        return dateB - dateA;
-      });
+      // Сначала максимальная версия по номеру (например, 1.0.2 выше 1.0.1).
+      .sort(compareReleasesByVersion);
     document.getElementById("modalIcon").textContent = project.icon;
     document.getElementById("modalTitle").textContent = project.name;
     document.getElementById("modalSubtitle").textContent = `${project.category} · Minecraft ${project.minecraft}`;
