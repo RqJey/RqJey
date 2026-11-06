@@ -63,8 +63,39 @@
     return response.json();
   }
 
+  // Дата публикации конкретного файла GitHub Release.
+  // created_at — время загрузки asset; остальные поля нужны как запасной вариант.
+  function getAssetPublishedAt(asset, release) {
+    return Date.parse(
+      asset.created_at ||
+      asset.updated_at ||
+      release.published_at ||
+      release.created_at ||
+      0
+    ) || 0;
+  }
+
+  // Самые новые файлы идут первыми — первый файл будет выбран по умолчанию.
   function jarAssets(release) {
-    return release.assets || [];
+    return (release.assets || [])
+      .slice()
+      .sort((a, b) => getAssetPublishedAt(b, release) - getAssetPublishedAt(a, release));
+  }
+
+  function getLatestFilePublishedAt(release) {
+    const assets = jarAssets(release);
+    return assets.length ? getAssetPublishedAt(assets[0], release) : 0;
+  }
+
+  function compareReleasesByPublishedFile(a, b) {
+    const dateA = getLatestFilePublishedAt(a);
+    const dateB = getLatestFilePublishedAt(b);
+    if (dateA !== dateB) return dateB - dateA;
+
+    // Если даты файлов совпадают, используем дату публикации самого релиза.
+    const releaseDateA = Date.parse(a.published_at || a.created_at || 0) || 0;
+    const releaseDateB = Date.parse(b.published_at || b.created_at || 0) || 0;
+    return releaseDateB - releaseDateA;
   }
 
   function allBuilds(releases) {
@@ -142,72 +173,14 @@
     showToast.timer = setTimeout(() => toast.classList.remove("show"), 2800);
   }
 
-  // Ищет именно версию мода, а не номер Minecraft (например, MC26.3).
-  // Поддерживает форматы FriendHub-1.0.6-MC26.3,
-  // FriendHub-Mod-Release-1.0.6 и обычные v1.2.3.
-  function getReleaseVersion(release) {
-    const sources = [release.tag_name, release.name].filter(Boolean);
-    const candidates = [];
-
-    for (const source of sources) {
-      const value = String(source);
-      const regex = /(?:^|[^0-9])v?(\d+(?:\.\d+){1,3})(?=$|[^0-9])/gi;
-      let match;
-      while ((match = regex.exec(value)) !== null) {
-        const before = value.slice(Math.max(0, match.index - 12), match.index);
-        // Пропускаем версии совместимости Minecraft.
-        if (/(?:mc|minecraft)\s*[-_ ]*$/i.test(before)) continue;
-        candidates.push({
-          version: match[1].split(".").map(part => Number(part)),
-          sourcePriority: source === release.tag_name ? 1 : 0,
-          position: match.index
-        });
-      }
-    }
-
-    if (!candidates.length) return null;
-
-    // Обычно версия мода стоит ближе к концу тега/названия,
-    // а номер Minecraft помечен MC и уже исключён выше.
-    candidates.sort((a, b) =>
-      b.sourcePriority - a.sourcePriority || b.position - a.position
-    );
-    return candidates[0].version;
-  }
-
-  function compareReleasesByVersion(a, b) {
-    const versionA = getReleaseVersion(a);
-    const versionB = getReleaseVersion(b);
-
-    // Если версии есть у обоих релизов, сравниваем именно числа,
-    // а не строки: 1.0.10 будет новее 1.0.2.
-    if (versionA && versionB) {
-      const length = Math.max(versionA.length, versionB.length);
-      for (let i = 0; i < length; i++) {
-        const partA = versionA[i] || 0;
-        const partB = versionB[i] || 0;
-        if (partA !== partB) return partB - partA;
-      }
-    } else if (versionA || versionB) {
-      // Релизы с распознанной версией ставим выше тех,
-      // у которых номер версии в теге/названии не найден.
-      return versionA ? -1 : 1;
-    }
-
-    // При одинаковых/отсутствующих версиях — более новый по дате выше.
-    const dateA = Date.parse(a.published_at || a.created_at || 0) || 0;
-    const dateB = Date.parse(b.published_at || b.created_at || 0) || 0;
-    return dateB - dateA;
-  }
-
   function openProject(id) {
     const project = projects.find(p => p.id === id);
     if (!project) return;
     activeProject = project;
     activeReleases = project.releases
       .filter(r => jarAssets(r).length > 0)
-      // Во всех модах сначала показываем максимальную версию по номеру.
-      .sort(compareReleasesByVersion);
+      // Сначала релиз с самым поздно опубликованным файлом.
+      .sort(compareReleasesByPublishedFile);
     document.getElementById("modalIcon").textContent = project.icon;
     document.getElementById("modalTitle").textContent = project.name;
     document.getElementById("modalSubtitle").textContent = `${project.category} · Minecraft ${project.minecraft}`;
