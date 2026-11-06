@@ -1,7 +1,8 @@
 (() => {
   const config = window.SITE_CONFIG || {};
   const owner = (config.owner || "").trim();
-  const projects = config.projects || [];
+  const releasesRepo = (config.releasesRepo || "Minecraft-Mods").trim();
+  const projectMetadata = config.projects || [];
   const grid = document.getElementById("projectGrid");
   const search = document.getElementById("searchInput");
   const modal = document.getElementById("modalBackdrop");
@@ -10,50 +11,99 @@
   const download = document.getElementById("downloadButton");
   const status = document.getElementById("releaseStatus");
   const toast = document.getElementById("toast");
-  const cache = new Map();
+  let allReleases = [];
+  let projects = [];
   let activeProject = null;
   let activeReleases = [];
 
   const iconSvg = {
     arrow: '<svg viewBox="0 0 24 24"><path d="M7 17 17 7M7 7h10v10"/></svg>'
   };
+  const fallbackIcons = ["✳", "⌖", "◇", "⌘", "↗", "✦", "◈"];
+  const accents = ["violet", "blue", "green", "purple", "orange"];
 
   function escapeHtml(value) {
     return String(value ?? "").replace(/[&<>"']/g, c => ({ "&":"&amp;", "<":"&lt;", ">":"&gt;", '"':"&quot;", "'":"&#39;" }[c]));
   }
 
-  async function getReleases(project) {
-    if (cache.has(project.id)) return cache.get(project.id);
+  // Формат имени релиза: Test-Mod-Release, Test-Mod-Release-1.2,
+  // Test-Mod-Release(описание). Имя мода — часть перед -Mod-Release.
+  function getModName(release) {
+    const candidates = [release.name, release.tag_name].filter(Boolean);
+    for (const raw of candidates) {
+      const value = String(raw).trim();
+      const match = value.match(/^(.+?)-Mod-Release(?=$|[-_\s(])/i);
+      if (match) return match[1].replace(/[-_]+/g, " ").trim();
+    }
+    // Дополнительный вариант: тег вида Test/1.2.0 или Test-1.2.0
+    for (const raw of candidates) {
+      const value = String(raw).trim();
+      const match = value.match(/^([A-Za-zА-Яа-яЁё0-9][\wА-Яа-яЁё -]*?)(?:\/|[-_])v?\d+\.\d+/i);
+      if (match) return match[1].replace(/[-_]+/g, " ").trim();
+    }
+    return null;
+  }
+
+  function makeId(name) {
+    return name.toLowerCase().replace(/[^a-z0-9а-яё]+/gi, "-").replace(/^-|-$/g, "") || "mod";
+  }
+
+  async function getAllReleases() {
     if (!owner || owner === "YOUR_GITHUB_USERNAME") throw new Error("Не указан GitHub username в config.js");
-    const url = `https://api.github.com/repos/${encodeURIComponent(owner)}/${encodeURIComponent(project.repo)}/releases?per_page=100`;
+    const url = `https://api.github.com/repos/${encodeURIComponent(owner)}/${encodeURIComponent(releasesRepo)}/releases?per_page=100`;
     const response = await fetch(url, {
       cache: "no-store",
       headers: { "Accept": "application/vnd.github+json" }
     });
     if (!response.ok) {
-      if (response.status === 404) throw new Error(`Репозиторий ${project.repo} не найден или он приватный`);
+      if (response.status === 404) throw new Error(`Репозиторий ${releasesRepo} не найден или он приватный`);
       if (response.status === 403) throw new Error("GitHub API временно ограничил запросы");
       throw new Error(`GitHub вернул ошибку ${response.status}`);
     }
-    const releases = await response.json();
-    cache.set(project.id, releases);
-    return releases;
+    return response.json();
   }
 
   function jarAssets(release) {
-    return (release.assets || []).filter(a => /\.jar$/i.test(a.name));
+    return release.assets || [];
   }
 
   function allBuilds(releases) {
-    return releases.flatMap((release, releaseIndex) =>
-      jarAssets(release).map((asset, assetIndex) => ({ release, asset, releaseIndex, assetIndex }))
-    );
+    return releases.flatMap(release => jarAssets(release).map(asset => ({ release, asset })));
+  }
+
+  function buildProjects(releases) {
+    const groups = new Map();
+    releases.forEach(release => {
+      const modName = getModName(release);
+      if (!modName) return;
+      const key = modName.toLowerCase();
+      if (!groups.has(key)) groups.set(key, { name: modName, releases: [] });
+      groups.get(key).releases.push(release);
+    });
+
+    return Array.from(groups.values()).map((group, index) => {
+      const metadata = projectMetadata.find(p => p.name.toLowerCase() === group.name.toLowerCase());
+      return {
+        ...(metadata || {}),
+        id: metadata?.id || makeId(group.name),
+        name: metadata?.name || group.name,
+        icon: metadata?.icon || fallbackIcons[index % fallbackIcons.length],
+        category: metadata?.category || "Minecraft-мод",
+        description: metadata?.description || `Релизы и файлы мода ${group.name} из GitHub.`,
+        minecraft: metadata?.minecraft || "См. описание релиза",
+        accent: metadata?.accent || accents[index % accents.length],
+        features: metadata?.features || [],
+        releases: group.releases
+      };
+    }).sort((a,b) => a.name.localeCompare(b.name, "ru"));
   }
 
   function renderProjects(filter = "") {
     const term = filter.trim().toLowerCase();
     const visible = projects.filter(p => [p.name, p.category, p.description, p.minecraft].join(" ").toLowerCase().includes(term));
-    grid.innerHTML = visible.map((p, i) => `
+    grid.innerHTML = visible.map((p, i) => {
+      const builds = allBuilds(p.releases);
+      return `
       <article class="project-card accent-${escapeHtml(p.accent)}" style="--delay:${i * 45}ms">
         <div class="card-topline">
           <span class="project-category">${escapeHtml(p.category)}</span>
@@ -68,31 +118,15 @@
         </div>
         <p class="project-description">${escapeHtml(p.description)}</p>
         <div class="card-bottom">
-          <span class="release-preview" id="preview-${escapeHtml(p.id)}"><span class="tiny-dot"></span> Проверка файлов...</span>
+          <span class="release-preview"><span class="tiny-dot"></span> ${builds.length} файлов · ${p.releases.length} релизов</span>
           <button class="details-button" data-project="${escapeHtml(p.id)}">Подробнее ${iconSvg.arrow}</button>
         </div>
-      </article>`).join("");
+      </article>`;
+    }).join("");
     document.getElementById("visibleCount").textContent = `${String(visible.length).padStart(2,"0")} / ${String(projects.length).padStart(2,"0")}`;
     document.getElementById("emptyState").classList.toggle("hidden", visible.length !== 0);
     document.getElementById("projectCount").textContent = projects.length;
     grid.querySelectorAll("[data-project]").forEach(btn => btn.addEventListener("click", () => openProject(btn.dataset.project)));
-  }
-
-  async function loadPreviews() {
-    for (const project of projects) {
-      const node = document.getElementById(`preview-${project.id}`);
-      if (!node) continue;
-      try {
-        const releases = await getReleases(project);
-        const builds = allBuilds(releases);
-        node.innerHTML = builds.length
-          ? `<span class="tiny-dot"></span> ${builds.length} ${builds.length === 1 ? "сборка" : builds.length < 5 ? "сборки" : "сборок"} · ${releases.length} релизов`
-          : `<span class="tiny-dot muted"></span> Пока нет .jar файлов`;
-      } catch (err) {
-        node.innerHTML = `<span class="tiny-dot muted"></span> GitHub Releases`;
-        node.title = err.message;
-      }
-    }
   }
 
   function showToast(message) {
@@ -106,52 +140,38 @@
     const project = projects.find(p => p.id === id);
     if (!project) return;
     activeProject = project;
-    activeReleases = [];
+    activeReleases = project.releases.filter(r => jarAssets(r).length > 0);
     document.getElementById("modalIcon").textContent = project.icon;
     document.getElementById("modalTitle").textContent = project.name;
     document.getElementById("modalSubtitle").textContent = `${project.category} · Minecraft ${project.minecraft}`;
     document.getElementById("modalDescription").textContent = project.description;
     document.getElementById("releaseInfo").textContent = project.features.join("  ·  ");
-    select.innerHTML = '<option>Загрузка релизов...</option>';
-    select.disabled = true;
+    select.innerHTML = "";
     fileSelect.innerHTML = '<option>Сначала выбери релиз</option>';
     fileSelect.disabled = true;
-    status.textContent = "Загрузка...";
-    status.className = "release-status";
+    status.textContent = `${allBuilds(activeReleases).length} файлов`;
+    status.className = "release-status ready";
     setDownload(null);
     document.getElementById("releaseNotes").classList.add("hidden");
     modal.classList.remove("hidden");
     document.body.classList.add("modal-open");
 
-    getReleases(project).then(releases => {
-      // Сохраняем каждый релиз, в котором есть хотя бы один .jar.
-      activeReleases = releases.filter(r => jarAssets(r).length > 0);
-      select.innerHTML = "";
-      if (!activeReleases.length) {
-        select.innerHTML = '<option value="">Нет релизов с .jar файлами</option>';
-        status.textContent = "Нет сборок";
-        setDownload(null);
-        return;
-      }
-      activeReleases.forEach((release, i) => {
-        const option = document.createElement("option");
-        const tag = release.tag_name || release.name || `Релиз ${i + 1}`;
-        const count = jarAssets(release).length;
-        option.value = String(i);
-        option.textContent = `${tag} · ${count} ${count === 1 ? "файл" : count < 5 ? "файла" : "файлов"}`;
-        select.appendChild(option);
-      });
-      select.disabled = false;
-      status.textContent = `${allBuilds(releases).length} файлов`;
-      status.className = "release-status ready";
-      updateSelectedRelease();
-    }).catch(err => {
-      select.innerHTML = '<option value="">Не удалось загрузить релизы</option>';
-      status.textContent = "Ошибка";
-      status.className = "release-status error";
-      document.getElementById("releaseInfo").textContent = `${err.message}. Проверь название репозитория и публичный доступ.`;
-      showToast(err.message);
+    if (!activeReleases.length) {
+      select.innerHTML = '<option value="">Нет релизов с .jar файлами</option>';
+      status.textContent = "Нет сборок";
+      select.disabled = true;
+      return;
+    }
+    activeReleases.forEach((release, i) => {
+      const option = document.createElement("option");
+      const tag = release.tag_name || release.name || `Релиз ${i + 1}`;
+      const count = jarAssets(release).length;
+      option.value = String(i);
+      option.textContent = `${tag} · ${count} ${count === 1 ? "файл" : count < 5 ? "файла" : "файлов"}`;
+      select.appendChild(option);
     });
+    select.disabled = false;
+    updateSelectedRelease();
   }
 
   function setDownload(asset) {
@@ -196,7 +216,7 @@
     const body = (release.body || "").trim();
     const releaseInfo = [
       date ? `Опубликовано: ${date}` : "",
-      `${assets.length} .jar ${assets.length === 1 ? "файл" : assets.length < 5 ? "файла" : "файлов"} в этом релизе`,
+      `${assets.length} ${assets.length === 1 ? "файл" : assets.length < 5 ? "файла" : "файлов"} в этом релизе`,
       body ? body.slice(0, 500) : "Описание релиза не добавлено."
     ].filter(Boolean);
     document.getElementById("releaseInfo").textContent = releaseInfo.join(" · ");
@@ -226,12 +246,25 @@
     document.querySelector(".nav").classList.toggle("nav-open");
   });
 
-  document.getElementById("year").textContent = new Date().getFullYear();
-  if (owner) {
-    const profile = `https://github.com/${encodeURIComponent(owner)}`;
-    document.getElementById("githubProfile").href = profile;
-    document.getElementById("sourceLink").href = profile;
+  async function init() {
+    document.getElementById("year").textContent = new Date().getFullYear();
+    if (owner) {
+      const profile = `https://github.com/${encodeURIComponent(owner)}`;
+      document.getElementById("githubProfile").href = profile;
+      document.getElementById("sourceLink").href = profile;
+    }
+    grid.innerHTML = '<div class="empty-state">Загрузка списка модов из GitHub Releases...</div>';
+    try {
+      allReleases = await getAllReleases();
+      projects = buildProjects(allReleases);
+      renderProjects();
+    } catch (err) {
+      grid.innerHTML = `<div class="empty-state">Не удалось загрузить релизы: ${escapeHtml(err.message)}. Проверь настройки config.js и публичный доступ к репозиторию.</div>`;
+      document.getElementById("projectCount").textContent = "0";
+      document.getElementById("visibleCount").textContent = "00 / 00";
+      showToast(err.message);
+    }
   }
-  renderProjects();
-  loadPreviews();
+
+  init();
 })();

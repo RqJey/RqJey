@@ -6,11 +6,13 @@
 */
 window.SITE_CONFIG = {
   owner: "itz_rqjey",
+  // Все моды и релизы теперь берутся из одного репозитория.
+  releasesRepo: "Minecraft-Mods",
+  // Необязательные описания/иконки известных модов. Новые моды создаются автоматически.
   projects: [
     {
       id: "itemly",
       name: "Itemly",
-      repo: "Itemly-Mod-release",
       icon: "✳",
       category: "Персонализация",
       description: "Локальное переименование предметов и изменение цвета отображаемого названия. Подходит и для предметов, и для фона.",
@@ -21,7 +23,6 @@ window.SITE_CONFIG = {
     {
       id: "nearyou",
       name: "NearYou",
-      repo: "NearYou-Mod-Release",
       icon: "⌖",
       category: "Навигация",
       description: "Поиск игроков на карте сервера, просмотр координат и удобная навигация по найденным игрокам.",
@@ -32,7 +33,6 @@ window.SITE_CONFIG = {
     {
       id: "dropguard",
       name: "DropGuard",
-      repo: "DropGuard-Mod-release",
       icon: "◇",
       category: "Защита",
       description: "Защита от случайного подбора выбранных предметов и управление собственным списком блокировки.",
@@ -43,7 +43,6 @@ window.SITE_CONFIG = {
     {
       id: "friendhub",
       name: "FriendHub",
-      repo: "FriendHub-GeneralMod-release",
       icon: "⌘",
       category: "Общение",
       description: "Система друзей, личные сообщения и приглашения в голосовой чат — всё в одном удобном меню.",
@@ -54,7 +53,6 @@ window.SITE_CONFIG = {
     {
       id: "fastcmd",
       name: "FastCmd",
-      repo: "FastCmd-Mod-Release",
       icon: "↗",
       category: "Инструменты",
       description: "Колесо быстрого доступа к командам, собственные команды и удобное управление страницами.",
