@@ -13,8 +13,8 @@
       document.body.classList.remove('rq-loading');
       setTimeout(() => boot.remove(), 900);
     };
-    // Keep the branded loader visible for at least 1.7 seconds.
-    const remaining = Math.max(0, 1700 - (performance.now() - bootStartedAt));
+    // Keep the branded loader visible for at least 1.25 seconds.
+    const remaining = Math.max(0, 1250 - (performance.now() - bootStartedAt));
     bootHideTimer = window.setTimeout(revealPage, remaining);
   };
   // Reveal after the app has painted its initial state; bounded fallback covers offline/API errors.
