@@ -22,6 +22,8 @@
   function setCosmic(enabled) {
     document.body.classList.toggle('cosmic-mode', enabled);
     document.documentElement.classList.toggle('cosmic-mode', enabled);
+    // Keep the user's selected theme untouched; dark mode is only a temporary override.
+    window.setCosmicThemeOverride?.(enabled);
     if (cosmicButton) {
       cosmicButton.setAttribute('aria-pressed', String(enabled));
       cosmicButton.setAttribute('aria-label', enabled ? 'Выключить космическую тему' : 'Включить космическую тему');
