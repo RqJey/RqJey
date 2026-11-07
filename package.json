@@ -1,0 +1,8 @@
+{
+  "name": "rqjey-mods-site",
+  "version": "3.1.0",
+  "private": true,
+  "description": "RqJey Mods website with a private server-side admin panel",
+  "scripts": { "start": "node server.js" },
+  "engines": { "node": ">=20" }
+}
