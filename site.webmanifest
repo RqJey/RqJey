@@ -1,0 +1,17 @@
+{
+  "name": "RqJey STUDIO | AURORA",
+  "short_name": "RqJey",
+  "start_url": "/RqJey/",
+  "scope": "/RqJey/",
+  "display": "standalone",
+  "background_color": "#080611",
+  "theme_color": "#10091f",
+  "icons": [
+    {
+      "src": "app-icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}
