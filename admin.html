@@ -1,0 +1,44 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="robots" content="noindex,nofollow,noarchive">
+  <meta name="theme-color" content="#101114">
+  <title>Private control room · RqJey</title>
+  <link rel="stylesheet" href="/admin.css">
+  <script src="/admin.js" defer></script>
+</head>
+<body>
+  <main class="admin-shell">
+    <section class="login-card" id="loginView" hidden>
+      <a class="brand" href="/">rq<span>.</span> <small>PRIVATE AREA</small></a>
+      <p class="eyebrow">RESTRICTED ACCESS</p>
+      <h1>Вход в панель</h1>
+      <p class="muted">Эта область доступна только администратору.</p>
+      <form id="loginForm" autocomplete="on">
+        <label>Логин<input name="username" autocomplete="username" required maxlength="100"></label>
+        <label>Пароль<input name="password" type="password" autocomplete="current-password" required maxlength="200"></label>
+        <button class="primary" type="submit">Войти в панель <span>→</span></button>
+        <p class="error" id="loginError" role="alert"></p>
+      </form>
+    </section>
+    <section class="dashboard" id="dashboardView" hidden>
+      <header class="top">
+        <div><a class="brand" href="/">rq<span>.</span> <small>CONTROL ROOM</small></a><p class="muted">Управление содержимым RqJey Mods</p></div>
+        <button class="ghost" id="logoutButton" type="button">Выйти ↗</button>
+      </header>
+      <div class="heading">
+        <div><p class="eyebrow">CONTENT MANAGEMENT</p><h1>Контент сайта</h1><p class="muted">Изменения сохраняются на сервере и появляются на публичной странице.</p></div>
+        <button class="primary save-top" id="saveButton" type="button">Сохранить изменения</button>
+      </div>
+      <div class="notice" id="notice" role="status">Загружаем данные…</div>
+      <div class="editor-layout">
+        <aside class="project-list" id="projectList" aria-label="Список проектов"></aside>
+        <section class="editor" id="editor"><div class="empty-editor"><span>✳</span><h2>Выбери проект</h2><p>Слева выбери мод, чтобы изменить его описание и характеристики.</p></div></section>
+      </div>
+      <footer>RQJEY / PRIVATE ADMINISTRATION <span>Сессия защищена · 8 часов</span></footer>
+    </section>
+  </main>
+</body>
+</html>
