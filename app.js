@@ -183,8 +183,14 @@
       groups.get(key).releases.push(release);
     });
 
-    return Array.from(groups.values()).map((group, index) => {
-      const metadata = projectMetadata.find(p => p.name.toLowerCase() === group.name.toLowerCase());
+    const usedMetadata = new Set();
+    const fromReleases = Array.from(groups.values()).map((group, index) => {
+      // Сопоставляем также по стабильному ID: администратор может переименовать мод.
+      const metadata = projectMetadata.find(p =>
+        p.name?.toLowerCase() === group.name.toLowerCase() ||
+        p.id === makeId(group.name)
+      );
+      if (metadata) usedMetadata.add(metadata.id);
       return {
         ...(metadata || {}),
         id: metadata?.id || makeId(group.name),
@@ -197,8 +203,14 @@
         features: metadata?.features || [],
         releases: group.releases
       };
-    }).sort((a,b) => {
-      // FriendHub всегда закреплён первым; остальные моды — по алфавиту.
+    });
+
+    // Проекты, добавленные через админку, отображаются и до первого GitHub Release.
+    const withoutReleases = projectMetadata
+      .filter(metadata => !usedMetadata.has(metadata.id))
+      .map(metadata => ({ ...metadata, releases: [] }));
+
+    return [...fromReleases, ...withoutReleases].sort((a,b) => {
       const aPinned = a.name.toLowerCase() === "friendhub";
       const bPinned = b.name.toLowerCase() === "friendhub";
       if (aPinned !== bPinned) return aPinned ? -1 : 1;
