@@ -281,7 +281,7 @@
     const term = filter.trim().toLowerCase();
     let ordered = utilities.slice();
     if (document.getElementById("utilitiesSort")?.value === "latest") {
-      ordered.sort((a,b) => compareReleasesByPublishedFile(b.releases[0] || {}, a.releases[0] || {}));
+      ordered.sort((a,b) => compareReleasesByPublishedFile(a.releases[0] || {}, b.releases[0] || {}));
     }
     const visible = ordered.filter(item => [item.name, item.description, ...item.releases.map(r => r.tag_name || r.name || "")].join(" ").toLowerCase().includes(term));
     utilityGrid.innerHTML = visible.map((item, index) => {
