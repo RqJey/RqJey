@@ -2,7 +2,8 @@
   const config = window.SITE_CONFIG || {};
   const owner = (config.owner || "").trim();
   const releasesRepo = (config.releasesRepo || "Minecraft-Mods").trim();
-  const projectMetadata = config.projects || [];
+  let projectMetadata = config.projects || [];
+  let serverContentLoaded = false;
   const grid = document.getElementById("projectGrid");
   const search = document.getElementById("searchInput");
   const categoryFilter = document.getElementById("categoryFilter");
@@ -449,6 +450,15 @@
     }
     grid.innerHTML = '<div class="empty-state">Загрузка списка модов из GitHub Releases...</div>';
     try {
+      // На серверном хостинге админка управляет метаданными через постоянное хранилище.
+      // На GitHub Pages API отсутствует — используем резервную конфигурацию config.js.
+      try {
+        const contentResponse = await fetch("/api/content", { cache: "no-store" });
+        if (contentResponse.ok) {
+          const content = await contentResponse.json();
+          if (Array.isArray(content.projects)) { projectMetadata = content.projects; serverContentLoaded = true; }
+        }
+      } catch (_) {}
       allReleases = await getAllReleases();
       projects = buildProjects(allReleases);
       const categories = [...new Set(projects.map(p => p.category).filter(Boolean))].sort((a, b) => a.localeCompare(b, "ru"));
