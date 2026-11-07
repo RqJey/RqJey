@@ -1,0 +1,55 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#0b0c10">
+  <meta name="description" content="Log Analyzer — локальный анализатор логов Minecraft.">
+  <title>Log Analyzer — Minecraft diagnostics</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="analyzer.css">
+</head>
+<body>
+  <div class="page-shell analyzer-shell">
+    <header class="topbar analyzer-topbar">
+      <a class="brand" href="index.html" aria-label="Back to home"><span class="brand-mark">rq<span>.</span></span><span class="brand-name">Minecraft <span class="brand-muted">Tools</span></span></a>
+      <a class="analyzer-back" href="index.html">← <span data-ru="На главную" data-en="Back to home">На главную</span></a>
+    </header>
+    <main class="analyzer-main">
+      <div class="analyzer-eyebrow"><span></span> MINECRAFT DIAGNOSTICS</div>
+      <h1>Log <em>Analyzer</em><span>.</span></h1>
+      <p class="analyzer-lead" data-ru="Найди причину вылета Minecraft. Загрузи лог или вставь его текст — анализ выполняется прямо в браузере." data-en="Find out why Minecraft crashed. Upload a log or paste its contents — analysis runs directly in your browser.">Найди причину вылета Minecraft. Загрузи лог или вставь его текст — анализ выполняется прямо в браузере.</p>
+
+      <section class="analyzer-panel">
+        <label class="drop-zone" id="dropZone" for="logFile">
+          <input id="logFile" type="file" accept=".log,.txt,.crash,.json,text/plain">
+          <span class="drop-icon" aria-hidden="true">↑</span>
+          <strong data-ru="Перетащи лог сюда" data-en="Drop your log here">Перетащи лог сюда</strong>
+          <span data-ru="или нажми, чтобы выбрать файл" data-en="or click to choose a file">или нажми, чтобы выбрать файл</span>
+          <small>latest.log · crash-report.txt · .log · .txt</small>
+        </label>
+        <div class="input-divider"><span data-ru="ИЛИ ВСТАВЬ ТЕКСТ ЛОГА" data-en="OR PASTE LOG TEXT">ИЛИ ВСТАВЬ ТЕКСТ ЛОГА</span></div>
+        <textarea id="logText" spellcheck="false" placeholder="Вставь содержимое latest.log или crash-report.txt..."></textarea>
+        <div class="analyzer-actions">
+          <span id="fileName" class="file-name" aria-live="polite" data-ru="Файл не выбран" data-en="No file selected">Файл не выбран</span>
+          <button id="analyzeButton" class="analyze-button" type="button" disabled><span data-ru="Анализировать" data-en="Analyze log">Анализировать</span> <b>→</b></button>
+        </div>
+        <p class="privacy-note"><span>●</span> <span data-ru="Лог не отправляется на сервер. Весь анализ происходит локально." data-en="Your log is never uploaded. All analysis happens locally in your browser.">Лог не отправляется на сервер. Весь анализ происходит локально.</span></p>
+      </section>
+
+      <section id="results" class="results-section" aria-live="polite" hidden>
+        <div class="results-heading"><div><div class="analyzer-eyebrow">ANALYSIS REPORT</div><h2 data-ru="Результаты анализа" data-en="Analysis results">Результаты анализа</h2></div><button id="copyReport" class="copy-button" type="button" data-ru="Копировать отчёт" data-en="Copy report">Копировать отчёт</button></div>
+        <div id="summary" class="summary-card"></div>
+        <div class="diagnostic-grid" id="diagnostics"></div>
+        <div class="evidence-card"><h3 data-ru="Фрагменты лога" data-en="Log evidence">Фрагменты лога</h3><pre id="evidence"></pre></div>
+        <p class="disclaimer" data-ru="Диагностика основана на найденных признаках и известных шаблонах ошибок. Предполагаемая причина не всегда является точным диагнозом." data-en="Diagnostics are based on detected patterns. A likely cause is not always a definitive diagnosis.">Диагностика основана на найденных признаках и известных шаблонах ошибок. Предполагаемая причина не всегда является точным диагнозом.</p>
+      </section>
+      <footer class="analyzer-footer"><a href="index.html">← <span data-ru="Вернуться к каталогу" data-en="Return to catalog">Вернуться к каталогу</span></a><span>LOG ANALYZER · BROWSER-BASED</span></footer>
+    </main>
+  </div>
+  <script src="analyzer.js"></script>
+</body>
+</html>
