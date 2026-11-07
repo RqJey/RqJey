@@ -694,3 +694,27 @@ html.cosmic-mode .solar-system-scene{opacity:.78;transform:scale(1)}
 html[data-theme="light"] .analyzer-nav-button{color:#7156ac;background:#f5f1fc;border-color:#ded5ef}
 @media(max-width:760px){.analyzer-nav-button{width:32px;height:32px;flex-basis:32px;border-radius:9px}}
 @media(max-width:420px){.analyzer-nav-button{width:30px;height:30px;flex-basis:30px}}
+
+
+/* Make the Log Analyzer shortcut unmistakably visible in the header. */
+.analyzer-nav-button{
+  width:auto;min-width:34px;flex:0 0 auto;display:inline-flex;align-items:center;justify-content:center;gap:7px;
+  padding:0 11px;border:1px solid #a58ce577;border-radius:10px;
+  background:linear-gradient(135deg,#a58ce52b,#8de0c115);color:#e4d9ff;
+  box-shadow:0 0 0 1px #a58ce50b,inset 0 1px #ffffff12;
+  white-space:nowrap;font-size:10px;font-weight:750;letter-spacing:.1px;
+}
+.analyzer-nav-button svg{width:16px;height:16px;flex:0 0 16px;fill:none;stroke:currentColor;stroke-width:1.65;stroke-linecap:round;stroke-linejoin:round}
+.analyzer-nav-label{display:inline}
+.analyzer-nav-button:hover{transform:translateY(-1px);border-color:#c2afff;background:#a58ce53b;box-shadow:0 5px 18px #a58ce52b}
+html[data-theme="light"] .analyzer-nav-button{color:#624795;background:#f0eafd;border-color:#bca9e5}
+@media(max-width:760px){
+  .analyzer-nav-button{width:34px;height:34px;min-width:34px;padding:0;flex:0 0 34px;border-radius:9px}
+  .analyzer-nav-label{display:none}
+}
+@media(max-width:380px){
+  .header-tools{gap:3px}
+  .header-tools .utility-button{display:none}
+  .header-tools .header-select:not(.language-select){max-width:64px}
+  .analyzer-nav-button{width:32px;height:32px;min-width:32px;flex-basis:32px}
+}
