@@ -59,12 +59,23 @@
   }
   function applyTheme(theme) {
     const selected = ["light", "dark", "system"].includes(theme) ? theme : "system";
-    document.documentElement.dataset.theme = selected;
+    // Cosmic mode temporarily forces dark colors without overwriting the user's preference.
+    const effective = document.documentElement.classList.contains("cosmic-mode") ? "dark" : selected;
+    document.documentElement.dataset.theme = effective;
     document.getElementById("themeSelect").value = selected;
     localStorage.setItem("rqjey-theme", selected);
-    const color = selected === "light" ? "#f4f5f8" : selected === "dark" ? "#0b0c10" : "#0b0c10";
+    const color = effective === "light" ? "#f4f5f8" : "#0b0c10";
     document.querySelector('meta[name="theme-color"]').setAttribute("content", color);
   }
+
+  // Allows the cosmic toggle (loaded after this file) to temporarily force dark mode.
+  window.setCosmicThemeOverride = enabled => {
+    const preferred = localStorage.getItem("rqjey-theme") || "system";
+    const effective = enabled ? "dark" : (["light", "dark", "system"].includes(preferred) ? preferred : "system");
+    document.documentElement.dataset.theme = effective;
+    const color = effective === "light" ? "#f4f5f8" : "#0b0c10";
+    document.querySelector('meta[name="theme-color"]').setAttribute("content", color);
+  };
 
   function escapeHtml(value) {
     return String(value ?? "").replace(/[&<>"']/g, c => ({ "&":"&amp;", "<":"&lt;", ">":"&gt;", '"':"&quot;", "'":"&#39;" }[c]));
