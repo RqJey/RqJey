@@ -2,10 +2,20 @@
   'use strict';
   const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
   const boot = document.getElementById('bootScreen');
+  const bootStartedAt = performance.now();
+  let bootHideTimer = 0;
   const hideBoot = () => {
-    if (!boot || boot.classList.contains('boot-done')) return;
-    boot.classList.add('boot-done'); document.body.classList.remove('rq-loading');
-    setTimeout(() => boot.remove(), 900);
+    if (!boot || boot.classList.contains('boot-done') || bootHideTimer) return;
+    const revealPage = () => {
+      bootHideTimer = 0;
+      if (!boot || boot.classList.contains('boot-done')) return;
+      boot.classList.add('boot-done');
+      document.body.classList.remove('rq-loading');
+      setTimeout(() => boot.remove(), 900);
+    };
+    // Keep the branded loader visible for at least 1.7 seconds.
+    const remaining = Math.max(0, 1700 - (performance.now() - bootStartedAt));
+    bootHideTimer = window.setTimeout(revealPage, remaining);
   };
   // Reveal after the app has painted its initial state; bounded fallback covers offline/API errors.
   const grid = document.getElementById('projectGrid');
