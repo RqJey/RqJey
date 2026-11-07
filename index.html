@@ -12,29 +12,42 @@
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
+  <div class="ambient-background" aria-hidden="true"><span class="ambient-orb orb-a"></span><span class="ambient-orb orb-b"></span><span class="ambient-orb orb-c"></span></div>
   <div class="page-shell">
     <header class="topbar">
       <a class="brand" href="#top" aria-label="RqJey Mods home"><span class="brand-mark">rq<span>.</span></span><span class="brand-name">RqJey <span class="brand-muted">Mods</span></span></a>
-      <nav class="nav" id="mainNav"><a class="nav-link active" href="#projects" data-i18n="navCatalog">Каталог</a><a class="nav-link" href="#about" data-i18n="navAbout">О проекте</a><a class="github-link" id="githubProfile" href="https://github.com/RqJey" target="_blank" rel="noreferrer"><span class="github-glyph" aria-hidden="true">⌘</span> GitHub <span class="external">↗</span></a></nav>
+      <nav class="nav" id="mainNav"><a class="nav-link active" href="#projects" data-i18n="navCatalog">Каталог</a><a class="nav-link" href="#about" data-i18n="navAbout">О проекте</a><a class="github-link" id="githubProfile" href="https://github.com/RqJey/Minecraft-Mods/releases" target="_blank" rel="noreferrer"><span class="github-glyph" aria-hidden="true">⌘</span> GitHub <span class="external">↗</span></a></nav>
       <div class="header-tools"><button class="utility-button" id="notifyButton" type="button" data-i18n="notifications">Уведомления</button><label class="sr-only" for="themeSelect">Theme</label><select id="themeSelect" class="header-select" aria-label="Theme"><option value="system" data-i18n="themeSystem">Системная</option><option value="light" data-i18n="themeLight">Светлая</option><option value="dark" data-i18n="themeDark">Тёмная</option></select><label class="sr-only" for="languageSelect">Language</label><select id="languageSelect" class="header-select language-select" aria-label="Language"><option value="ru">РУ</option><option value="en">EN</option></select></div>
       <button class="mobile-menu" id="mobileMenu" aria-label="Открыть меню" aria-expanded="false">☰</button>
     </header>
     <main id="top">
-      <section class="intro">
+      <section class="intro intro-showcase">
         <div class="hero-glow"></div>
-        <div class="eyebrow"><span class="eyebrow-dot"></span> MINECRAFT MODS <span class="eyebrow-divider">/</span> BUILT BY RQJEY</div>
-        <h1 data-i18n-html="heroTitle">Прокачай свой<br><span>Minecraft.</span></h1>
-        <p class="intro-copy" data-i18n="heroCopy">Набор полезных клиентских модификаций, созданных, чтобы сделать игру удобнее. Выбирай инструмент, изучай версии и скачивай последнюю сборку в пару кликов.</p>
-        <div class="hero-actions"><a class="primary-cta" href="#projects"><span data-i18n="exploreMods">Исследовать моды</span> <span>↓</span></a><a class="secondary-cta" id="heroGithub" href="https://github.com/RqJey" target="_blank" rel="noreferrer"><span data-i18n="openGithub">Открыть GitHub</span> ↗</a></div>
-        <div class="intro-meta"><span><i class="meta-dot"></i><b id="projectCount">0</b> проектов</span><span class="meta-divider"></span><span>Автообновление из GitHub Releases</span><span class="meta-divider"></span><span>Fabric · Client-side</span></div>
-        <div class="hero-orbit orbit-one"></div><div class="hero-orbit orbit-two"></div>
+        <div class="showcase-copy">
+          <div class="eyebrow"><span class="eyebrow-dot"></span> RQJEY MODS <span class="eyebrow-divider">/</span> CLIENT TOOLKIT</div>
+          <div class="showcase-index"><span>01</span><i></i><span>05</span><span class="index-caption" data-i18n="showcaseLabel">КОЛЛЕКЦИЯ ИНСТРУМЕНТОВ</span></div>
+          <p class="intro-copy" data-i18n="heroCopy">Полезные клиентские модификации для более удобной игры. Выбирай инструмент, изучай версии и скачивай актуальные сборки в пару кликов.</p>
+          <div class="hero-actions"><a class="primary-cta" href="#projects"><span data-i18n="exploreMods">Исследовать моды</span> <span>↓</span></a><a class="secondary-cta" id="heroGithub" href="https://github.com/RqJey/Minecraft-Mods/releases" target="_blank" rel="noreferrer"><span data-i18n="openGithub">Открыть GitHub</span> ↗</a></div>
+          <div class="intro-meta"><span><i class="meta-dot"></i><b id="projectCount">0</b> <span data-i18n="projectsWord">проектов</span></span><span class="meta-divider"></span><span data-i18n="autoReleases">Автообновление из GitHub Releases</span><span class="meta-divider"></span><span>Fabric · Client-side</span></div>
+        </div>
+        <div class="showcase-art" aria-hidden="true">
+          <div class="showcase-halo halo-a"></div><div class="showcase-halo halo-b"></div>
+          <div class="showcase-topline"><span><i></i> LIVE LIBRARY</span><span>RQ / 2026</span></div>
+          <div class="showcase-stack">
+            <div class="showcase-card card-back"><span class="mini-symbol">⌘</span><span class="mini-lines"><i></i><i></i><i></i></span><b>TOOLS</b></div>
+            <div class="showcase-card card-mid"><span class="mini-symbol">✳</span><span class="mini-lines"><i></i><i></i><i></i></span><b>CLIENT</b></div>
+            <div class="showcase-card card-front"><div class="front-head"><span class="mini-symbol">rq.</span><span class="online-state"><i></i> ONLINE</span></div><div class="front-title">MOD<br><em>COLLECTION</em></div><div class="front-foot"><span>FABRIC / CLIENT-SIDE</span><span>↗</span></div></div>
+          </div>
+          <div class="showcase-orbit-number">RQ<span>J</span></div>
+          <div class="showcase-caption"><span>01—05</span><span data-i18n="curatedMods">CURATED MODS</span></div>
+        </div>
       </section>
       <section class="projects-section" id="projects">
         <div class="section-heading"><div><div class="section-kicker" data-i18n="library">БИБЛИОТЕКА МОДОВ</div><h2 data-i18n="chooseTool">Выбери свой инструмент<span class="heading-period">.</span></h2><p class="section-subtitle" data-i18n="libraryCopy">Все актуальные сборки и история релизов в одном месте.</p></div><div class="project-total" id="visibleCount">00 / 00</div></div>
         <div class="filter-bar"><label class="search-box"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="10.8" cy="10.8" r="6.8"/><path d="m16 16 5 5"/></svg><input id="searchInput" type="search" placeholder="Поиск по названию, категории..." autocomplete="off"><kbd>/</kbd></label><label class="filter-select-wrap"><span data-i18n="category">Категория</span><select id="categoryFilter" class="filter-select"><option value="all" data-i18n="allCategories">Все категории</option></select></label><label class="filter-select-wrap sort-wrap"><span data-i18n="sort">Сортировка</span><select id="sortSelect" class="filter-select"><option value="name" data-i18n="sortName">По названию</option><option value="latest" data-i18n="sortLatest">Сначала новые</option></select></label></div>
         <div class="project-grid" id="projectGrid" aria-live="polite"></div><div class="empty-state hidden" id="emptyState" data-i18n="empty">Ничего не найдено. Попробуй изменить запрос или фильтр.</div>
       </section>
-      <section class="about-strip" id="about"><div class="about-symbol">rq.</div><div class="about-text"><div class="section-kicker" data-i18n="aboutKicker">ЗА КАЖДЫМ МОДОМ — ИДЕЯ</div><h2 data-i18n="aboutTitle">Меньше рутины. Больше игры.</h2><p data-i18n="aboutCopy">RqJey Mods — коллекция небольших инструментов для Minecraft. Новые версии автоматически появляются здесь после публикации релиза на GitHub.</p></div><a class="text-link" id="sourceLink" href="https://github.com/RqJey" target="_blank" rel="noreferrer"><span data-i18n="sourceCode">Исходный код</span> ↗</a></section>
+      <section class="about-strip" id="about"><div class="about-symbol" aria-hidden="true"><span>rq.</span><i></i></div><div class="about-text"><div class="section-kicker" data-i18n="aboutKicker">ЗА КАЖДЫМ МОДОМ — ИДЕЯ</div><h2 data-i18n="aboutTitle">Меньше рутины. Больше игры.</h2><p data-i18n="aboutCopy">RqJey Mods — коллекция небольших инструментов для Minecraft. Новые версии автоматически появляются здесь после публикации релиза на GitHub.</p></div><div class="about-signature" aria-hidden="true"><span class="signature-mark">✳</span><span class="signature-copy"><b>RQJEY / STUDIO</b><small>MADE FOR YOUR NEXT SESSION</small></span></div></section>
     </main>
     <footer class="footer"><span>© <span id="year"></span> RqJey Mods</span><span class="footer-center" data-i18n="footerTag">Made for better Minecraft sessions</span><a href="#top" data-i18n="backTop">Наверх ↑</a></footer>
   </div>
@@ -46,7 +59,8 @@
         <div class="modal-icon" id="modalIcon"></div>
         <div><h2 id="modalTitle">Project</h2><p id="modalSubtitle"></p></div>
       </div>
-      <p class="modal-description" id="modalDescription"></p>
+      <div class="modal-description markdown-content" id="modalDescription"></div>
+      <div class="detail-stats" id="detailStats"><div class="detail-stat"><span class="detail-stat-icon">↓</span><span><strong id="downloadCount">0</strong><small data-i18n="totalDownloads">Всего скачиваний</small></span></div><div class="detail-stat"><span class="detail-stat-icon">◷</span><span><strong id="releaseCount">0</strong><small data-i18n="publishedReleases">Опубликовано релизов</small></span></div></div>
       <div class="modal-divider"></div>
       <div class="release-label-row">
         <label for="versionSelect" data-i18n="chooseVersion">Выбери версию</label>
@@ -56,6 +70,7 @@
       <label class="file-select-label" for="fileSelect" data-i18n="buildFile">Файл сборки</label>
       <select id="fileSelect" class="version-select" disabled></select>
       <div class="release-info" id="releaseInfo"></div>
+      <div class="release-body markdown-content" id="releaseBody"></div>
       <a class="download-button disabled" id="downloadButton" href="#" aria-disabled="true">
         <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3v12m0 0 4.5-4.5M12 15l-4.5-4.5M4 19.5h16"/></svg>
         <span data-i18n="downloadBuild">Скачать сборку</span><span class="download-size" id="downloadSize"></span>

@@ -24,8 +24,8 @@
   const fallbackIcons = ["✳", "⌖", "◇", "⌘", "↗", "✦", "◈"];
   const accents = ["violet", "blue", "green", "purple", "orange"];
   const translations = {
-    ru: {navCatalog:"Каталог",navAbout:"О проекте",notifications:"Уведомления",themeSystem:"Системная",themeLight:"Светлая",themeDark:"Тёмная",heroTitle:"Прокачай свой<br><span>Minecraft.</span>",heroCopy:"Набор полезных клиентских модификаций, созданных, чтобы сделать игру удобнее. Выбирай инструмент, изучай версии и скачивай последнюю сборку в пару кликов.",exploreMods:"Исследовать моды",openGithub:"Открыть GitHub",library:"БИБЛИОТЕКА МОДОВ",chooseTool:"Выбери свой инструмент",libraryCopy:"Все актуальные сборки и история релизов в одном месте.",category:"Категория",allCategories:"Все категории",sort:"Сортировка",sortName:"По названию",sortLatest:"Сначала новые",empty:"Ничего не найдено. Попробуй изменить запрос или фильтр.",aboutKicker:"ЗА КАЖДЫМ МОДОМ — ИДЕЯ",aboutTitle:"Меньше рутины. Больше игры.",aboutCopy:"RqJey Mods — коллекция небольших инструментов для Minecraft. Новые версии автоматически появляются здесь после публикации релиза на GitHub.",sourceCode:"Исходный код",footerTag:"Made for better Minecraft sessions",backTop:"Наверх ↑",downloadCenter:"· ЦЕНТР СКАЧИВАНИЯ",chooseVersion:"Выбери версию",buildFile:"Файл сборки",downloadBuild:"Скачать сборку",viewRelease:"Посмотреть релиз на GitHub",searchPlaceholder:"Поиск по названию, категории...",details:"Подробнее",files:"файлов",releases:"релизов",published:"Опубликовано",noRelease:"Нет релизов с .jar файлами",noBuilds:"Нет сборок",chooseRelease:"Сначала выбери релиз",notifyEnabled:"Уведомления включены",notifyDenied:"Разреши уведомления в настройках браузера",notifyUnsupported:"Этот браузер не поддерживает уведомления",notifyPrompt:"Разрешить уведомления о новых релизах?",copied:"Ссылка скопирована",shareError:"Не удалось поделиться ссылкой",newBadge:"НОВЫЙ",updatedBadge:"ОБНОВЛЁН",share:"Поделиться",copyLink:"Копировать ссылку",popularBadge:"ПОПУЛЯРНЫЙ",noDescription:"Описание релиза не добавлено.",loading:"Загрузка...",loadError:"Не удалось загрузить релизы"},
-    en: {navCatalog:"Catalog",navAbout:"About",notifications:"Notifications",themeSystem:"System",themeLight:"Light",themeDark:"Dark",heroTitle:"Upgrade your<br><span>Minecraft.</span>",heroCopy:"A collection of useful client-side mods designed to make your game more convenient. Pick a tool, explore versions, and download the latest build in just a few clicks.",exploreMods:"Explore mods",openGithub:"Open GitHub",library:"MOD LIBRARY",chooseTool:"Choose your tool",libraryCopy:"All current builds and release history in one place.",category:"Category",allCategories:"All categories",sort:"Sort by",sortName:"Name",sortLatest:"Newest first",empty:"Nothing found. Try changing your search or filters.",aboutKicker:"AN IDEA BEHIND EVERY MOD",aboutTitle:"Less routine. More gameplay.",aboutCopy:"RqJey Mods is a collection of small tools for Minecraft. New versions appear here automatically after a GitHub release is published.",sourceCode:"Source code",footerTag:"Made for better Minecraft sessions",backTop:"Back to top ↑",downloadCenter:"· DOWNLOAD CENTER",chooseVersion:"Choose version",buildFile:"Build file",downloadBuild:"Download build",viewRelease:"View release on GitHub",searchPlaceholder:"Search by name or category...",details:"Details",files:"files",releases:"releases",published:"Published",noRelease:"No releases with .jar files",noBuilds:"No builds",chooseRelease:"Choose a release first",notifyEnabled:"Notifications enabled",notifyDenied:"Allow notifications in your browser settings",notifyUnsupported:"This browser does not support notifications",notifyPrompt:"Allow notifications about new releases?",copied:"Link copied",shareError:"Could not share this link",newBadge:"NEW",updatedBadge:"UPDATED",share:"Share",copyLink:"Copy link",popularBadge:"POPULAR",noDescription:"No release notes provided.",loading:"Loading...",loadError:"Could not load releases"}
+    ru: {navCatalog:"Каталог",navAbout:"О проекте",notifications:"Уведомления",themeSystem:"Системная",themeLight:"Светлая",themeDark:"Тёмная",showcaseLabel:"КОЛЛЕКЦИЯ ИНСТРУМЕНТОВ",projectsWord:"проектов",autoReleases:"Автообновление из GitHub Releases",curatedMods:"ПОДБОРКА МОДОВ",heroCopy:"Полезные клиентские модификации для более удобной игры. Выбирай инструмент, изучай версии и скачивай актуальные сборки в пару кликов.",exploreMods:"Исследовать моды",openGithub:"Открыть GitHub",library:"БИБЛИОТЕКА МОДОВ",chooseTool:"Выбери свой инструмент",libraryCopy:"Все актуальные сборки и история релизов в одном месте.",category:"Категория",allCategories:"Все категории",sort:"Сортировка",sortName:"По названию",sortLatest:"Сначала новые",empty:"Ничего не найдено. Попробуй изменить запрос или фильтр.",aboutKicker:"ЗА КАЖДЫМ МОДОМ — ИДЕЯ",aboutTitle:"Меньше рутины. Больше игры.",aboutCopy:"RqJey Mods — коллекция небольших инструментов для Minecraft. Новые версии автоматически появляются здесь после публикации релиза на GitHub.",sourceCode:"Исходный код",footerTag:"Made for better Minecraft sessions",backTop:"Наверх ↑",downloadCenter:"· ЦЕНТР СКАЧИВАНИЯ",chooseVersion:"Выбери версию",buildFile:"Файл сборки",downloadBuild:"Скачать сборку",viewRelease:"Посмотреть релиз на GitHub",searchPlaceholder:"Поиск по названию, категории...",details:"Подробнее",files:"файлов",releases:"релизов",published:"Опубликовано",noRelease:"Нет релизов с .jar файлами",noBuilds:"Нет сборок",chooseRelease:"Сначала выбери релиз",notifyEnabled:"Уведомления включены",notifyDenied:"Разреши уведомления в настройках браузера",notifyUnsupported:"Этот браузер не поддерживает уведомления",notifyPrompt:"Разрешить уведомления о новых релизах?",copied:"Ссылка скопирована",shareError:"Не удалось поделиться ссылкой",newBadge:"НОВЫЙ",updatedBadge:"ОБНОВЛЁН",share:"Поделиться",copyLink:"Копировать ссылку",popularBadge:"ПОПУЛЯРНЫЙ",noDescription:"Описание релиза не добавлено.",loading:"Загрузка...",loadError:"Не удалось загрузить релизы",totalDownloads:"Всего скачиваний",publishedReleases:"Опубликовано релизов",downloadCountUnavailable:"Счётчик GitHub обновляется вместе с релизами"},
+    en: {navCatalog:"Catalog",navAbout:"About",notifications:"Notifications",themeSystem:"System",themeLight:"Light",themeDark:"Dark",showcaseLabel:"CURATED TOOLKIT",projectsWord:"projects",autoReleases:"Auto-updated from GitHub Releases",curatedMods:"CURATED MODS",heroCopy:"Useful client-side modifications for a smoother Minecraft experience. Pick a tool, explore versions, and get the latest build in a couple of clicks.",exploreMods:"Explore mods",openGithub:"Open GitHub",library:"MOD LIBRARY",chooseTool:"Choose your tool",libraryCopy:"All current builds and release history in one place.",category:"Category",allCategories:"All categories",sort:"Sort by",sortName:"Name",sortLatest:"Newest first",empty:"Nothing found. Try changing your search or filters.",aboutKicker:"AN IDEA BEHIND EVERY MOD",aboutTitle:"Less routine. More gameplay.",aboutCopy:"RqJey Mods is a collection of small tools for Minecraft. New versions appear here automatically after a GitHub release is published.",sourceCode:"Source code",footerTag:"Made for better Minecraft sessions",backTop:"Back to top ↑",downloadCenter:"· DOWNLOAD CENTER",chooseVersion:"Choose version",buildFile:"Build file",downloadBuild:"Download build",viewRelease:"View release on GitHub",searchPlaceholder:"Search by name or category...",details:"Details",files:"files",releases:"releases",published:"Published",noRelease:"No releases with .jar files",noBuilds:"No builds",chooseRelease:"Choose a release first",notifyEnabled:"Notifications enabled",notifyDenied:"Allow notifications in your browser settings",notifyUnsupported:"This browser does not support notifications",notifyPrompt:"Allow notifications about new releases?",copied:"Link copied",shareError:"Could not share this link",newBadge:"NEW",updatedBadge:"UPDATED",share:"Share",copyLink:"Copy link",popularBadge:"POPULAR",noDescription:"No release notes provided.",loading:"Loading...",loadError:"Could not load releases",totalDownloads:"Total downloads",publishedReleases:"Published releases",downloadCountUnavailable:"GitHub download count updates with releases"}
   };
   let language = localStorage.getItem("rqjey-language") || "ru";
   if (!translations[language]) language = "ru";
@@ -63,6 +63,37 @@
 
   function escapeHtml(value) {
     return String(value ?? "").replace(/[&<>"']/g, c => ({ "&":"&amp;", "<":"&lt;", ">":"&gt;", '"':"&quot;", "'":"&#39;" }[c]));
+  }
+
+  // Безопасный небольшой Markdown-рендерер: поддерживает **жирный**, *курсив*, `код`,
+  // списки, переносы строк и ссылки. HTML из описаний никогда не вставляется напрямую.
+  function renderMarkdown(value) {
+    const lines = String(value ?? "").replace(/\r/g, "").split("\n");
+    const inline = text => {
+      let html = escapeHtml(text);
+      html = html.replace(/\[([^\]]+)\]\((https?:\/\/[^\s)]+)\)/g, '<a href="$2" target="_blank" rel="noopener noreferrer">$1</a>');
+      html = html.replace(/\*\*(.+?)\*\*/g, "<strong>$1</strong>");
+      html = html.replace(/(^|[^*])\*([^*\n]+)\*/g, "$1<em>$2</em>");
+      html = html.replace(/`([^`]+)`/g, "<code>$1</code>");
+      return html;
+    };
+    const out = []; let list = false;
+    for (const raw of lines) {
+      const line = raw.trim();
+      const item = line.match(/^(?:[-*•])\s+(.+)/);
+      if (item) { if (!list) { out.push("<ul>"); list = true; } out.push(`<li>${inline(item[1])}</li>`); continue; }
+      if (list) { out.push("</ul>"); list = false; }
+      if (!line) continue;
+      const heading = line.match(/^(#{1,3})\s+(.+)/);
+      if (heading) { const level = heading[1].length + 2; out.push(`<h${level}>${inline(heading[2])}</h${level}>`); }
+      else out.push(`<p>${inline(line)}</p>`);
+    }
+    if (list) out.push("</ul>");
+    return out.join("");
+  }
+
+  function getProjectDownloadCount(project) {
+    return project.releases.reduce((total, release) => total + (release.assets || []).reduce((sum, asset) => sum + Math.max(0, Number(asset.download_count) || 0), 0), 0);
   }
 
   // Формат имени релиза: Test-Mod-Release, Test-Mod-Release-1.2,
@@ -286,8 +317,11 @@
     document.getElementById("modalIcon").textContent = project.icon;
     document.getElementById("modalTitle").textContent = project.name;
     document.getElementById("modalSubtitle").textContent = `${projectField(project, "category")} · Minecraft ${project.minecraft}`;
-    document.getElementById("modalDescription").textContent = projectField(project, "description");
+    document.getElementById("modalDescription").innerHTML = renderMarkdown(projectField(project, "description"));
+    document.getElementById("downloadCount").textContent = getProjectDownloadCount(project).toLocaleString(language === "ru" ? "ru-RU" : "en-US");
+    document.getElementById("releaseCount").textContent = project.releases.length.toLocaleString(language === "ru" ? "ru-RU" : "en-US");
     document.getElementById("releaseInfo").textContent = project.features.join("  ·  ");
+    document.getElementById("releaseBody").innerHTML = "";
     select.innerHTML = "";
     fileSelect.innerHTML = `<option>${tr("chooseRelease")}</option>`;
     fileSelect.disabled = true;
@@ -358,10 +392,10 @@
     const body = (release.body || "").trim();
     const releaseInfo = [
       date ? `${tr("published")}: ${date}` : "",
-      `${assets.length} ${tr("files")} · ${activeProject?.releases.length || 0} ${tr("releases")}`,
-      body ? body.slice(0, 500) : tr("noDescription")
+      `${assets.length} ${tr("files")}`
     ].filter(Boolean);
     document.getElementById("releaseInfo").textContent = releaseInfo.join(" · ");
+    document.getElementById("releaseBody").innerHTML = body ? renderMarkdown(body) : `<p>${escapeHtml(tr("noDescription"))}</p>`;
   }
 
   function formatBytes(bytes) {
@@ -409,10 +443,9 @@
   async function init() {
     document.getElementById("year").textContent = new Date().getFullYear();
     if (owner) {
-      const profile = `https://github.com/${encodeURIComponent(owner)}`;
-      document.getElementById("githubProfile").href = profile;
-      document.getElementById("sourceLink").href = profile;
-      document.getElementById("heroGithub").href = profile;
+      const releasesPage = `https://github.com/${encodeURIComponent(owner)}/${encodeURIComponent(SITE_CONFIG.releasesRepo || "Minecraft-Mods")}/releases`;
+      document.getElementById("githubProfile").href = releasesPage;
+      document.getElementById("heroGithub").href = releasesPage;
     }
     grid.innerHTML = '<div class="empty-state">Загрузка списка модов из GitHub Releases...</div>';
     try {
