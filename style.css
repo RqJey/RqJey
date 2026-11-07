@@ -893,3 +893,19 @@ html.cosmic-mode .faq-warning-card{border-color:#c39a6b42}
 .brand-mark{width:42px;height:42px;min-width:42px;padding:0;border:0;border-radius:9px;background:transparent;box-shadow:none;overflow:hidden}
 .brand-mark img{width:100%;height:100%;object-fit:cover;border-radius:inherit}
 .front-head .front-logo-icon{display:block;width:36px;height:36px;flex:0 0 36px;object-fit:cover;border-radius:8px}
+
+
+/* Premium circular brand loader */
+.boot-screen{gap:18px;isolation:isolate}
+.boot-screen:before{width:270px;height:270px;border-color:#b9a5f61c;box-shadow:0 0 100px #a58ce514,inset 0 0 70px #a58ce508}
+.boot-screen:after{width:350px;height:350px;border-color:#91e6c812}
+.boot-mark{width:142px;height:142px;display:grid;place-items:center;letter-spacing:0;text-shadow:none;animation:boot-breathe 3s ease-in-out infinite}
+.boot-mark:before{content:"";position:absolute;inset:2px;border:2px solid #ffffff14;border-top-color:var(--aurora-violet);border-right-color:var(--aurora-mint);border-radius:50%;filter:drop-shadow(0 0 8px #a58ce566);animation:boot-orbit 2.8s linear infinite}
+.boot-mark:after{content:"";position:absolute;inset:13px;border:1px solid #b9a5f626;border-radius:50%;box-shadow:0 0 28px #a58ce51c;pointer-events:none}
+.boot-mark img{position:relative;z-index:1;display:block;width:108px;height:108px;object-fit:cover;border-radius:50%;border:2px solid #ffffff24;box-shadow:0 0 28px #7d35ff55,0 0 60px #7d35ff20}
+.boot-caption{margin-top:3px;font:700 9px/1 Manrope,sans-serif;letter-spacing:3px;color:#d2c8e8;text-transform:uppercase}
+.boot-caption span{color:var(--aurora-mint);padding:0 7px}
+.boot-line{width:154px;height:3px;background:#ffffff16;box-shadow:0 0 18px #a58ce51a}
+.boot-line i{width:34%;box-shadow:0 0 14px #b9a5f6,0 0 24px #91e6c855}
+@media(max-width:600px){.boot-mark{width:126px;height:126px}.boot-mark img{width:96px;height:96px}.boot-screen:before{width:230px;height:230px}.boot-screen:after{width:300px;height:300px}}
+@media(prefers-reduced-motion:reduce){.boot-mark:before{animation:none!important}.boot-mark{animation:none!important}}
