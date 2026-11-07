@@ -910,14 +910,24 @@ html.cosmic-mode .faq-warning-card{border-color:#c39a6b42}
 @media(max-width:600px){.boot-mark{width:126px;height:126px}.boot-mark img{width:96px;height:96px}.boot-screen:before{width:230px;height:230px}.boot-screen:after{width:300px;height:300px}}
 @media(prefers-reduced-motion:reduce){.boot-mark:before{animation:none!important}.boot-mark{animation:none!important}}
 
-/* Smooth page entrance shared by every full HTML page. */
+/* Smooth page entrance shared by every full HTML page.
+   Keep filters off <body>: a body filter creates a containing block for fixed
+   descendants, which would make the floating controls and cosmic backdrop scroll away. */
 @keyframes rq-page-enter {
-  from { opacity: 0; filter: blur(5px); }
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+@keyframes rq-content-enter {
+  from { opacity: .72; filter: blur(5px); }
   to { opacity: 1; filter: blur(0); }
 }
 body:not(.rq-loading) {
   animation: rq-page-enter 1.2s cubic-bezier(.2,.7,.2,1) both;
 }
+body:not(.rq-loading) > .page-shell {
+  animation: rq-content-enter 1.2s cubic-bezier(.2,.7,.2,1) both;
+}
 @media (prefers-reduced-motion: reduce) {
-  body:not(.rq-loading) { animation: none !important; }
+  body:not(.rq-loading),
+  body:not(.rq-loading) > .page-shell { animation: none !important; }
 }
