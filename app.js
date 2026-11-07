@@ -17,6 +17,8 @@
   let projects = [];
   let activeProject = null;
   let activeReleases = [];
+  let activeCollection = projects;
+  let utilities = [];
 
   const iconSvg = {
     arrow: '<svg viewBox="0 0 24 24"><path d="M7 17 17 7M7 7h10v10"/></svg>'
@@ -24,8 +26,8 @@
   const fallbackIcons = ["✳", "⌖", "◇", "⌘", "↗", "✦", "◈"];
   const accents = ["violet", "blue", "green", "purple", "orange"];
   const translations = {
-    ru: {navCatalog:"Каталог",navAbout:"О проекте",notifications:"Уведомления",themeSystem:"Системная",themeLight:"Светлая",themeDark:"Тёмная",showcaseLabel:"КОЛЛЕКЦИЯ ИНСТРУМЕНТОВ",projectsWord:"проектов",autoReleases:"Автообновление из GitHub Releases",curatedMods:"ПОДБОРКА МОДОВ",heroCopy:"Полезные клиентские модификации для более удобной игры. Выбирай инструмент, изучай версии и скачивай актуальные сборки в пару кликов.",exploreMods:"Исследовать моды",openGithub:"Открыть GitHub",library:"БИБЛИОТЕКА МОДОВ",chooseTool:"Выбери свой инструмент",libraryCopy:"Все актуальные сборки и история релизов в одном месте.",category:"Категория",allCategories:"Все категории",sort:"Сортировка",sortName:"По названию",sortLatest:"Сначала новые",empty:"Ничего не найдено. Попробуй изменить запрос или фильтр.",aboutKicker:"ЗА КАЖДЫМ МОДОМ — ИДЕЯ",aboutTitle:"Меньше рутины. Больше игры.",aboutCopy:"RqJey Mods — коллекция небольших инструментов для Minecraft. Новые версии автоматически появляются здесь после публикации релиза на GitHub.",sourceCode:"Исходный код",footerTag:"Made for better Minecraft sessions",backTop:"Наверх ↑",downloadCenter:"· ЦЕНТР СКАЧИВАНИЯ",chooseVersion:"Выбери версию",buildFile:"Файл сборки",downloadBuild:"Скачать сборку",viewRelease:"Посмотреть релиз на GitHub",searchPlaceholder:"Поиск по названию, категории...",details:"Подробнее",files:"файлов",releases:"релизов",published:"Опубликовано",noRelease:"Нет релизов с .jar файлами",noBuilds:"Нет сборок",chooseRelease:"Сначала выбери релиз",notifyEnabled:"Уведомления включены",notifyDenied:"Разреши уведомления в настройках браузера",notifyUnsupported:"Этот браузер не поддерживает уведомления",notifyPrompt:"Разрешить уведомления о новых релизах?",copied:"Ссылка скопирована",shareError:"Не удалось поделиться ссылкой",newBadge:"НОВЫЙ",updatedBadge:"ОБНОВЛЁН",share:"Поделиться",copyLink:"Копировать ссылку",popularBadge:"ПОПУЛЯРНЫЙ",noDescription:"Описание релиза не добавлено.",loading:"Загрузка...",loadError:"Не удалось загрузить релизы",totalDownloads:"Всего скачиваний",publishedReleases:"Опубликовано релизов",downloadCountUnavailable:"Счётчик GitHub обновляется вместе с релизами"},
-    en: {navCatalog:"Catalog",navAbout:"About",notifications:"Notifications",themeSystem:"System",themeLight:"Light",themeDark:"Dark",showcaseLabel:"CURATED TOOLKIT",projectsWord:"projects",autoReleases:"Auto-updated from GitHub Releases",curatedMods:"CURATED MODS",heroCopy:"Useful client-side modifications for a smoother Minecraft experience. Pick a tool, explore versions, and get the latest build in a couple of clicks.",exploreMods:"Explore mods",openGithub:"Open GitHub",library:"MOD LIBRARY",chooseTool:"Choose your tool",libraryCopy:"All current builds and release history in one place.",category:"Category",allCategories:"All categories",sort:"Sort by",sortName:"Name",sortLatest:"Newest first",empty:"Nothing found. Try changing your search or filters.",aboutKicker:"AN IDEA BEHIND EVERY MOD",aboutTitle:"Less routine. More gameplay.",aboutCopy:"RqJey Mods is a collection of small tools for Minecraft. New versions appear here automatically after a GitHub release is published.",sourceCode:"Source code",footerTag:"Made for better Minecraft sessions",backTop:"Back to top ↑",downloadCenter:"· DOWNLOAD CENTER",chooseVersion:"Choose version",buildFile:"Build file",downloadBuild:"Download build",viewRelease:"View release on GitHub",searchPlaceholder:"Search by name or category...",details:"Details",files:"files",releases:"releases",published:"Published",noRelease:"No releases with .jar files",noBuilds:"No builds",chooseRelease:"Choose a release first",notifyEnabled:"Notifications enabled",notifyDenied:"Allow notifications in your browser settings",notifyUnsupported:"This browser does not support notifications",notifyPrompt:"Allow notifications about new releases?",copied:"Link copied",shareError:"Could not share this link",newBadge:"NEW",updatedBadge:"UPDATED",share:"Share",copyLink:"Copy link",popularBadge:"POPULAR",noDescription:"No release notes provided.",loading:"Loading...",loadError:"Could not load releases",totalDownloads:"Total downloads",publishedReleases:"Published releases",downloadCountUnavailable:"GitHub download count updates with releases"}
+    ru: {utilitiesKicker:"БИБЛИОТЕКА УТИЛИТ",utilitiesTitle:"Полезные инструменты",utilitiesCopy:"Небольшие программы и утилиты. Версии и файлы автоматически загружаются из GitHub Releases.",utilitiesSearchPlaceholder:"Поиск по утилитам...",loadingUtilities:"Загрузка утилит из GitHub Releases...",utilitiesEmpty:"Утилиты не найдены.",utilitiesLoadError:"Не удалось загрузить библиотеку утилит",navCatalog:"Каталог",navAbout:"О проекте",notifications:"Уведомления",themeSystem:"Системная",themeLight:"Светлая",themeDark:"Тёмная",showcaseLabel:"КОЛЛЕКЦИЯ ИНСТРУМЕНТОВ",projectsWord:"проектов",autoReleases:"Автообновление из GitHub Releases",curatedMods:"ПОДБОРКА МОДОВ",heroCopy:"Полезные клиентские модификации для более удобной игры. Выбирай инструмент, изучай версии и скачивай актуальные сборки в пару кликов.",exploreMods:"Исследовать моды",openGithub:"Открыть GitHub",library:"БИБЛИОТЕКА МОДОВ",chooseTool:"Выбери свой инструмент",libraryCopy:"Все актуальные сборки и история релизов в одном месте.",category:"Категория",allCategories:"Все категории",sort:"Сортировка",sortName:"По названию",sortLatest:"Сначала новые",empty:"Ничего не найдено. Попробуй изменить запрос или фильтр.",aboutKicker:"ЗА КАЖДЫМ МОДОМ — ИДЕЯ",aboutTitle:"Меньше рутины. Больше игры.",aboutCopy:"RqJey Mods — коллекция небольших инструментов для Minecraft. Новые версии автоматически появляются здесь после публикации релиза на GitHub.",sourceCode:"Исходный код",footerTag:"Made for better Minecraft sessions",backTop:"Наверх ↑",downloadCenter:"· ЦЕНТР СКАЧИВАНИЯ",chooseVersion:"Выбери версию",buildFile:"Файл сборки",downloadBuild:"Скачать сборку",viewRelease:"Посмотреть релиз на GitHub",searchPlaceholder:"Поиск по названию, категории...",details:"Подробнее",files:"файлов",releases:"релизов",published:"Опубликовано",noRelease:"Нет релизов с .jar файлами",noBuilds:"Нет сборок",chooseRelease:"Сначала выбери релиз",notifyEnabled:"Уведомления включены",notifyDenied:"Разреши уведомления в настройках браузера",notifyUnsupported:"Этот браузер не поддерживает уведомления",notifyPrompt:"Разрешить уведомления о новых релизах?",copied:"Ссылка скопирована",shareError:"Не удалось поделиться ссылкой",newBadge:"НОВЫЙ",updatedBadge:"ОБНОВЛЁН",share:"Поделиться",copyLink:"Копировать ссылку",popularBadge:"ПОПУЛЯРНЫЙ",noDescription:"Описание релиза не добавлено.",loading:"Загрузка...",loadError:"Не удалось загрузить релизы",totalDownloads:"Всего скачиваний",publishedReleases:"Опубликовано релизов",downloadCountUnavailable:"Счётчик GitHub обновляется вместе с релизами"},
+    en: {utilitiesKicker:"UTILITIES LIBRARY",utilitiesTitle:"Useful tools",utilitiesCopy:"Small programs and utilities. Versions and files are automatically loaded from GitHub Releases.",utilitiesSearchPlaceholder:"Search utilities...",loadingUtilities:"Loading utilities from GitHub Releases...",utilitiesEmpty:"No utilities found.",utilitiesLoadError:"Could not load the utilities library",navCatalog:"Catalog",navAbout:"About",notifications:"Notifications",themeSystem:"System",themeLight:"Light",themeDark:"Dark",showcaseLabel:"CURATED TOOLKIT",projectsWord:"projects",autoReleases:"Auto-updated from GitHub Releases",curatedMods:"CURATED MODS",heroCopy:"Useful client-side modifications for a smoother Minecraft experience. Pick a tool, explore versions, and get the latest build in a couple of clicks.",exploreMods:"Explore mods",openGithub:"Open GitHub",library:"MOD LIBRARY",chooseTool:"Choose your tool",libraryCopy:"All current builds and release history in one place.",category:"Category",allCategories:"All categories",sort:"Sort by",sortName:"Name",sortLatest:"Newest first",empty:"Nothing found. Try changing your search or filters.",aboutKicker:"AN IDEA BEHIND EVERY MOD",aboutTitle:"Less routine. More gameplay.",aboutCopy:"RqJey Mods is a collection of small tools for Minecraft. New versions appear here automatically after a GitHub release is published.",sourceCode:"Source code",footerTag:"Made for better Minecraft sessions",backTop:"Back to top ↑",downloadCenter:"· DOWNLOAD CENTER",chooseVersion:"Choose version",buildFile:"Build file",downloadBuild:"Download build",viewRelease:"View release on GitHub",searchPlaceholder:"Search by name or category...",details:"Details",files:"files",releases:"releases",published:"Published",noRelease:"No releases with .jar files",noBuilds:"No builds",chooseRelease:"Choose a release first",notifyEnabled:"Notifications enabled",notifyDenied:"Allow notifications in your browser settings",notifyUnsupported:"This browser does not support notifications",notifyPrompt:"Allow notifications about new releases?",copied:"Link copied",shareError:"Could not share this link",newBadge:"NEW",updatedBadge:"UPDATED",share:"Share",copyLink:"Copy link",popularBadge:"POPULAR",noDescription:"No release notes provided.",loading:"Loading...",loadError:"Could not load releases",totalDownloads:"Total downloads",publishedReleases:"Published releases",downloadCountUnavailable:"GitHub download count updates with releases"}
   };
   let language = localStorage.getItem("rqjey-language") || "ru";
   if (!translations[language]) language = "ru";
@@ -45,6 +47,9 @@
     document.querySelectorAll("[data-i18n]").forEach(el => { const key = el.dataset.i18n; el.textContent = tr(key); });
     document.querySelectorAll("[data-i18n-html]").forEach(el => { el.innerHTML = tr(el.dataset.i18nHtml); });
     search.placeholder = tr("searchPlaceholder");
+    const utilitySearch = document.getElementById("utilitiesSearch");
+    if (utilitySearch) utilitySearch.placeholder = tr("utilitiesSearchPlaceholder");
+    renderUtilities(utilitySearch?.value || "");
     document.getElementById("languageSelect").value = language;
     const selectedCategory = categoryFilter.value;
     const categoryOptions = [...categoryFilter.options].slice(1).map(option => option.value);
@@ -118,15 +123,15 @@
     return name.toLowerCase().replace(/[^a-z0-9а-яё]+/gi, "-").replace(/^-|-$/g, "") || "mod";
   }
 
-  async function getAllReleases() {
+  async function getAllReleases(repo = releasesRepo) {
     if (!owner || owner === "YOUR_GITHUB_USERNAME") throw new Error("Не указан GitHub username в config.js");
-    const url = `https://api.github.com/repos/${encodeURIComponent(owner)}/${encodeURIComponent(releasesRepo)}/releases?per_page=100`;
+    const url = `https://api.github.com/repos/${encodeURIComponent(owner)}/${encodeURIComponent(repo)}/releases?per_page=100`;
     const response = await fetch(url, {
       cache: "no-store",
       headers: { "Accept": "application/vnd.github+json" }
     });
     if (!response.ok) {
-      if (response.status === 404) throw new Error(`Репозиторий ${releasesRepo} не найден или он приватный`);
+      if (response.status === 404) throw new Error(`Репозиторий ${repo} не найден или он приватный`);
       if (response.status === 403) throw new Error("GitHub API временно ограничил запросы");
       throw new Error(`GitHub вернул ошибку ${response.status}`);
     }
@@ -246,6 +251,67 @@
     grid.querySelectorAll("[data-share]").forEach(btn => btn.addEventListener("click", () => shareProject(btn.dataset.share)));
   }
 
+
+  function buildUtilities(releases) {
+    const groups = new Map();
+    releases.filter(release => !release.draft).forEach(release => {
+      const assets = (release.assets || []).filter(asset => asset.state === "uploaded");
+      if (!assets.length) return;
+      const title = String(release.name || "").trim();
+      const versionOnly = !title || /^v?\d+(?:[._-]\d+)*$/i.test(title);
+      const fileBase = String(assets[0].name || "Utility").replace(/\.[^.]+$/, "").replace(/[-_ ]v?\d+(?:[._-]\d+)*.*$/i, "").replace(/[-_]+/g, " ").trim();
+      const name = versionOnly ? (fileBase || release.tag_name || "Utility") : title;
+      const key = name.toLowerCase();
+      if (!groups.has(key)) groups.set(key, {name, releases: []});
+      groups.get(key).releases.push(release);
+    });
+    return [...groups.values()].map((group, index) => ({
+      id: "utility-" + makeId(group.name), name: group.name,
+      icon: ["⌘", "⚙", "✦", "◇", "↗", "✳"][index % 6],
+      category: language === "ru" ? "Утилита" : "Utility",
+      description: (group.releases.slice().sort(compareReleasesByPublishedFile)[0]?.body || "").trim() || (language === "ru" ? "Файлы и версии утилиты из GitHub Releases." : "Utility files and versions from GitHub Releases."),
+      minecraft: "", accent: accents[index % accents.length], features: [],
+      releases: group.releases.sort(compareReleasesByPublishedFile)
+    })).sort((a,b) => a.name.localeCompare(b.name, language === "ru" ? "ru" : "en"));
+  }
+
+  function renderUtilities(filter = "") {
+    const utilityGrid = document.getElementById("utilitiesGrid");
+    if (!utilityGrid) return;
+    const term = filter.trim().toLowerCase();
+    let ordered = utilities.slice();
+    if (document.getElementById("utilitiesSort")?.value === "latest") {
+      ordered.sort((a,b) => compareReleasesByPublishedFile(a.releases[0] || {}, b.releases[0] || {}));
+    }
+    const visible = ordered.filter(item => [item.name, item.description, ...item.releases.map(r => r.tag_name || r.name || "")].join(" ").toLowerCase().includes(term));
+    utilityGrid.innerHTML = visible.map((item, index) => {
+      const builds = allBuilds(item.releases);
+      const latest = item.releases.slice().sort(compareReleasesByPublishedFile)[0];
+      const version = latest?.tag_name || latest?.name || "";
+      return '<article id="utility-' + escapeHtml(item.id) + '" class="project-card accent-' + escapeHtml(item.accent) + ' utility-card" style="--delay:' + (index * 45) + 'ms">' +
+        '<div class="card-topline"><span class="project-category">' + (language === "ru" ? "УТИЛИТА" : "UTILITY") + '</span><div class="card-top-actions"><span class="card-index">' + String(index + 1).padStart(2,"0") + '</span></div></div>' +
+        '<div class="card-main"><div class="project-icon">' + escapeHtml(item.icon) + '</div><div class="project-heading"><h3>' + escapeHtml(item.name) + '</h3><span class="mc-version">' + escapeHtml(version) + '</span></div></div>' +
+        '<p class="project-description">' + escapeHtml(item.description.replace(/[#*_]/g, "").slice(0, 220)) + '</p>' +
+        '<div class="card-bottom"><span class="release-preview"><span class="tiny-dot"></span> ' + builds.length + ' ' + tr("files") + ' · ' + item.releases.length + ' ' + tr("releases") + '</span><div class="card-actions"><button class="details-button" data-utility-project="' + escapeHtml(item.id) + '">' + escapeHtml(tr("details")) + ' ' + iconSvg.arrow + '</button></div></div></article>';
+    }).join("");
+    document.getElementById("utilitiesVisibleCount").textContent = String(visible.length).padStart(2,"0") + " / " + String(utilities.length).padStart(2,"0");
+    document.getElementById("utilitiesEmpty").classList.toggle("hidden", visible.length !== 0);
+    utilityGrid.querySelectorAll("[data-utility-project]").forEach(button => button.addEventListener("click", () => openProject(button.dataset.utilityProject, utilities)));
+  }
+
+  async function initUtilities() {
+    const utilityGrid = document.getElementById("utilitiesGrid");
+    if (!utilityGrid) return;
+    try {
+      const releases = await getAllReleases("Utilities");
+      utilities = buildUtilities(releases);
+      renderUtilities(document.getElementById("utilitiesSearch").value);
+    } catch (error) {
+      utilityGrid.innerHTML = '<div class="empty-state">' + escapeHtml(tr("utilitiesLoadError")) + ': ' + escapeHtml(error.message) + '. <a href="https://github.com/RqJey/Utilities/releases" target="_blank" rel="noreferrer">GitHub Releases ↗</a></div>';
+      document.getElementById("utilitiesVisibleCount").textContent = "00 / 00";
+    }
+  }
+
   function getProjectBadge(project) {
     const latest = project.releases.slice().sort(compareReleasesByPublishedFile)[0];
     const date = Date.parse(latest?.published_at || latest?.created_at || 0) || 0;
@@ -306,10 +372,11 @@
     showToast.timer = setTimeout(() => toast.classList.remove("show"), 2800);
   }
 
-  function openProject(id) {
-    const project = projects.find(p => p.id === id);
+  function openProject(id, collection = projects) {
+    const project = collection.find(p => p.id === id);
     if (!project) return;
     activeProject = project;
+    activeCollection = collection;
     activeReleases = project.releases
       .filter(r => jarAssets(r).length > 0)
       // Сначала релиз с самым поздно опубликованным файлом.
@@ -412,8 +479,10 @@
   }
 
   search.addEventListener("input", () => renderProjects(search.value));
+  document.getElementById("utilitiesSearch")?.addEventListener("input", event => renderUtilities(event.target.value));
+  document.getElementById("utilitiesSort")?.addEventListener("change", () => renderUtilities(document.getElementById("utilitiesSearch").value));
   document.getElementById("themeSelect").addEventListener("change", e => applyTheme(e.target.value));
-  document.getElementById("languageSelect").addEventListener("change", e => { language = e.target.value; localStorage.setItem("rqjey-language", language); applyLanguage(); if (activeProject) openProject(activeProject.id); });
+  document.getElementById("languageSelect").addEventListener("change", e => { language = e.target.value; localStorage.setItem("rqjey-language", language); applyLanguage(); if (activeProject) openProject(activeProject.id, activeCollection); });
   setupNotifications();
   applyTheme(localStorage.getItem("rqjey-theme") || "system");
   applyLanguage();
@@ -448,6 +517,7 @@
       document.getElementById("heroGithub").href = releasesPage;
     }
     grid.innerHTML = '<div class="empty-state">Загрузка списка модов из GitHub Releases...</div>';
+    initUtilities();
     try {
       allReleases = await getAllReleases();
       projects = buildProjects(allReleases);

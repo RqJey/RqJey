@@ -724,3 +724,13 @@ html[data-theme="light"] .analyzer-nav-button{color:#7156ac;background:#f5f1fc;b
 @media(max-width:420px){
   .analyzer-nav-button{width:32px;height:32px;min-width:32px;flex-basis:32px;border-radius:9px}
 }
+
+
+/* Utilities library — same visual language as the Mods catalog. */
+.utilities-section{margin-top:76px;padding-top:48px;border-top:1px solid #ffffff12}
+.utilities-filter{margin-bottom:22px}
+.utilities-filter .search-box{flex:1}
+.utility-card .project-description{min-height:3.4em}
+.utility-card .card-actions{justify-content:flex-end}
+html[data-theme="light"] .utilities-section{border-color:#20243818}
+@media(max-width:760px){.utilities-section{margin-top:54px;padding-top:36px}}
