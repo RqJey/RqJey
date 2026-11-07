@@ -881,3 +881,6 @@ html.cosmic-mode .faq-warning-card{border-color:#c39a6b42}
   .faq-back-link{padding:8px 10px;font-size:10px}
 }
 @media(prefers-reduced-motion:reduce){.faq-float-button,.vpn-joke-link,.faq-back-link{transition:none}}
+
+.faq-page-title{margin:0;font:800 clamp(27px,4vw,38px)/1.2 Manrope;letter-spacing:-1.4px}
+.faq-content-main{padding-top:66px;min-height:calc(100vh - 170px)}
