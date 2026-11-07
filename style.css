@@ -326,3 +326,313 @@ html.cosmic-mode ::selection{background:#b68a5a66;color:white}
 .cosmic-planet[data-planet="uranus"]{background:radial-gradient(circle at 32% 27%,#e2f1e9 0%,#a9d1ce 33%,#6f9c9b 70%,#203b42 100%)}
 .cosmic-planet[data-planet="neptune"]{background:radial-gradient(circle at 32% 27%,#9dc8e9 0%,#397fb5 35%,#17466f 70%,#081b32 100%)}
 @media(prefers-reduced-motion:reduce){.cosmic-planet[data-planet="earth"]:after{animation:none}}
+
+
+/* Mobile performance layer: preserve the visual identity while reducing paint/compositing work. */
+@media (max-width: 900px), (hover: none), (pointer: coarse) {
+  .particle-canvas { display: none !important; }
+  .ambient-orb { filter: none !important; opacity: .08; }
+  .ambient-background:after { display: none !important; }
+  .cosmic-backdrop:before { filter: none !important; opacity: .55; }
+  .cosmic-backdrop:after { display: none !important; }
+  .cosmic-planet { filter: none !important; box-shadow: inset -22px -14px 38px #05040399, 0 0 28px #bd895018 !important; }
+  .showcase-halo { box-shadow: none !important; }
+  .showcase-card, .project-card, .filter-bar, .release-modal {
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+  }
+  .project-card { contain: layout paint; }
+  .project-card:hover { transform: none !important; }
+  .primary-cta:hover, .secondary-cta:hover { transform: none !important; }
+}
+@media (max-width: 600px) {
+  html { scroll-behavior: auto; }
+  .project-card { content-visibility: auto; contain-intrinsic-size: 1px 270px; }
+  .project-card, .showcase-card {
+    box-shadow: 0 8px 22px #0003, inset 0 1px #ffffff08 !important;
+  }
+  .cosmic-planet { opacity: .2 !important; }
+  .ambient-orb { opacity: .045 !important; }
+}
+@media (prefers-reduced-motion: reduce) {
+  *, *:before, *:after {
+    scroll-behavior: auto !important;
+    animation-duration: .01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: .01ms !important;
+  }
+}
+
+
+/* Textured Solar System: real equirectangular planetary maps, with orbital order preserved. */
+.solar-system-scene{
+  --system-size:min(78vw,760px);
+  position:absolute; width:var(--system-size); aspect-ratio:1;
+  right:-5vw; top:clamp(105px,15vh,175px);
+  opacity:0; transform:scale(.97);
+  transition:opacity 1s ease,transform 1.4s ease;
+}
+html.cosmic-mode .solar-system-scene{opacity:.78;transform:scale(1)}
+.solar-sun{
+  position:absolute;left:50%;top:50%;width:8.2%;aspect-ratio:1;transform:translate(-50%,-50%);
+  border-radius:50%;background:#ffb52e url('https://www.solarsystemscope.com/textures/download/2k_sun.jpg') center/cover;
+  box-shadow:0 0 22px 8px #ff9d2d88,0 0 65px 22px #ff7b2444,0 0 125px 42px #ffb52e22;
+}
+.solar-orbit{position:absolute;left:50%;top:50%;border:1px solid #d8c8b51c;border-radius:50%;transform:translate(-50%,-50%);animation:solar-orbit-spin var(--orbit-time) linear infinite}
+.solar-orbit i{position:absolute;left:50%;top:0;display:block;border-radius:50%;transform:translate(-50%,-50%);background-position:center;background-size:cover;box-shadow:inset -7px -3px 9px #000b,0 0 9px #fff2; }
+.orbit-mercury{width:15%;height:15%;--orbit-time:8s}.orbit-venus{width:23%;height:23%;--orbit-time:13s}
+.orbit-earth{width:32%;height:32%;--orbit-time:18s}.orbit-mars{width:41%;height:41%;--orbit-time:24s}
+.orbit-jupiter{width:58%;height:58%;--orbit-time:42s}.orbit-saturn{width:72%;height:72%;--orbit-time:55s}
+.orbit-uranus{width:86%;height:86%;--orbit-time:72s}.orbit-neptune{width:100%;height:100%;--orbit-time:90s}
+.solar-body{width:clamp(5px,1.05vw,11px);height:clamp(5px,1.05vw,11px)}
+.mercury{background-image:url('https://www.solarsystemscope.com/textures/download/2k_mercury.jpg')}
+.venus{width:clamp(7px,1.45vw,15px);height:clamp(7px,1.45vw,15px);background-image:url('https://www.solarsystemscope.com/textures/download/2k_venus_surface.jpg')}
+.earth{width:clamp(8px,1.65vw,17px);height:clamp(8px,1.65vw,17px);background-image:url('https://www.solarsystemscope.com/textures/download/2k_earth_daymap.jpg')}
+.mars{width:clamp(6px,1.25vw,13px);height:clamp(6px,1.25vw,13px);background-image:url('https://www.solarsystemscope.com/textures/download/2k_mars.jpg')}
+.jupiter{width:clamp(19px,3.8vw,39px);height:clamp(19px,3.8vw,39px);background-image:url('https://www.solarsystemscope.com/textures/download/2k_jupiter.jpg')}
+.saturn{position:relative;isolation:isolate;width:clamp(17px,3.4vw,35px);height:clamp(17px,3.4vw,35px);background-image:url('https://www.solarsystemscope.com/textures/download/2k_saturn.jpg');z-index:2}
+.saturn:after{content:"";position:absolute;left:-75%;top:24%;width:250%;height:48%;border:clamp(3px,.55vw,6px) solid #c8ad7caa;border-left-color:#e2d1a4bb;border-right-color:#8c755b99;border-radius:50%;transform:rotate(-18deg);z-index:-1}
+.uranus{width:clamp(11px,2.2vw,23px);height:clamp(11px,2.2vw,23px);background-image:url('https://www.solarsystemscope.com/textures/download/2k_uranus.jpg')}
+.neptune{width:clamp(10px,2vw,21px);height:clamp(10px,2vw,21px);background-image:url('https://www.solarsystemscope.com/textures/download/2k_neptune.jpg')}
+.solar-moon{position:absolute;width:35%;height:35%;right:-45%;top:-20%;border-radius:50%;background:#aaa url('https://www.solarsystemscope.com/textures/download/2k_moon.jpg') center/cover;box-shadow:0 0 3px #fff8}
+.solar-system-caption{position:absolute;left:50%;bottom:-5%;transform:translateX(-50%);white-space:nowrap;color:#d6c1a4a0;font:600 9px/1.4 'DM Sans',sans-serif;letter-spacing:.2em}
+.solar-system-caption span{color:#d6c1a466}
+@keyframes solar-orbit-spin{from{transform:translate(-50%,-50%) rotate(0)}to{transform:translate(-50%,-50%) rotate(360deg)}}
+@media(max-width:900px){
+ .solar-system-scene{--system-size:min(94vw,590px);right:-22vw;top:145px;opacity:0}
+ html.cosmic-mode .solar-system-scene{opacity:.62}
+ .solar-orbit{animation:none}
+ .solar-body{box-shadow:inset -4px -2px 6px #000b!important}
+ .solar-sun{box-shadow:0 0 16px 5px #ff9d2d66,0 0 42px 15px #ff7b242b}
+}
+@media(max-width:600px){
+ .solar-system-scene{--system-size:100vw;right:-35vw;top:155px}
+ .solar-system-caption{font-size:7px;bottom:-2%}
+ .solar-sun{width:7%}
+}
+@media(prefers-reduced-motion:reduce){.solar-orbit{animation:none}}
+
+/* Replaced the former single-gradient showcase sphere with the complete textured system. */
+.cosmic-planet,.cosmic-planet-caption{display:none!important}
+
+
+/* Stable planetary rings: rear arc behind the sphere, front arc above it.
+   Both arcs are anchored to the planet itself, not to the rotating orbit. */
+.solar-body.jupiter,
+.solar-body.saturn {
+  position: relative;
+  isolation: isolate;
+  overflow: visible;
+  z-index: 1;
+}
+.solar-body.jupiter::before,
+.solar-body.saturn::before {
+  content: "";
+  position: absolute;
+  left: -78%;
+  top: 23%;
+  width: 256%;
+  height: 54%;
+  box-sizing: border-box;
+  border: clamp(2px, .42vw, 5px) solid #c8ad7c99;
+  border-left-color: #e2d1a4bb;
+  border-right-color: #8c755b99;
+  border-radius: 50%;
+  transform: rotate(-18deg);
+  z-index: -1;
+  pointer-events: none;
+}
+.solar-body.jupiter > b,
+.solar-body.saturn > b {
+  position: absolute;
+  inset: 0;
+  display: block;
+  overflow: visible;
+  z-index: 2;
+  pointer-events: none;
+}
+.solar-body.jupiter > b::after,
+.solar-body.saturn > b::after {
+  content: "";
+  position: absolute;
+  left: -78%;
+  top: 23%;
+  width: 256%;
+  height: 54%;
+  box-sizing: border-box;
+  border: clamp(2px, .42vw, 5px) solid #c8ad7c99;
+  border-left-color: #e2d1a4bb;
+  border-right-color: #8c755b99;
+  border-radius: 50%;
+  transform: rotate(-18deg);
+  clip-path: inset(50% -5% -5% -5%);
+}
+.solar-body.jupiter::before,
+.solar-body.jupiter > b::after {
+  border-color: #b99b6caa;
+  border-left-color: #e2c995cc;
+  border-right-color: #80674e99;
+}
+.solar-body.saturn::before,
+.solar-body.saturn > b::after {
+  border-width: clamp(3px, .55vw, 6px);
+  border-color: #c8ad7caa;
+  border-left-color: #e2d1a4cc;
+  border-right-color: #8c755b99;
+}
+/* Disable the former single-layer Saturn ring; the split arcs above replace it. */
+.solar-body.saturn::after { display: none; }
+
+
+/* Planetary ring systems: every ringed giant has a rear arc and a front arc.
+   Ring geometry is attached to each planet, so it cannot drift as its orbit moves. */
+.solar-body.jupiter,
+.solar-body.saturn,
+.solar-body.uranus,
+.solar-body.neptune {
+  position: relative;
+  isolation: isolate;
+  overflow: visible;
+  z-index: 1;
+}
+.solar-body.jupiter::before,
+.solar-body.saturn::before,
+.solar-body.uranus::before,
+.solar-body.neptune::before,
+.solar-body.jupiter > b::after,
+.solar-body.saturn > b::after,
+.solar-body.uranus > b::after,
+.solar-body.neptune > b::after {
+  content: "";
+  position: absolute;
+  left: -78%;
+  top: 23%;
+  width: 256%;
+  height: 54%;
+  box-sizing: border-box;
+  border: 2px solid #c8ad7c88;
+  border-radius: 50%;
+  transform: rotate(-18deg);
+  pointer-events: none;
+}
+.solar-body.jupiter::before,
+.solar-body.saturn::before,
+.solar-body.uranus::before,
+.solar-body.neptune::before { z-index: -1; }
+.solar-body.jupiter > b,
+.solar-body.saturn > b,
+.solar-body.uranus > b,
+.solar-body.neptune > b {
+  position: absolute;
+  inset: 0;
+  display: block;
+  overflow: visible;
+  z-index: 2;
+  pointer-events: none;
+}
+.solar-body.jupiter > b::after,
+.solar-body.saturn > b::after,
+.solar-body.uranus > b::after,
+.solar-body.neptune > b::after {
+  clip-path: inset(50% -5% -5% -5%);
+}
+/* Jupiter: very faint, narrow dusty rings. */
+.solar-body.jupiter::before,
+.solar-body.jupiter > b::after {
+  border-width: 1px;
+  border-color: #c9b89a55;
+  box-shadow: 0 0 2px #c9b89a22;
+  transform: rotate(-18deg);
+}
+/* Saturn: broad, bright icy rings with visible layered bands. */
+.solar-body.saturn::before,
+.solar-body.saturn > b::after {
+  border-width: clamp(3px, .62vw, 7px);
+  border-color: #c8ad7cbb;
+  border-left-color: #eee0bdde;
+  border-right-color: #80664ab0;
+  box-shadow: 0 0 2px #f3dfb455, inset 0 0 2px #f3dfb455;
+  transform: rotate(-18deg);
+}
+/* Uranus: thin, dark, steeply tilted rings. */
+.solar-body.uranus::before,
+.solar-body.uranus > b::after {
+  left: -92%;
+  top: 29%;
+  width: 284%;
+  height: 42%;
+  border-width: 1px;
+  border-color: #78817c99;
+  border-left-color: #b3b9a9aa;
+  border-right-color: #424c4d99;
+  transform: rotate(-62deg);
+}
+/* Neptune: extremely subtle, narrow dusty arcs. */
+.solar-body.neptune::before,
+.solar-body.neptune > b::after {
+  left: -82%;
+  top: 30%;
+  width: 264%;
+  height: 40%;
+  border-width: 1px;
+  border-color: #a9b9c477;
+  border-left-color: #d0d9df88;
+  border-right-color: #627d9588;
+  transform: rotate(14deg);
+}
+/* The older single-layer Saturn ring is intentionally replaced above. */
+.solar-body.saturn::after { display: none; }
+
+
+/* Saturn depth fix: three explicit layers (rear ring, spherical planet, front ring).
+   Avoid negative z-index pseudo-elements, which can be painted behind the planet's
+   own stacking context and make the ring appear as one uninterrupted overlay. */
+.solar-body.saturn {
+  position: relative;
+  isolation: isolate;
+  overflow: visible;
+  z-index: 1;
+  background: none !important;
+  border-radius: 0;
+  box-shadow: none !important;
+}
+.solar-body.saturn .saturn-disc {
+  position: absolute;
+  inset: 0;
+  display: block;
+  border-radius: 50%;
+  background: url('https://www.solarsystemscope.com/textures/download/2k_saturn.jpg') center / cover;
+  box-shadow: inset -5px -3px 7px #000b, inset 2px 1px 3px #fff3, 0 0 5px #d9bd8b33;
+  z-index: 1;
+}
+.solar-body.saturn .saturn-ring {
+  position: absolute;
+  left: -78%;
+  top: 23%;
+  width: 256%;
+  height: 54%;
+  display: block;
+  box-sizing: border-box;
+  border: clamp(3px, .62vw, 7px) solid #c8ad7cbb;
+  border-left-color: #eee0bdde;
+  border-right-color: #80664ab0;
+  border-radius: 50%;
+  transform: rotate(-18deg);
+  pointer-events: none;
+}
+.solar-body.saturn .saturn-ring-back {
+  z-index: 0;
+  clip-path: inset(-5% -5% 50% -5%);
+  opacity: .82;
+}
+.solar-body.saturn .saturn-ring-front {
+  z-index: 2;
+  clip-path: inset(50% -5% -5% -5%);
+}
+/* Remove legacy pseudo-element rings; the explicit layers above replace them. */
+.solar-body.saturn::before,
+.solar-body.saturn::after,
+.solar-body.saturn > b::after {
+  content: none !important;
+  display: none !important;
+}

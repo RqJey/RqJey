@@ -60,7 +60,7 @@
   }
   function syncPlanetRotation() {
     if (planetTimer) { clearInterval(planetTimer); planetTimer = null; }
-    if (!document.body.classList.contains('cosmic-mode') || document.hidden || reduce) return;
+    if (!document.body.classList.contains('cosmic-mode') || document.hidden || reduce || !matchMedia('(min-width: 901px) and (hover:hover) and (pointer:fine)').matches) return;
     showPlanet(planetIndex);
     planetTimer = setInterval(() => {
       planetIndex = (planetIndex + 1) % solarBodies.length;
@@ -77,7 +77,7 @@
 
   // Lightweight ambient particles: no dependencies, pauses when the tab is hidden.
   const canvas = document.getElementById('particleCanvas');
-  if (canvas && !reduce) {
+  if (canvas && !reduce && matchMedia('(min-width: 901px) and (hover:hover) and (pointer:fine)').matches) {
     const ctx = canvas.getContext('2d'); let w=0,h=0,dpr=1, particles=[], raf=0, pointer={x:-1000,y:-1000};
     const count = () => Math.min(58, Math.max(24, Math.floor(w*h/26000)));
     function resize(){ dpr=Math.min(devicePixelRatio||1,1.6); w=innerWidth; h=innerHeight; canvas.width=w*dpr; canvas.height=h*dpr; canvas.style.width=w+'px'; canvas.style.height=h+'px'; ctx.setTransform(dpr,0,0,dpr,0,0); particles=Array.from({length:count()},()=>({x:Math.random()*w,y:Math.random()*h,vx:(Math.random()-.5)*.18,vy:(Math.random()-.5)*.18,r:.7+Math.random()*1.35,a:.12+Math.random()*.24})); }
