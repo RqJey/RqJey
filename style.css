@@ -636,3 +636,47 @@ html.cosmic-mode .solar-system-scene{opacity:.78;transform:scale(1)}
   content: none !important;
   display: none !important;
 }
+
+
+/* Phone performance: stop decorative motion and expensive compositing on touch devices. */
+@media (max-width: 760px), (hover: none) and (pointer: coarse) {
+  html { scroll-behavior: auto !important; }
+  /* The orbit diagram remains visible, but does not continuously repaint on phones. */
+  .solar-orbit,
+  .showcase-halo,
+  .showcase-stack,
+  .eyebrow-dot,
+  .cosmic-planet:after,
+  .ambient-background:after,
+  .boot-screen:before,
+  .boot-screen:after,
+  .boot-mark,
+  .boot-line i,
+  .project-card,
+  .js-reveal {
+    animation: none !important;
+  }
+  .solar-system-scene { transition: none !important; }
+  .showcase-copy, .showcase-art { animation: none !important; }
+  /* Keep simple state changes, but avoid long animated transforms on touch. */
+  *, *::before, *::after {
+    transition-duration: .12s !important;
+    scroll-behavior: auto !important;
+  }
+  /* Large blurred shadows and filters are costly to composite on mobile GPUs. */
+  .solar-sun, .solar-body, .cosmic-planet,
+  .showcase-card, .showcase-halo, .project-card,
+  .boot-mark, .ambient-orb {
+    filter: none !important;
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+  }
+  .solar-sun {
+    box-shadow: 0 0 12px 4px #ff9d2d55 !important;
+  }
+  .solar-body { box-shadow: inset -3px -2px 5px #000b !important; }
+  .project-card, .showcase-card {
+    box-shadow: 0 5px 14px #0003 !important;
+  }
+  .cosmic-planet { box-shadow: inset -12px -8px 20px #05040399 !important; }
+}
