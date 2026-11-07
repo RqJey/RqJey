@@ -558,10 +558,6 @@
 
   async function init() {
     document.getElementById("year").textContent = new Date().getFullYear();
-    if (owner) {
-      const releasesPage = `https://github.com/${encodeURIComponent(owner)}/${encodeURIComponent(SITE_CONFIG.releasesRepo || "Minecraft-Mods")}/releases`;
-      document.getElementById("githubProfile").href = releasesPage;
-    }
     grid.innerHTML = '<div class="empty-state">Загрузка списка модов из GitHub Releases...</div>';
     initUtilities();
     try {
