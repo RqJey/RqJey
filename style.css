@@ -781,3 +781,43 @@ html .social-nav-button{background:var(--surface2);border-color:var(--line);colo
 html .social-choice-dialog{background:linear-gradient(145deg,var(--surface),var(--bg));border-color:var(--line);color:var(--text);box-shadow:0 30px 100px #0005}
 @media(max-width:760px){.social-nav-button{height:32px;padding:0 9px;font-size:9px}}
 @media(max-width:420px){.social-nav-button{height:30px;padding:0 7px;font-size:8px}}
+
+
+/* Compact two-line owner profile link in the header. */
+.github-link{
+  min-height:38px;
+  padding:5px 10px;
+  gap:7px;
+  border-radius:9px;
+}
+.github-label{
+  display:flex;
+  flex-direction:column;
+  align-items:flex-start;
+  justify-content:center;
+  gap:0;
+  font-size:10px;
+  line-height:1.08;
+  letter-spacing:-.1px;
+  white-space:nowrap;
+}
+.github-label span:last-child{
+  font-size:9px;
+  font-weight:600;
+  opacity:.78;
+}
+.github-link .github-glyph{
+  width:17px;
+  height:17px;
+  flex:0 0 17px;
+  font-size:12px;
+}
+.github-link .external{font-size:10px}
+@media(max-width:900px){
+  .github-link{padding:5px 8px;gap:6px}
+}
+@media(max-width:760px){
+  .github-link{min-height:34px;padding:4px 8px}
+  .github-label{font-size:9px}
+  .github-label span:last-child{font-size:8px}
+}
