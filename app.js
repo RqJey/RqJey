@@ -316,9 +316,16 @@
     try {
       const releases = await getAllReleases("Utilities");
       utilities = buildUtilities(releases);
-      renderUtilities(document.getElementById("utilitiesSearch").value);
+      const utilitiesSection = document.getElementById("utilities");
+      utilitiesSection.classList.toggle("hidden", utilities.length === 0);
+      if (utilities.length > 0) {
+        renderUtilities(document.getElementById("utilitiesSearch").value);
+      } else {
+        document.getElementById("utilitiesVisibleCount").textContent = "00 / 00";
+      }
     } catch (error) {
-      utilityGrid.innerHTML = '<div class="empty-state">' + escapeHtml(tr("utilitiesLoadError")) + ': ' + escapeHtml(error.message) + '. <a href="https://github.com/RqJey/Utilities/releases" target="_blank" rel="noreferrer">GitHub Releases ↗</a></div>';
+      // Не показываем библиотеку, пока GitHub не вернул ни одного доступного релиза.
+      document.getElementById("utilities").classList.add("hidden");
       document.getElementById("utilitiesVisibleCount").textContent = "00 / 00";
     }
   }
