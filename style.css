@@ -753,15 +753,14 @@ html[data-theme="light"] .utilities-section{border-color:#20243818}
 .github-choice-link strong{color:var(--text);font-size:12px}
 .github-choice-link small{color:var(--muted);font-size:10px}
 .github-choice-arrow{margin-left:auto;color:var(--muted);font-size:16px}
-html[data-theme="light"] .github-choice-dialog{background:linear-gradient(145deg,#fff,#f5f3fa);border-color:#dedee8;box-shadow:0 30px 100px #20203030}
-html[data-theme="system"] .github-choice-dialog{background:linear-gradient(145deg,#fff,#f5f3fa);border-color:#dedee8}
+html .github-choice-dialog{background:linear-gradient(145deg,var(--surface),var(--bg));border-color:var(--line);color:var(--text);box-shadow:0 30px 100px #0005}
 @media(max-width:420px){.github-choice-dialog{padding:27px 19px}}
 
 
 /* Social links in the top toolbar */
 .social-nav-button{height:34px;padding:0 12px;border:1px solid #ffffff20;border-radius:9px;background:#ffffff08;color:var(--text);font-size:10px;font-weight:700;white-space:nowrap;cursor:pointer;transition:transform .2s,border-color .2s,background .2s}
 .social-nav-button:hover{transform:translateY(-1px);border-color:var(--accent);background:color-mix(in srgb,var(--surface2) 75%,var(--accent))}
-html[data-theme="light"] .social-nav-button,html[data-theme="system"] .social-nav-button{background:#fff;border-color:#dfe1e8;color:#393746}
+html .social-nav-button{background:var(--surface2);border-color:var(--line);color:var(--text)}
 .social-choice-backdrop{position:fixed;inset:0;z-index:32;display:grid;place-items:center;padding:18px;background:#05060ac9;backdrop-filter:blur(12px);animation:fade-in .18s}
 .social-choice-backdrop.hidden{display:none}
 .social-choice-dialog{position:relative;width:min(420px,100%);padding:30px;border:1px solid #ffffff20;border-radius:19px;background:linear-gradient(145deg,#1b1a25,#111319 65%);box-shadow:0 30px 100px #000a;animation:modal-in .22s ease-out}
@@ -779,6 +778,6 @@ html[data-theme="light"] .social-nav-button,html[data-theme="system"] .social-na
 .social-choice-link strong{color:var(--text);font-size:12px}
 .social-choice-link small{color:var(--muted);font-size:10px}
 .social-choice-arrow{margin-left:auto;color:var(--muted);font-size:16px}
-html[data-theme="light"] .social-choice-dialog,html[data-theme="system"] .social-choice-dialog{background:linear-gradient(145deg,#fff,#f5f3fa);border-color:#dedee8;box-shadow:0 30px 100px #20203030}
+html .social-choice-dialog{background:linear-gradient(145deg,var(--surface),var(--bg));border-color:var(--line);color:var(--text);box-shadow:0 30px 100px #0005}
 @media(max-width:760px){.social-nav-button{height:32px;padding:0 9px;font-size:9px}}
 @media(max-width:420px){.social-nav-button{height:30px;padding:0 7px;font-size:8px}}
