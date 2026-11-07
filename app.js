@@ -463,5 +463,42 @@
     }
   }
 
+  // Premium motion layer: reveal sections on scroll and add a subtle pointer glow to cards.
+  const reduceMotion = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  if (!reduceMotion && "IntersectionObserver" in window) {
+    const revealObserver = new IntersectionObserver(entries => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add("is-visible");
+          revealObserver.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.12, rootMargin: "0px 0px -35px 0px" });
+    const revealTargets = document.querySelectorAll(".projects-section, .section-heading, .filter-bar, .about-strip, .footer");
+    revealTargets.forEach((el, index) => {
+      el.classList.add("js-reveal");
+      el.style.transitionDelay = `${Math.min(index * 65, 260)}ms`;
+      revealObserver.observe(el);
+    });
+    const cardObserver = new MutationObserver(() => {
+      document.querySelectorAll(".project-card:not([data-reveal-ready])").forEach((card, index) => {
+        card.dataset.revealReady = "true";
+        card.classList.add("js-reveal");
+        card.style.transitionDelay = `${Math.min(index % 6 * 55, 275)}ms`;
+        revealObserver.observe(card);
+      });
+    });
+    cardObserver.observe(grid, { childList: true });
+  }
+  if (!reduceMotion && window.matchMedia && window.matchMedia("(hover: hover) and (pointer: fine)").matches) {
+    grid.addEventListener("pointermove", event => {
+      const card = event.target.closest(".project-card");
+      if (!card) return;
+      const rect = card.getBoundingClientRect();
+      card.style.setProperty("--pointer-x", `${event.clientX - rect.left}px`);
+      card.style.setProperty("--pointer-y", `${event.clientY - rect.top}px`);
+    }, { passive: true });
+  }
+
   init();
 })();

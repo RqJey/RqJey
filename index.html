@@ -5,14 +5,19 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="theme-color" content="#101114">
   <meta name="description" content="Клиентские модификации Minecraft от RqJey.">
-  <title>RqJey — Minecraft Mods</title>
+  <title>RqJey Mods 3.0 — Minecraft Mods</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="style.css">
 </head>
-<body>
+<body class="rq-loading">
+  <div class="boot-screen" id="bootScreen" role="status" aria-label="RqJey Mods loading">
+    <div class="boot-mark">rq<span>.</span></div><div class="boot-line"><i></i></div><div class="boot-caption">RQJEY MODS <span>·</span> AURORA 3.0</div>
+  </div>
+  <canvas class="particle-canvas" id="particleCanvas" aria-hidden="true"></canvas>
   <div class="ambient-background" aria-hidden="true"><span class="ambient-orb orb-a"></span><span class="ambient-orb orb-b"></span><span class="ambient-orb orb-c"></span></div>
+  <div class="cosmic-backdrop" id="cosmicBackdrop" aria-hidden="true"><div class="cosmic-planet" id="cosmicPlanet"></div><div class="cosmic-planet-caption" id="cosmicPlanetCaption">MERCURY · SOLAR SYSTEM</div></div>
   <div class="page-shell">
     <header class="topbar">
       <a class="brand" href="#top" aria-label="RqJey Mods home"><span class="brand-mark">rq<span>.</span></span><span class="brand-name">RqJey <span class="brand-muted">Mods</span></span></a>
@@ -78,8 +83,13 @@
       <a class="release-notes-link" id="releaseNotes" href="#" target="_blank" rel="noreferrer"><span data-i18n="viewRelease">Посмотреть релиз на GitHub</span> ↗</a>
     </section>
   </div>
+  <div class="download-feedback" id="downloadFeedback" aria-live="polite"><span class="download-feedback-icon">↓</span><span><b data-ru="Загрузка началась" data-en="Download started">Загрузка началась</b><small data-ru="Файл передан браузеру" data-en="File handed to your browser">Файл передан браузеру</small></span><i></i></div>
   <div class="toast" id="toast" role="status"></div>
+  <button class="cosmic-toggle" id="cosmicToggle" type="button" aria-label="Включить космическую тему" title="Секретная тема" aria-pressed="false"><span aria-hidden="true">✧</span><span class="cosmic-toggle-hint" aria-hidden="true">Cosmic mode</span></button>
   <script src="config.js"></script>
   <script src="app.js"></script>
+  <script src="aurora.js"></script>
+
+  
 </body>
 </html>
