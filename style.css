@@ -680,3 +680,17 @@ html.cosmic-mode .solar-system-scene{opacity:.78;transform:scale(1)}
   }
   .cosmic-planet { box-shadow: inset -12px -8px 20px #05040399 !important; }
 }
+
+
+/* Compact Log Analyzer shortcut, placed directly after the language selector. */
+.analyzer-nav-button{
+  width:34px;height:34px;flex:0 0 34px;display:grid;place-items:center;
+  border:1px solid #a58ce53d;border-radius:10px;background:#a58ce50c;
+  color:#cbbcf2;transition:background .2s,border-color .2s,transform .2s,box-shadow .2s;
+}
+.analyzer-nav-button svg{width:16px;height:16px;fill:none;stroke:currentColor;stroke-width:1.65;stroke-linecap:round;stroke-linejoin:round}
+.analyzer-nav-button:hover{transform:translateY(-1px);border-color:#a58ce5a0;background:#a58ce51c;box-shadow:0 5px 18px #a58ce51c}
+.analyzer-nav-button:focus-visible{outline:2px solid var(--accent);outline-offset:3px}
+html[data-theme="light"] .analyzer-nav-button{color:#7156ac;background:#f5f1fc;border-color:#ded5ef}
+@media(max-width:760px){.analyzer-nav-button{width:32px;height:32px;flex-basis:32px;border-radius:9px}}
+@media(max-width:420px){.analyzer-nav-button{width:30px;height:30px;flex-basis:30px}}
