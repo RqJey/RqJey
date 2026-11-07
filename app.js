@@ -267,10 +267,9 @@
     const groups = new Map();
     releases.filter(release => !release.draft).forEach(release => {
       const assets = (release.assets || []).filter(asset => asset.state === "uploaded");
-      if (!assets.length) return;
       const title = String(release.name || "").trim();
       const versionOnly = !title || /^v?\d+(?:[._-]\d+)*$/i.test(title);
-      const fileBase = String(assets[0].name || "Utility").replace(/\.[^.]+$/, "").replace(/[-_ ]v?\d+(?:[._-]\d+)*.*$/i, "").replace(/[-_]+/g, " ").trim();
+      const fileBase = String(assets[0]?.name || "").replace(/\.[^.]+$/, "").replace(/[-_ ]v?\d+(?:[._-]\d+)*.*$/i, "").replace(/[-_]+/g, " ").trim();
       const name = versionOnly ? (fileBase || release.tag_name || "Utility") : title;
       const key = name.toLowerCase();
       if (!groups.has(key)) groups.set(key, {name, releases: []});
@@ -280,7 +279,7 @@
       id: "utility-" + makeId(group.name), name: group.name,
       icon: ["⌘", "⚙", "✦", "◇", "↗", "✳"][index % 6],
       category: language === "ru" ? "Утилита" : "Utility",
-      description: (group.releases.slice().sort(compareReleasesByPublishedFile)[0]?.body || "").trim() || (language === "ru" ? "Файлы и версии утилиты из GitHub Releases." : "Utility files and versions from GitHub Releases."),
+      description: (group.releases.slice().sort(compareReleasesByPublishedFile)[0]?.body || "").trim() || (language === "ru" ? "Релизы утилиты. Если файл не прикреплён, доступен ZIP-архив исходников с GitHub." : "Utility releases. If no file is attached, a ZIP source archive is available from GitHub."),
       minecraft: "", accent: accents[index % accents.length], features: [],
       releases: group.releases.sort(compareReleasesByPublishedFile)
     })).sort((a,b) => a.name.localeCompare(b.name, language === "ru" ? "ru" : "en"));
@@ -396,8 +395,7 @@
     activeProject = project;
     activeCollection = collection;
     activeReleases = project.releases
-      .filter(r => jarAssets(r).length > 0)
-      // Сначала релиз с самым поздно опубликованным файлом.
+      .filter(r => !r.draft)
       .sort(compareReleasesByPublishedFile);
     document.getElementById("modalIcon").textContent = project.icon;
     document.getElementById("modalTitle").textContent = project.name;
@@ -428,7 +426,9 @@
       const tag = release.tag_name || release.name || `Релиз ${i + 1}`;
       const count = jarAssets(release).length;
       option.value = String(i);
-      option.textContent = `${tag} · ${count} ${count === 1 ? "файл" : count < 5 ? "файла" : "файлов"}`;
+      option.textContent = count
+        ? `${tag} · ${count} ${count === 1 ? "файл" : count < 5 ? "файла" : "файлов"}`
+        : `${tag} · ${language === "ru" ? "ZIP исходников" : "source ZIP"}`;
       select.appendChild(option);
     });
     select.disabled = false;
@@ -454,12 +454,19 @@
     if (!release) return;
     const assets = jarAssets(release);
     fileSelect.innerHTML = "";
-    assets.forEach((asset, i) => {
+    if (assets.length) {
+      assets.forEach((asset, i) => {
+        const option = document.createElement("option");
+        option.value = String(i);
+        option.textContent = asset.name;
+        fileSelect.appendChild(option);
+      });
+    } else {
       const option = document.createElement("option");
-      option.value = String(i);
-      option.textContent = asset.name;
+      option.value = "source";
+      option.textContent = language === "ru" ? "ZIP исходников" : "Source ZIP";
       fileSelect.appendChild(option);
-    });
+    }
     fileSelect.disabled = assets.length <= 1;
     const notes = document.getElementById("releaseNotes");
     notes.href = release.html_url;
@@ -472,12 +479,15 @@
     if (!release) return;
     const assets = jarAssets(release);
     const asset = assets[Number(fileSelect.value)] || assets[0];
-    setDownload(asset);
+    const sourceArchive = release.zipball_url || release.tarball_url;
+    setDownload(asset || (sourceArchive ? {browser_download_url: sourceArchive, size: 0} : null));
     const date = release.published_at ? new Date(release.published_at).toLocaleDateString(language === "ru" ? "ru-RU" : "en-US") : "";
     const body = (release.body || "").trim();
     const releaseInfo = [
       date ? `${tr("published")}: ${date}` : "",
-      `${assets.length} ${tr("files")}`
+      assets.length
+        ? `${assets.length} ${tr("files")}`
+        : (language === "ru" ? "Доступен ZIP исходников" : "Source ZIP available")
     ].filter(Boolean);
     document.getElementById("releaseInfo").textContent = releaseInfo.join(" · ");
     document.getElementById("releaseBody").innerHTML = body ? renderMarkdown(body) : `<p>${escapeHtml(tr("noDescription"))}</p>`;
