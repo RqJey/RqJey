@@ -883,8 +883,8 @@ html.cosmic-mode .faq-warning-card{border-color:#c39a6b42}
 .faq-content-main{padding-top:66px;min-height:calc(100vh - 170px)}
 
 /* New AURORA emblem */
-.brand-mark{display:block;background:#080611 url("brand-logo.png") center/cover no-repeat;border:1px solid #8c55ff66;box-shadow:0 0 22px #702cff28}
-.brand-mark img{display:none}
+.brand-mark{display:block;background:#080611;border:1px solid #8c55ff66;box-shadow:0 0 22px #702cff28}
+.brand-mark img{display:block;width:100%;height:100%;object-fit:contain;border-radius:inherit}
 .brand-mark:after{display:none}
 .boot-mark{width:124px;height:124px;display:grid;place-items:center;letter-spacing:0;text-shadow:none;animation:boot-breathe 2.8s ease-in-out infinite}
-.boot-mark img{display:block;width:112px;height:112px;object-fit:cover;border-radius:26px;filter:drop-shadow(0 0 25px #7d35ff75)}
+.boot-mark img{display:block;width:112px;height:112px;object-fit:contain;border-radius:26px;filter:drop-shadow(0 0 25px #7d35ff75)}
