@@ -86,7 +86,7 @@ function secureEqual(a,b) {
 }
 function clientIp(req) {
   const forwarded = req.headers['x-forwarded-for'];
-  return (typeof forwarded === 'string' ? forwarded.split(',')[0].trim() : req.socket.remoteAddress) || 'unknown';
+  return (typeof forwarded === 'string' ? forwarded.split(',').at(-1).trim() : req.socket.remoteAddress) || 'unknown';
 }
 function loginAllowed(ip) {
   const entry=attempts.get(ip);
