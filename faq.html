@@ -1,0 +1,57 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#101114">
+  <meta name="description" content="FAQ — ответы на вопросы о RqJey STUDIO | AURORA.">
+  <title>FAQ — RqJey STUDIO | AURORA</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body class="faq-page">
+  <div class="page-shell faq-shell">
+    <header class="faq-topbar">
+      <a class="brand" href="index.html" aria-label="RqJey STUDIO | AURORA — главная"><span class="brand-mark">rq<span>.</span></span><span class="brand-name">RqJey STUDIO <span class="brand-muted">| AURORA</span></span></a>
+      <a class="faq-back-link" href="index.html">← На главную</a>
+    </header>
+    <main class="faq-main">
+      <section class="faq-warning-card" aria-labelledby="warningTitle">
+        <div class="faq-parody-label">ШУТКА · ПАРОДИЯ</div>
+        <div class="rkn-emblem" role="img" aria-label="Стилизованная шуточная эмблема Роскомнадзора">
+          <svg viewBox="0 0 88 88" aria-hidden="true">
+            <circle cx="44" cy="44" r="39" fill="none" stroke="currentColor" stroke-width="2.5"/>
+            <ellipse cx="44" cy="44" rx="18" ry="39" fill="none" stroke="currentColor" stroke-width="2"/>
+            <path d="M7 44h74M14 26h60M14 62h60" fill="none" stroke="currentColor" stroke-width="2"/>
+            <path d="M19 18 69 70M69 18 19 70" fill="none" stroke="currentColor" stroke-width="1.5" opacity=".28"/>
+            <path d="M44 5v78" stroke="currentColor" stroke-width="1.5" opacity=".45"/>
+          </svg>
+          <span>РКН</span>
+        </div>
+        <div class="rkn-wordmark">РОСКОМНАДЗОР</div>
+        <h1 id="warningTitle">Доступ к FAQ ограничен</h1>
+        <p class="faq-warning-text">Извините, но данная функция нарушает законодательство Российской Федерации.</p>
+        <p class="faq-warning-note">Спокойно, это просто шутка. Никаких блокировок, проверок или ограничений на сайте нет.</p>
+        <a class="vpn-joke-link" href="faq-content.html">Включить VPN <span aria-hidden="true">↗</span></a>
+        <small class="vpn-joke-caption">* Кнопка не включает VPN — она открывает FAQ. Мы же не волшебники.</small>
+      </section>
+
+
+    </main>
+    <footer class="footer faq-footer"><span>© <span id="faqYear"></span> RqJey STUDIO | AURORA</span><a href="index.html">Вернуться на главную ↑</a></footer>
+  </div>
+  <script>
+    (() => {
+      const root = document.documentElement;
+      try {
+        const theme = localStorage.getItem('rqjey-theme') || 'system';
+        root.dataset.theme = theme === 'light' ? 'light' : 'dark';
+        if (localStorage.getItem('rqjey-cosmic-mode') === '1') root.classList.add('cosmic-mode');
+      } catch (_) { root.dataset.theme = 'dark'; }
+      document.getElementById('faqYear').textContent = new Date().getFullYear();
+    })();
+  </script>
+</body>
+</html>
