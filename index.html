@@ -5,15 +5,15 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="theme-color" content="#101114">
   <meta name="description" content="Клиентские модификации Minecraft от RqJey.">
-  <title>RqJey Mods 3.0 — Minecraft Mods</title>
+  <title>RqJey STUDIO | AURORA</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="style.css">
 </head>
 <body class="rq-loading">
-  <div class="boot-screen" id="bootScreen" role="status" aria-label="RqJey Mods loading">
-    <div class="boot-mark">rq<span>.</span></div><div class="boot-line"><i></i></div><div class="boot-caption">RQJEY MODS <span>·</span> AURORA 3.0</div>
+  <div class="boot-screen" id="bootScreen" role="status" aria-label="RqJey STUDIO | AURORA loading">
+    <div class="boot-mark">rq<span>.</span></div><div class="boot-line"><i></i></div><div class="boot-caption">RQJEY STUDIO <span>·</span> AURORA</div>
   </div>
   <canvas class="particle-canvas" id="particleCanvas" aria-hidden="true"></canvas>
   <div class="ambient-background" aria-hidden="true"><span class="ambient-orb orb-a"></span><span class="ambient-orb orb-b"></span><span class="ambient-orb orb-c"></span></div>
@@ -34,7 +34,7 @@
   </div>
   <div class="page-shell">
     <header class="topbar">
-      <a class="brand" href="#top" aria-label="RqJey Mods home"><span class="brand-mark">rq<span>.</span></span><span class="brand-name">RqJey <span class="brand-muted">Mods</span></span></a>
+      <a class="brand" href="#top" aria-label="RqJey STUDIO | AURORA home"><span class="brand-mark">rq<span>.</span></span><span class="brand-name">RqJey STUDIO <span class="brand-muted">| AURORA</span></span></a>
       <nav class="nav" id="mainNav"><a class="nav-link active" href="#projects" data-i18n="navCatalog">Каталог</a><a class="nav-link" href="#about" data-i18n="navAbout">О проекте</a><a class="github-link" id="githubProfile" href="https://github.com/RqJey" target="_blank" rel="noopener noreferrer" aria-label="GitHub начальника"><span class="github-glyph" aria-hidden="true">⌘</span><span class="github-label"><span>Github</span><span>начальника</span></span><span class="external" aria-hidden="true">↗</span></a></nav>
       <button class="mobile-menu" id="mobileMenu" aria-label="Открыть меню" aria-expanded="false">☰</button>
       <div class="header-tools"><button class="utility-button" id="notifyButton" type="button" data-i18n="notifications">Уведомления</button><label class="sr-only" for="themeSelect">Theme</label><select id="themeSelect" class="header-select" aria-label="Theme"><option value="system" data-i18n="themeSystem">Системная</option><option value="light" data-i18n="themeLight">Светлая</option><option value="dark" data-i18n="themeDark">Тёмная</option></select><label class="sr-only" for="languageSelect">Language</label><select id="languageSelect" class="header-select language-select" aria-label="Language"><option value="ru">РУ</option><option value="en">EN</option></select><a class="analyzer-nav-button" href="analyzer.html" aria-label="Log Analyzer" title="Log Analyzer"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 5.5h16v13H4z"/><path d="m8 10 2.5 2-2.5 2M13 14h3"/></svg></a><button class="social-nav-button" id="socialNavButton" type="button" aria-haspopup="dialog" aria-controls="socialChoiceBackdrop" data-i18n="socials">Соц. сети</button></div>
@@ -43,7 +43,7 @@
       <section class="intro intro-showcase">
         <div class="hero-glow"></div>
         <div class="showcase-copy">
-          <div class="eyebrow"><span class="eyebrow-dot"></span> RQJEY MODS <span class="eyebrow-divider">/</span> CLIENT TOOLKIT</div>
+          <div class="eyebrow"><span class="eyebrow-dot"></span> RQJEY STUDIO <span class="eyebrow-divider">/</span> AURORA</div>
           <div class="showcase-index"><span>01</span><i></i><span>05</span><span class="index-caption" data-i18n="showcaseLabel">КОЛЛЕКЦИЯ ИНСТРУМЕНТОВ</span></div>
           <p class="intro-copy" data-i18n="heroCopy">Полезные клиентские модификации для более удобной игры. Выбирай инструмент, изучай версии и скачивай актуальные сборки в пару кликов.</p>
           <div class="hero-actions"><a class="primary-cta" href="#projects"><span data-i18n="exploreMods">Исследовать моды</span> <span>↓</span></a><button class="secondary-cta" id="heroGithub" type="button" aria-haspopup="dialog" aria-controls="githubChoiceBackdrop"><span data-i18n="openGithub">Открыть GitHub</span> <span aria-hidden="true">↗</span></button></div>
@@ -72,9 +72,9 @@
         <div class="project-grid" id="utilitiesGrid" aria-live="polite"><div class="empty-state" data-i18n="loadingUtilities">Загрузка утилит из GitHub Releases...</div></div>
         <div class="empty-state hidden" id="utilitiesEmpty" data-i18n="utilitiesEmpty">Утилиты не найдены.</div>
       </section>
-      <section class="about-strip" id="about"><div class="about-symbol" aria-hidden="true"><span>rq.</span><i></i></div><div class="about-text"><div class="section-kicker" data-i18n="aboutKicker">ЗА КАЖДЫМ МОДОМ — ИДЕЯ</div><h2 data-i18n="aboutTitle">Меньше рутины. Больше игры.</h2><p data-i18n="aboutCopy">RqJey Mods — коллекция небольших инструментов для Minecraft. Новые версии автоматически появляются здесь после публикации релиза на GitHub.</p></div><div class="about-signature" aria-hidden="true"><span class="signature-mark">✳</span><span class="signature-copy"><b>RQJEY / STUDIO</b><small>MADE FOR YOUR NEXT SESSION</small></span></div></section>
+      <section class="about-strip" id="about"><div class="about-symbol" aria-hidden="true"><span>rq.</span><i></i></div><div class="about-text"><div class="section-kicker" data-i18n="aboutKicker">ЗА КАЖДЫМ МОДОМ — ИДЕЯ</div><h2 data-i18n="aboutTitle">Меньше рутины. Больше игры.</h2><p data-i18n="aboutCopy">RqJey STUDIO | AURORA — коллекция небольших инструментов и проектов. Новые версии автоматически появляются здесь после публикации релиза на GitHub.</p></div><div class="about-signature" aria-hidden="true"><span class="signature-mark">✳</span><span class="signature-copy"><b>RQJEY / STUDIO</b><small>MADE FOR YOUR NEXT SESSION</small></span></div></section>
     </main>
-    <footer class="footer"><span>© <span id="year"></span> RqJey Mods</span><span class="footer-center" data-i18n="footerTag">Made for better Minecraft sessions</span><a href="#top" data-i18n="backTop">Наверх ↑</a></footer>
+    <footer class="footer"><span>© <span id="year"></span> RqJey STUDIO | AURORA</span><span class="footer-center" data-i18n="footerTag">Made for better Minecraft sessions</span><a href="#top" data-i18n="backTop">Наверх ↑</a></footer>
   </div>
 
   <div class="social-choice-backdrop hidden" id="socialChoiceBackdrop">
@@ -110,7 +110,7 @@
   <div class="modal-backdrop hidden" id="modalBackdrop">
     <section class="release-modal" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
       <button class="modal-close" id="modalClose" aria-label="Закрыть">×</button>
-      <div class="modal-kicker">RQJEY MODS <span data-i18n="downloadCenter">· ЦЕНТР СКАЧИВАНИЯ</span></div>
+      <div class="modal-kicker">RQJEY STUDIO <span data-i18n="downloadCenter">· ЦЕНТР СКАЧИВАНИЯ</span></div>
       <div class="modal-title-row">
         <div class="modal-icon" id="modalIcon"></div>
         <div><h2 id="modalTitle">Project</h2><p id="modalSubtitle"></p></div>
