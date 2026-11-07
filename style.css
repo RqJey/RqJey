@@ -734,3 +734,51 @@ html[data-theme="light"] .analyzer-nav-button{color:#7156ac;background:#f5f1fc;b
 .utility-card .card-actions{justify-content:flex-end}
 html[data-theme="light"] .utilities-section{border-color:#20243818}
 @media(max-width:760px){.utilities-section{margin-top:54px;padding-top:36px}}
+
+
+/* GitHub repository chooser */
+.secondary-cta{font-family:inherit;cursor:pointer}
+.github-choice-backdrop{position:fixed;inset:0;z-index:30;display:grid;place-items:center;padding:18px;background:#05060ac9;backdrop-filter:blur(12px);animation:fade-in .18s}
+.github-choice-backdrop.hidden{display:none}
+.github-choice-dialog{position:relative;width:min(420px,100%);padding:30px;border:1px solid #ffffff20;border-radius:19px;background:linear-gradient(145deg,#1b1a25,#111319 65%);box-shadow:0 30px 100px #000a;animation:modal-in .22s ease-out}
+.github-choice-close{position:absolute;right:15px;top:14px;width:32px;height:32px;border:1px solid #ffffff1a;border-radius:9px;color:#aaa9b4;background:#ffffff08;font-size:21px;cursor:pointer}
+.github-choice-kicker{margin-bottom:15px;color:#b8a5ec;font-size:9px;font-weight:800;letter-spacing:1.8px}
+.github-choice-kicker span{color:#777485}
+.github-choice-dialog h2{margin:0 0 5px;color:var(--text);font:800 23px Manrope,sans-serif;letter-spacing:-.7px}
+.github-choice-dialog>p{margin:0 0 21px;color:var(--muted);font-size:12px}
+.github-choice-link{display:flex;align-items:center;gap:13px;padding:14px;margin-top:10px;border:1px solid var(--line);border-radius:12px;background:var(--surface2);transition:border-color .2s,transform .2s,background .2s}
+.github-choice-link:hover{transform:translateY(-2px);border-color:var(--accent);background:color-mix(in srgb,var(--surface2) 85%,var(--accent))}
+.github-choice-icon{width:39px;height:39px;display:grid;place-items:center;border:1px solid var(--line);border-radius:10px;background:var(--surface);color:var(--accent);font:700 19px Manrope;flex-shrink:0}
+.github-choice-link>span:nth-child(2){display:grid;gap:3px;min-width:0}
+.github-choice-link strong{color:var(--text);font-size:12px}
+.github-choice-link small{color:var(--muted);font-size:10px}
+.github-choice-arrow{margin-left:auto;color:var(--muted);font-size:16px}
+html[data-theme="light"] .github-choice-dialog{background:linear-gradient(145deg,#fff,#f5f3fa);border-color:#dedee8;box-shadow:0 30px 100px #20203030}
+html[data-theme="system"] .github-choice-dialog{background:linear-gradient(145deg,#fff,#f5f3fa);border-color:#dedee8}
+@media(max-width:420px){.github-choice-dialog{padding:27px 19px}}
+
+
+/* Social links in the top toolbar */
+.social-nav-button{height:34px;padding:0 12px;border:1px solid #ffffff20;border-radius:9px;background:#ffffff08;color:var(--text);font-size:10px;font-weight:700;white-space:nowrap;cursor:pointer;transition:transform .2s,border-color .2s,background .2s}
+.social-nav-button:hover{transform:translateY(-1px);border-color:var(--accent);background:color-mix(in srgb,var(--surface2) 75%,var(--accent))}
+html[data-theme="light"] .social-nav-button,html[data-theme="system"] .social-nav-button{background:#fff;border-color:#dfe1e8;color:#393746}
+.social-choice-backdrop{position:fixed;inset:0;z-index:32;display:grid;place-items:center;padding:18px;background:#05060ac9;backdrop-filter:blur(12px);animation:fade-in .18s}
+.social-choice-backdrop.hidden{display:none}
+.social-choice-dialog{position:relative;width:min(420px,100%);padding:30px;border:1px solid #ffffff20;border-radius:19px;background:linear-gradient(145deg,#1b1a25,#111319 65%);box-shadow:0 30px 100px #000a;animation:modal-in .22s ease-out}
+.social-choice-close{position:absolute;right:15px;top:14px;width:32px;height:32px;border:1px solid #ffffff1a;border-radius:9px;color:#aaa9b4;background:#ffffff08;font-size:21px;cursor:pointer}
+.social-choice-kicker{margin-bottom:15px;color:#b8a5ec;font-size:9px;font-weight:800;letter-spacing:1.8px}
+.social-choice-kicker span{color:#777485}
+.social-choice-dialog h2{margin:0 0 5px;color:var(--text);font:800 23px Manrope,sans-serif;letter-spacing:-.7px}
+.social-choice-dialog>p{margin:0 0 21px;color:var(--muted);font-size:12px}
+.social-choice-link{display:flex;align-items:center;gap:13px;padding:14px;margin-top:10px;border:1px solid var(--line);border-radius:12px;background:var(--surface2);transition:border-color .2s,transform .2s,background .2s}
+.social-choice-link:hover{transform:translateY(-2px);border-color:var(--accent);background:color-mix(in srgb,var(--surface2) 85%,var(--accent))}
+.social-choice-icon{width:39px;height:39px;display:grid;place-items:center;border:1px solid var(--line);border-radius:10px;background:var(--surface);color:var(--accent);font:800 19px Manrope;flex-shrink:0}
+.social-choice-icon.twitch-icon{color:#a98af2}
+.social-choice-icon.telegram-icon{color:#35aee2}
+.social-choice-link>span:nth-child(2){display:grid;gap:3px;min-width:0}
+.social-choice-link strong{color:var(--text);font-size:12px}
+.social-choice-link small{color:var(--muted);font-size:10px}
+.social-choice-arrow{margin-left:auto;color:var(--muted);font-size:16px}
+html[data-theme="light"] .social-choice-dialog,html[data-theme="system"] .social-choice-dialog{background:linear-gradient(145deg,#fff,#f5f3fa);border-color:#dedee8;box-shadow:0 30px 100px #20203030}
+@media(max-width:760px){.social-nav-button{height:32px;padding:0 9px;font-size:9px}}
+@media(max-width:420px){.social-nav-button{height:30px;padding:0 7px;font-size:8px}}
