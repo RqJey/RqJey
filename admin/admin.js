@@ -162,7 +162,7 @@
   let selectedBackup=null;
   $("exportBackup").addEventListener("click",()=>{
     const snapshot={...content,exportedAt:new Date().toISOString(),format:"rqjey-cms-backup-v1"};
-    const blob=new Blob([JSON.stringify(snapshot,null,2)+"\\n"],{type:"application/json"});
+    const blob=new Blob([JSON.stringify(snapshot,null,2)+"\n"],{type:"application/json"});
     const url=URL.createObjectURL(blob),link=document.createElement("a");
     link.href=url;link.download="rqjey-cms-backup-"+new Date().toISOString().slice(0,10)+".json";
     document.body.appendChild(link);link.click();link.remove();URL.revokeObjectURL(url);toast("Резервная копия скачана");
@@ -171,7 +171,7 @@
     selectedBackup=null;$("prepareRestore").disabled=true;
     const file=e.target.files?.[0];$("backupFileName").textContent=file?file.name:"Файл не выбран.";
     if(!file)return;
-    if(file.size>60000){toast("Файл копии больше 60 КБ");return;}
+    if(file.size>55000){toast("Файл копии больше 55 КБ");return;}
     try{
       const parsed=JSON.parse(await file.text());
       if(!parsed||typeof parsed!=="object"||!parsed.homepage||!Array.isArray(parsed.projects)||!Array.isArray(parsed.news)||!Array.isArray(parsed.categories))throw new Error("Файл не похож на резервную копию CMS");
