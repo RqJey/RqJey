@@ -82,7 +82,7 @@
     const button=create('button','ui-theme-choice'); button.type='button'; button.dataset.uiTheme=value;
     const dot=create('span','ui-theme-dot '+value); dot.setAttribute('aria-hidden','true');
     button.append(dot,create('strong','',label));
-    button.addEventListener('click',()=>setTheme(value)); themes.appendChild(button);
+    button.addEventListener('click',()=>{const apply=()=>setTheme(value);if(settings.smoothThemes&&!reduceMotion&&document.startViewTransition)document.startViewTransition(apply);else apply();}); themes.appendChild(button);
   });
   themeSection.appendChild(themes); content.appendChild(themeSection);
   const footer=create('footer','ui-settings-footer');
@@ -131,6 +131,8 @@
     const root=document.documentElement;
     Object.keys(defaults).forEach(key=>root.classList.toggle('ui-'+key,!!settings[key] && !(reduceMotion&&['magnetic','iconMotion','pageTransitions'].includes(key))));
     root.style.setProperty('--ui-pointer-x','-1000px'); root.style.setProperty('--ui-pointer-y','-1000px');
+    if(progressBar) progressBar.setAttribute('data-enabled',String(!!settings.scrollProgress));
+    if(cursorGlow) cursorGlow.setAttribute('data-enabled',String(!!settings.cursorLight));
   }
   applySettings(); syncControls();
   setTheme(activeTheme,false);
@@ -175,27 +177,22 @@
       if(target&&!target.contains(event.relatedTarget)){target.style.removeProperty('--ui-magnet-x');target.style.removeProperty('--ui-magnet-y');}
     },{passive:true});
   }
-  if(settings.scrollProgress){
-    const bar=create('div','ui-scroll-progress'); bar.setAttribute('aria-hidden','true'); document.body.appendChild(bar);
-    const update=()=>{const max=document.documentElement.scrollHeight-innerHeight;bar.style.transform='scaleX('+(max>0?scrollY/max:0)+')';};
-    addEventListener('scroll',update,{passive:true});addEventListener('resize',update,{passive:true});update();
-  }
-  if(settings.cursorLight&&finePointer&&!reduceMotion){
-    const glow=create('div','ui-cursor-glow');glow.setAttribute('aria-hidden','true');document.body.appendChild(glow);
-  }
+  const progressBar=create('div','ui-scroll-progress'); progressBar.setAttribute('aria-hidden','true'); document.body.appendChild(progressBar);
+  const updateProgress=()=>{const max=document.documentElement.scrollHeight-innerHeight;progressBar.style.transform='scaleX('+(max>0?scrollY/max:0)+')';};
+  addEventListener('scroll',updateProgress,{passive:true});addEventListener('resize',updateProgress,{passive:true});updateProgress();
+  const cursorGlow=create('div','ui-cursor-glow');cursorGlow.setAttribute('aria-hidden','true');document.body.appendChild(cursorGlow);
   if(settings.headingReveal&&!reduceMotion&&'IntersectionObserver'in window){
-    const observer=new IntersectionObserver(entries=>entries.forEach(entry=>{if(entry.isIntersecting){entry.target.classList.add('ui-heading-visible');observer.unobserve(entry.target);}}),{threshold:.12});
+    const observer=new IntersectionObserver(entries=>entries.forEach(entry=>{if(entry.isIntersecting&&settings.headingReveal){entry.target.classList.add('ui-heading-visible');observer.unobserve(entry.target);}}),{threshold:.12});
     document.querySelectorAll('h1,h2,.section-kicker').forEach(node=>{node.classList.add('ui-heading-reveal');observer.observe(node);});
   }
-  if(settings.pageTransitions&&!reduceMotion){
+  if(!reduceMotion){
     document.addEventListener('click',event=>{
+      if(!settings.pageTransitions)return;
       const link=event.target.closest('a[href]');if(!link||link.target==='_blank'||event.metaKey||event.ctrlKey||event.shiftKey||event.altKey)return;
       const url=new URL(link.href,location.href);if(url.origin!==location.origin||url.pathname===location.pathname||url.hash&&!url.pathname.endsWith('.html'))return;
       if(url.pathname.endsWith('.html')&&document.startViewTransition){event.preventDefault();document.startViewTransition(()=>location.assign(url.href));}
     });
-  }
-  if(settings.iconMotion&&!reduceMotion){
-    document.addEventListener('pointerover',event=>{const icon=event.target.closest('button svg,button .ui-settings-trigger-icon,.project-icon,.tools-choice-icon,.social-choice-icon');if(icon)icon.classList.add('ui-icon-active');});
+    document.addEventListener('pointerover',event=>{if(!settings.iconMotion)return;const icon=event.target.closest('button svg,button .ui-settings-trigger-icon,.project-icon,.tools-choice-icon,.social-choice-icon');if(icon)icon.classList.add('ui-icon-active');});
     document.addEventListener('pointerout',event=>{const icon=event.target.closest('button svg,button .ui-settings-trigger-icon,.project-icon,.tools-choice-icon,.social-choice-icon');if(icon&&!icon.contains(event.relatedTarget))icon.classList.remove('ui-icon-active');});
   }
 })();
