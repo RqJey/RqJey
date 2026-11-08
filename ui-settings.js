@@ -5,6 +5,7 @@
   const STORAGE_KEY = 'rqjey-ui-settings-v1';
   const THEME_KEY = 'rqjey-ui-theme';
   const CURSOR_MIGRATION_KEY = 'rqjey-cursor-global-v1';
+  const DEFAULTS_MIGRATION_KEY = 'rqjey-enabled-effects-v1';
   const defaults = {
     glass:true, cursorLight:true, magnetic:false, modalDepth:true, animatedBorders:true,
     customCursor:true, pageTransitions:true, scrollProgress:true, headingReveal:true,
@@ -22,7 +23,7 @@
     {id:'headingReveal',group:'quality',title:'Появление заголовков',description:'Заголовки проявляются при прокрутке.'},
     {id:'customNotifications',group:'quality',title:'Красивые уведомления',description:'Вместо стандартных системных alert — стильные тосты.'},
     {id:'smoothThemes',group:'quality',title:'Плавная смена тем',description:'Анимированное переключение оформления.'},
-    {id:'iconMotion',group:'quality',title:'Анимация иконок',description:'Иконки оживают при наведении.'}
+    {id:'iconMotion',group:'quality',title:'Анимация кнопок',description:'Кнопки и иконки плавно оживают при наведении.'}
   ];
   let settings = {...defaults};
   try { settings = {...defaults, ...JSON.parse(localStorage.getItem(STORAGE_KEY) || '{}')}; } catch (_) {}
@@ -31,6 +32,13 @@
       settings.customCursor = true;
       localStorage.setItem(STORAGE_KEY, JSON.stringify(settings));
       localStorage.setItem(CURSOR_MIGRATION_KEY, '1');
+    }
+  } catch (_) {}
+  try {
+    if (!localStorage.getItem(DEFAULTS_MIGRATION_KEY)) {
+      ['glass','modalDepth','animatedBorders','customCursor','pageTransitions','headingReveal','smoothThemes','iconMotion'].forEach(key => { settings[key] = true; });
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(settings));
+      localStorage.setItem(DEFAULTS_MIGRATION_KEY, '1');
     }
   } catch (_) {}
   let activeTheme = 'dark';
