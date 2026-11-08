@@ -61,8 +61,9 @@
   }
   function applyTheme(theme) {
     const selected = ["light", "dark", "system"].includes(theme) ? theme : "system";
-    // Cosmic mode temporarily forces dark colors without overwriting the user's preference.
-    const effective = (document.documentElement.classList.contains("cosmic-mode") || document.documentElement.classList.contains("aurora-mode")) ? "dark" : selected;
+    // Cosmic, Aurora and Sakura themes always use dark colors without overwriting the user's preference.
+    const root = document.documentElement;
+    const effective = (root.classList.contains("cosmic-mode") || root.classList.contains("aurora-mode") || root.classList.contains("sakura-mode")) ? "dark" : selected;
     document.documentElement.dataset.theme = effective;
     document.getElementById("themeSelect").value = selected;
     localStorage.setItem("rqjey-theme", selected);
