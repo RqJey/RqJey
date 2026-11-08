@@ -11,20 +11,14 @@
       if (!boot || boot.classList.contains('boot-done')) return;
       boot.classList.add('boot-done');
       document.body.classList.remove('rq-loading');
-      setTimeout(() => boot.remove(), 900);
+      window.setTimeout(() => boot.remove(), 900);
     };
-    // Keep the branded loader visible for at least 0.9 seconds.
+    // Keep the branded intro for 0.9 seconds, but never wait for APIs, fonts or window.load.
     const remaining = Math.max(0, 900 - (performance.now() - bootStartedAt));
     bootHideTimer = window.setTimeout(revealPage, remaining);
   };
-  // Reveal after the app has painted its initial state; bounded fallback covers offline/API errors.
-  const grid = document.getElementById('projectGrid');
-  if (grid) {
-    const observer = new MutationObserver(() => { if (grid.children.length) { observer.disconnect(); setTimeout(hideBoot, 260); } });
-    observer.observe(grid, {childList:true, subtree:true});
-  }
-  window.addEventListener('load', () => setTimeout(hideBoot, 650), {once:true});
-  setTimeout(hideBoot, 6500);
+  // Let the browser paint the static homepage shell, then reveal it independently of network requests.
+  requestAnimationFrame(() => requestAnimationFrame(hideBoot));
 
   // Four selectable visual themes; the selected theme survives page reloads.
   const cosmicButton = document.getElementById('cosmicToggle');
