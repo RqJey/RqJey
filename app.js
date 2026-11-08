@@ -617,6 +617,28 @@
     document.body.classList.remove("modal-open");
   }));
 
+
+  const toolsChoiceBackdrop = document.getElementById("toolsChoiceBackdrop");
+  const toolsMenuButton = document.getElementById("toolsMenuButton");
+  const closeToolsChoice = () => {
+    toolsChoiceBackdrop.classList.add("hidden");
+    document.body.classList.remove("modal-open");
+    toolsMenuButton.focus();
+  };
+  toolsMenuButton.addEventListener("click", () => {
+    toolsChoiceBackdrop.classList.remove("hidden");
+    document.body.classList.add("modal-open");
+    document.getElementById("toolsChoiceClose").focus();
+  });
+  document.getElementById("toolsChoiceClose").addEventListener("click", closeToolsChoice);
+  toolsChoiceBackdrop.addEventListener("click", event => {
+    if (event.target === toolsChoiceBackdrop) closeToolsChoice();
+  });
+  toolsChoiceBackdrop.querySelectorAll("a").forEach(link => link.addEventListener("click", () => {
+    toolsChoiceBackdrop.classList.add("hidden");
+    document.body.classList.remove("modal-open");
+  }));
+
   const githubChoiceBackdrop = document.getElementById("githubChoiceBackdrop");
   const heroGithubButton = document.getElementById("heroGithub");
   const closeGithubChoice = () => {
@@ -640,6 +662,7 @@
   document.addEventListener("keydown", event => {
     if (event.key === "Escape" && !githubChoiceBackdrop.classList.contains("hidden")) closeGithubChoice();
     if (event.key === "Escape" && !socialChoiceBackdrop.classList.contains("hidden")) closeSocialChoice();
+    if (event.key === "Escape" && !toolsChoiceBackdrop.classList.contains("hidden")) closeToolsChoice();
   });
 
   search.addEventListener("input", () => renderProjects(search.value));
