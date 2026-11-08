@@ -29,7 +29,7 @@
       </nav>
 
       <section class="mc-tool-panel mc-anvil-panel" id="tool-enchantments" data-tool-panel="enchantments">
-        <div class="mc-tool-heading"><div><div class="mc-tool-kicker">ANVIL PLANNER · JAVA EDITION</div><h2>Калькулятор наковальни</h2><p>Подбери книги, а калькулятор найдёт наиболее выгодную последовательность объединений и переноса на предмет.</p></div><span class="mc-tool-symbol">✦</span></div>
+        <div class="mc-tool-heading"><div><div class="mc-tool-kicker">ANVIL PLANNER · JAVA EDITION</div><h2>Калькулятор наковальни</h2><p>Подбери книги, а калькулятор найдёт наиболее выгодную последовательность объединений и переноса на предмет.</p></div><span class="mc-tool-symbol mc-anvil-item-icon" id="anvilItemIcon" aria-hidden="true">⚔</span></div>
         <div class="mc-anvil-topline"><span class="mc-live-dot"></span> Оптимизация в реальном времени <button type="button" id="resetAnvil" class="mc-text-button">Сбросить всё ↺</button></div>
         <div class="mc-anvil-section">
           <div class="mc-step-title"><span>1</span><div><strong>Ваш предмет</strong><small>Выберите экипировку и укажите её состояние.</small></div></div>
@@ -54,6 +54,7 @@
           <div id="enchantResult" class="mc-result-card mc-anvil-summary" aria-live="polite"><span class="mc-result-label">ПЛАН НАКОВАЛЬНИ</span><strong>Добавь книги для расчёта</strong><p>Здесь появится самый дешёвый порядок операций.</p></div>
           <div id="anvilTree" class="mc-anvil-tree"></div>
           <div id="anvilSteps" class="mc-anvil-steps"></div>
+          <div class="mc-anvil-actions"><button type="button" id="copyAnvilPlan" class="mc-secondary-button" disabled>Копировать план</button><span id="anvilCopyStatus" role="status" aria-live="polite"></span></div>
         </div>
         <p class="mc-note">Расчёт для Java Edition: стоимость переноса книги учитывает уровень зачарования и базовую стоимость чар, штраф предыдущих работ учитывается отдельно. Лимит 39 уровней проверяется для каждой операции, а не для суммы всего плана. Ремонт предмета материалами и готовые книги с несколькими чарами не моделируются.</p>
       </section>

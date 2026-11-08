@@ -19,6 +19,9 @@
   ];
   const conflicts=[["protection","fire_protection","blast_protection","projectile_protection"],["sharpness","smite","bane_of_arthropods","density","breach"],["depth_strider","frost_walker"],["silk_touch","fortune"],["infinity","mending"],["multishot","piercing"],["loyalty","riptide"],["channeling","riptide"]];
   const item=$("enchantItem"), choices=$("enchantChoices"), existingBox=$("existingEnchantChoices"), booksBox=$("selectedBooks");
+  const itemIcons={helmet:"⛑",turtle_helmet:"🐢",chestplate:"🛡",leggings:"♜",boots:"🥾",elytra:"🪽",sword:"⚔",axe:"🪓",bow:"🏹",crossbow:"🏹",trident:"🔱",mace:"🔨",pickaxe:"⛏",shovel:"🪏",hoe:"⚒",shears:"✂",fishing_rod:"🎣",flint_and_steel:"🔥",shield:"🛡"};
+  const roman=n=>["","I","II","III","IV","V"][n]||String(n);
+  function updateItemIcon(){const icon=$("anvilItemIcon");if(icon)icon.textContent=itemIcons[item.value]||"✦";}
   let books=new Map(),existing=new Set();
   const label=id=>E.find(e=>e[1]===id)?.[0]||id, data=id=>E.find(e=>e[1]===id);
   const maxPenalty=n=>Math.pow(2,n)-1;
@@ -35,9 +38,9 @@
   }
   function renderBooks(){
     booksBox.replaceChildren();if(!books.size){const p=document.createElement("p");p.className="mc-empty";p.textContent="Пока нет книг. Выбери зачарования выше.";booksBox.append(p);return;}
-    books.forEach((level,id)=>{const e=data(id),row=document.createElement("div");row.className="mc-selected-book";const name=document.createElement("strong");name.textContent=e[0];const select=document.createElement("select");select.setAttribute("aria-label","Уровень "+e[0]);for(let n=1;n<=e[2];n++){const o=document.createElement("option");o.value=n;o.textContent="Уровень "+n+" · "+(n*Math.max(1,Math.floor(e[3]/2)))+" ур.";o.selected=n===level;select.append(o);}select.addEventListener("change",()=>{books.set(id,Number(select.value));calculate();});const remove=document.createElement("button");remove.type="button";remove.className="mc-remove-book";remove.textContent="×";remove.setAttribute("aria-label","Удалить "+e[0]);remove.addEventListener("click",()=>{books.delete(id);renderAll();});row.append(name,select,remove);booksBox.append(row);});
+    books.forEach((level,id)=>{const e=data(id),row=document.createElement("div");row.className="mc-selected-book";const icon=document.createElement("span");icon.className="mc-book-glyph";icon.textContent="▤";const info=document.createElement("div");info.className="mc-book-info";const name=document.createElement("strong");name.textContent=e[0];const meta=document.createElement("small");meta.textContent="Зачарованная книга · "+roman(level);info.append(name,meta);const select=document.createElement("select");select.setAttribute("aria-label","Уровень "+e[0]);for(let n=1;n<=e[2];n++){const o=document.createElement("option");o.value=n;o.textContent="Уровень "+n+" · "+(n*Math.max(1,Math.floor(e[3]/2)))+" ур.";o.selected=n===level;select.append(o);}select.addEventListener("change",()=>{books.set(id,Number(select.value));calculate();});const remove=document.createElement("button");remove.type="button";remove.className="mc-remove-book";remove.textContent="×";remove.setAttribute("aria-label","Удалить "+e[0]);remove.addEventListener("click",()=>{books.delete(id);renderAll();});row.append(icon,info,select,remove);booksBox.append(row);});
   }
-  function renderAll(){renderChoices();renderBooks();calculate();}
+  function renderAll(){renderChoices();renderBooks();calculate();updateItemIcon();}
   function node(ids,penalty=0){return {ids:[...ids].sort(),penalty};}
   function nodeKey(n){return n.ids.join(",")+"@"+n.penalty;}
   function enchCost(ids){return ids.reduce((s,id)=>s+data(id)[2] /* placeholder */,0);}
@@ -78,14 +81,16 @@
     return {result,states,initialPenalty};
   }
   function calculate(){
-    if(!books.size){$("enchantResult").innerHTML='<span class="mc-result-label">ПЛАН НАКОВАЛЬНИ</span><strong>Добавь книги для расчёта</strong><p>Выбери зачарования — здесь появится самый дешёвый порядок операций.</p>';$("anvilTree").replaceChildren();$("anvilSteps").replaceChildren();return;}
+    if(!books.size){$("copyAnvilPlan").disabled=true;$("anvilCopyStatus").textContent="";$("enchantResult").innerHTML='<span class="mc-result-label">ПЛАН НАКОВАЛЬНИ</span><strong>Добавь книги для расчёта</strong><p>Выбери зачарования — здесь появится самый дешёвый порядок операций.</p>';$("anvilTree").replaceChildren();$("anvilSteps").replaceChildren();return;}
     const invalid=conflicts.some(g=>g.filter(id=>existing.has(id)||books.has(id)).length>1);
-    if(invalid){$("enchantResult").innerHTML='<span class="mc-result-label">НЕСОВМЕСТИМЫЕ ЧАРЫ</span><strong>Нельзя применить выбранный набор</strong><p>Убери конфликтующие зачарования или отметь только те, что уже есть на предмете.</p>';$("anvilTree").replaceChildren();$("anvilSteps").replaceChildren();return;}
-    if(books.size>8){$("enchantResult").innerHTML='<span class="mc-result-label">СЛИШКОМ МНОГО КНИГ</span><strong>Выбери не более 8 книг за раз</strong><p>Это ограничение нужно для полного перебора порядка операций без долгого ожидания.</p>';$("anvilTree").replaceChildren();$("anvilSteps").replaceChildren();return;}
+    if(invalid){$("copyAnvilPlan").disabled=true;$("enchantResult").innerHTML='<span class="mc-result-label">НЕСОВМЕСТИМЫЕ ЧАРЫ</span><strong>Нельзя применить выбранный набор</strong><p>Убери конфликтующие зачарования или отметь только те, что уже есть на предмете.</p>';$("anvilTree").replaceChildren();$("anvilSteps").replaceChildren();return;}
+    if(books.size>8){$("copyAnvilPlan").disabled=true;$("enchantResult").innerHTML='<span class="mc-result-label">СЛИШКОМ МНОГО КНИГ</span><strong>Выбери не более 8 книг за раз</strong><p>Это ограничение нужно для полного перебора порядка операций без долгого ожидания.</p>';$("anvilTree").replaceChildren();$("anvilSteps").replaceChildren();return;}
     const {result,states}=optimize();
-    if(!result){$("enchantResult").innerHTML='<span class="mc-result-label">РАСЧЁТ НЕ ЗАВЕРШЁН</span><strong>Слишком много вариантов</strong><p>Попробуй убрать одну книгу или разделить сборку на части.</p>';return;}
+    if(!result){$("copyAnvilPlan").disabled=true;$("enchantResult").innerHTML='<span class="mc-result-label">РАСЧЁТ НЕ ЗАВЕРШЁН</span><strong>Слишком много вариантов</strong><p>Попробуй убрать одну книгу или разделить сборку на части.</p>';return;}
     const maxStep=Math.max(...result.steps.map(s=>s.cost)),over=result.steps.some(s=>s.cost>=40),normal=result.steps.reduce((s,x)=>s+x.cost,0);
     $("enchantResult").innerHTML='<span class="mc-result-label">ИТОГОВАЯ СТОИМОСТЬ</span><strong>'+result.cost+' уровней опыта</strong><p>'+result.steps.length+' операций · самая дорогая: '+maxStep+' / 39 · штраф предмета после плана: '+result.targetPenalty+'</p><p class="'+(over?"mc-danger":"mc-success")+'">'+(over?"Внимание: одна или несколько операций стоят 40+ уровней — в обычном выживании они недоступны.":"Все операции укладываются в лимит наковальни.")+' · Проверено вариантов: '+states+'</p>';
+    $("copyAnvilPlan").disabled=false;
+    $("copyAnvilPlan").onclick=async()=>{const lines=["План наковальни Minecraft","Предмет: "+item.options[item.selectedIndex].text,"Предыдущие работы: "+$("targetWork").value,"Итог: "+result.cost+" уровней опыта","",...result.steps.map((s,i)=>(i+1)+". "+(s.kind==="merge"?"Объединить "+s.left.map(label).join(" + ")+" и "+s.right.map(label).join(" + "):"Перенести "+s.right.map(label).join(" + ")+" на предмет")+" — "+s.cost+" ур.")];try{await navigator.clipboard.writeText(lines.join("\n"));$("anvilCopyStatus").textContent="План скопирован";}catch{$("anvilCopyStatus").textContent="Не удалось скопировать — проверь разрешение браузера";}};
     const tree=$("anvilTree");tree.replaceChildren();const treeTitle=document.createElement("div");treeTitle.className="mc-tree-title";treeTitle.textContent="Дерево объединений";tree.append(treeTitle);
     result.steps.forEach((s,i)=>{const row=document.createElement("div");row.className="mc-tree-row";const num=document.createElement("span");num.className="mc-tree-number";num.textContent=String(i+1);const desc=document.createElement("div");desc.className="mc-tree-desc";desc.innerHTML='<strong></strong><small></small>';desc.querySelector("strong").textContent=s.kind==="merge"?"Объединить книги":"Наложить книгу на предмет";desc.querySelector("small").textContent=(s.kind==="merge"?s.left.map(label).join(" + ")+" → "+s.result.map(label).join(", "):"Предмет + "+s.right.map(label).join(", ")+" → "+s.result.map(label).join(", "));const price=document.createElement("b");price.textContent="+"+s.cost+" ур.";if(s.cost>=40)price.classList.add("mc-danger");row.append(num,desc,price);tree.append(row);});
     const steps=$("anvilSteps");steps.replaceChildren();const h=document.createElement("div");h.className="mc-steps-title";h.textContent="Пошаговый порядок";steps.append(h);
@@ -94,7 +99,7 @@
   item.addEventListener("change",()=>{books.clear();existing.clear();renderAll();renderExisting();});
   $("targetWork").addEventListener("change",calculate);
   $("clearEnchants").addEventListener("click",()=>{books.clear();renderAll();});
-  $("resetAnvil").addEventListener("click",()=>{books.clear();existing.clear();$("targetWork").value="0";item.value="sword";renderExisting();renderAll();});
+  $("resetAnvil").addEventListener("click",()=>{books.clear();existing.clear();$("targetWork").value="0";item.value="sword";renderExisting();renderAll();updateItemIcon();});
   // Portal coordinate calculator.
   $("calculatePortal").addEventListener("click",()=>{const x=Number($("portalX").value),z=Number($("portalZ").value),y=$("portalY").value.trim(),out=$("portalResult");if(!$("portalX").value.trim()||!$("portalZ").value.trim()||!Number.isFinite(x)||!Number.isFinite(z)){out.innerHTML='<span class="mc-result-label">ОШИБКА ВВОДА</span><strong>Введи корректные координаты X и Z</strong>';return;}const scale=$("portalDirection").value==="overworld"?1/8:8,tx=x*scale,tz=z*scale,target=scale===.125?"Незер":"Верхний мир",fmt=n=>Number(n.toFixed(2)).toLocaleString("ru-RU");out.innerHTML='<span class="mc-result-label">КООРДИНАТЫ В '+target.toUpperCase()+'</span><strong>X: '+fmt(tx)+' · Z: '+fmt(tz)+'</strong><p>Ближайшие целые координаты: X '+Math.round(tx)+' · Z '+Math.round(tz)+(y&&Number.isFinite(Number(y))?' · Y '+Number(y):'')+'</p>';});
   renderExisting();renderAll();

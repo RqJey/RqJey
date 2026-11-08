@@ -153,3 +153,22 @@
   .mc-tree-row>b{grid-column:2}
   .mc-tools-footer{flex-direction:column}
 }
+
+/* Enchantment planner: tactile feedback and small quality-of-life details */
+.mc-enchant-pick,.mc-selected-book,.mc-tree-row,.mc-operation-card{transition:transform .2s ease,border-color .2s ease,background .2s ease,box-shadow .2s ease}
+.mc-enchant-pick:hover:not(:disabled),.mc-operation-card:hover{transform:translateY(-2px);box-shadow:0 9px 22px #00000014}
+.mc-enchant-pick:active:not(:disabled),.mc-primary-button:active,.mc-secondary-button:active{transform:translateY(1px) scale(.99)}
+.mc-enchant-pick:focus-visible,.mc-text-button:focus-visible,.mc-remove-book:focus-visible,.mc-secondary-button:focus-visible{outline:2px solid var(--accent);outline-offset:3px}
+.mc-selected-book{grid-template-columns:30px minmax(0,1fr) minmax(120px,auto) 26px}
+.mc-book-glyph{display:grid;place-items:center;width:29px;height:32px;border:1px solid color-mix(in srgb,var(--accent) 45%,var(--line));border-radius:8px;background:color-mix(in srgb,var(--accent) 12%,var(--surface));color:var(--accent);font-size:18px}
+.mc-book-info{display:grid;gap:3px;min-width:0}
+.mc-book-info small{color:var(--muted);font-size:10px}
+.mc-anvil-item-icon{font-size:25px}
+.mc-anvil-actions{display:flex;align-items:center;gap:12px;margin-top:16px}
+.mc-anvil-actions button:disabled{opacity:.4;cursor:not-allowed;transform:none}
+#anvilCopyStatus{color:var(--mint);font-size:11px}
+.mc-result-card,.mc-tree-row{animation:mc-result-in .28s ease both}
+.mc-tree-row:nth-child(2){animation-delay:.025s}.mc-tree-row:nth-child(3){animation-delay:.05s}.mc-tree-row:nth-child(4){animation-delay:.075s}
+@keyframes mc-result-in{from{opacity:0;transform:translateY(7px)}to{opacity:1;transform:translateY(0)}}
+@media(max-width:460px){.mc-selected-book{grid-template-columns:27px minmax(0,1fr) minmax(100px,auto) 24px}.mc-book-glyph{width:26px;height:29px}.mc-book-info small{font-size:9px}.mc-anvil-actions{align-items:flex-start;flex-direction:column}}
+@media(prefers-reduced-motion:reduce){.mc-enchant-pick,.mc-selected-book,.mc-tree-row,.mc-operation-card,.mc-result-card{transition:none;animation:none}}
