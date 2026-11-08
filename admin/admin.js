@@ -1,5 +1,38 @@
 (() => {
   "use strict";
+  const DEMO_USERNAME = "admin";
+  const DEMO_PASSWORD = "admin";
+  const SESSION_KEY = "rqjey_cms_demo_session";
+  const loginScreen = document.getElementById("loginScreen");
+  const adminShell = document.getElementById("adminShell");
+  const loginForm = document.getElementById("loginForm");
+  const loginError = document.getElementById("loginError");
+  function showAdmin() {
+    loginScreen.hidden = true;
+    adminShell.hidden = false;
+  }
+  function showLogin() {
+    sessionStorage.removeItem(SESSION_KEY);
+    adminShell.hidden = true;
+    loginScreen.hidden = false;
+    document.getElementById("loginPassword").value = "";
+  }
+  if (sessionStorage.getItem(SESSION_KEY) === "ok") showAdmin();
+  loginForm.addEventListener("submit", event => {
+    event.preventDefault();
+    const username = document.getElementById("loginUsername").value.trim();
+    const password = document.getElementById("loginPassword").value;
+    if (username === DEMO_USERNAME && password === DEMO_PASSWORD) {
+      sessionStorage.setItem(SESSION_KEY, "ok");
+      loginError.textContent = "";
+      showAdmin();
+    } else {
+      loginError.textContent = "Неверный логин или пароль. Попробуй ещё раз.";
+      document.getElementById("loginPassword").select();
+    }
+  });
+  document.getElementById("logoutButton").addEventListener("click", showLogin);
+
   const CONTENT_URL = "../content/site-content.json";
   const WORKFLOW_URL = "https://github.com/RqJey/RqJey/actions/workflows/cms-publish.yml";
   let content = {homepage:{},categories:[],projects:[],news:[]};
