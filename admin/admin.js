@@ -118,7 +118,14 @@
     $("newsForm").querySelector('button[type="submit"]').textContent="Подготовить новость";
   });
   $("categoriesForm").addEventListener("submit",e=>{e.preventDefault();setPayload({action:"save_categories",categories:$("categoriesText").value.split("\n").map(x=>x.trim()).filter(Boolean)});});
-  $("homepageForm").addEventListener("submit",e=>{e.preventDefault();setPayload({action:"update_homepage",homepage:{heroCopy:$("hHero").value.trim(),aboutTitle:$("hAboutTitle").value.trim(),aboutCopy:$("hAboutCopy").value.trim()}});});
+  $("homepageForm").addEventListener("submit",e=>{
+    e.preventDefault();
+    const fields=["hHero","hModsKicker","hModsTitle","hModsCopy","hUtilitiesKicker","hUtilitiesTitle","hUtilitiesCopy","hNewsKicker","hNewsTitle","hNewsCopy","hAboutKicker","hAboutTitle","hAboutCopy"];
+    const homepage={};
+    for(const id of fields) homepage[({hHero:"heroCopy",hModsKicker:"modsKicker",hModsTitle:"modsTitle",hModsCopy:"modsCopy",hUtilitiesKicker:"utilitiesKicker",hUtilitiesTitle:"utilitiesTitle",hUtilitiesCopy:"utilitiesCopy",hNewsKicker:"newsKicker",hNewsTitle:"newsTitle",hNewsCopy:"newsCopy",hAboutKicker:"aboutKicker",hAboutTitle:"aboutTitle",hAboutCopy:"aboutCopy"})[id]]=$(id).value.trim();
+    if(Object.values(homepage).some(value=>!value)){toast("Заполни все текстовые поля");return;}
+    setPayload({action:"update_homepage",homepage});
+  });
   $("copyPayload").addEventListener("click",async()=>{try{await navigator.clipboard.writeText($("payload").value);toast("JSON скопирован. Теперь открой GitHub Actions.");}catch(_){$("payload").select();document.execCommand("copy");toast("JSON скопирован.");}});
   $("workflowLink").href=WORKFLOW_URL;
 
@@ -260,7 +267,9 @@
       content.projects ||= [];content.news ||= [];content.categories ||= [];content.homepage ||= {};
       refreshOverview();renderProjects();renderNews();
       $("categoriesText").value=content.categories.join("\n");
-      $("hHero").value=content.homepage.heroCopy||"";$("hAboutTitle").value=content.homepage.aboutTitle||"";$("hAboutCopy").value=content.homepage.aboutCopy||"";
+      const homepageDefaults={heroCopy:"Полезные клиентские модификации для более удобной игры. Выбирай инструмент, изучай версии и скачивай актуальные сборки в пару кликов.",modsKicker:"БИБЛИОТЕКА МОДОВ",modsTitle:"Выбери свой инструмент",modsCopy:"Все актуальные сборки и история релизов в одном месте.",utilitiesKicker:"БИБЛИОТЕКА УТИЛИТ",utilitiesTitle:"Полезные инструменты",utilitiesCopy:"Небольшие программы и утилиты. Версии и файлы автоматически загружаются из GitHub Releases.",newsKicker:"RQJEY STUDIO / UPDATES",newsTitle:"Новости и обновления",newsCopy:"Последние события и изменения проектов.",aboutKicker:"ЗА КАЖДЫМ МОДОМ — ИДЕЯ",aboutTitle:"Меньше рутины. Больше игры.",aboutCopy:"RqJey STUDIO | AURORA — коллекция небольших инструментов и проектов. Новые версии автоматически появляются здесь после публикации релиза на GitHub."};
+      const homepageInputs={heroCopy:"hHero",modsKicker:"hModsKicker",modsTitle:"hModsTitle",modsCopy:"hModsCopy",utilitiesKicker:"hUtilitiesKicker",utilitiesTitle:"hUtilitiesTitle",utilitiesCopy:"hUtilitiesCopy",newsKicker:"hNewsKicker",newsTitle:"hNewsTitle",newsCopy:"hNewsCopy",aboutKicker:"hAboutKicker",aboutTitle:"hAboutTitle",aboutCopy:"hAboutCopy"};
+      for(const [key,id] of Object.entries(homepageInputs)) $(id).value=content.homepage[key]||homepageDefaults[key];
     }catch(error){toast("Не удалось загрузить CMS-данные: "+error.message);}
   }
   init();

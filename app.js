@@ -627,12 +627,26 @@
   }));
 
   function applyHomepageContent() {
-    const hero = document.querySelector(".intro-copy");
-    const aboutTitle = document.querySelector(".about-text h2");
-    const aboutCopy = document.querySelector(".about-text p");
-    if (cmsContent.homepage?.heroCopy && hero) hero.innerHTML = renderInlineMarkdown(cmsContent.homepage.heroCopy);
-    if (cmsContent.homepage?.aboutTitle && aboutTitle) aboutTitle.innerHTML = renderInlineMarkdown(cmsContent.homepage.aboutTitle);
-    if (cmsContent.homepage?.aboutCopy && aboutCopy) aboutCopy.innerHTML = renderInlineMarkdown(cmsContent.homepage.aboutCopy);
+    const fields = [
+      ["heroCopy", ".intro-copy"],
+      ["modsKicker", "#projects .section-kicker"],
+      ["modsTitle", "#projects .section-heading h2"],
+      ["modsCopy", "#projects .section-subtitle"],
+      ["utilitiesKicker", "#utilities .section-kicker"],
+      ["utilitiesTitle", "#utilities .section-heading h2"],
+      ["utilitiesCopy", "#utilities .section-subtitle"],
+      ["newsKicker", "#newsSection .section-kicker"],
+      ["newsTitle", "#newsSection .section-heading h2"],
+      ["newsCopy", "#newsSection .section-subtitle"],
+      ["aboutKicker", ".about-text .section-kicker"],
+      ["aboutTitle", ".about-text h2"],
+      ["aboutCopy", ".about-text p"]
+    ];
+    for (const [key, selector] of fields) {
+      const element = document.querySelector(selector);
+      const value = cmsContent.homepage?.[key];
+      if (element && typeof value === "string" && value.trim()) element.innerHTML = renderInlineMarkdown(value);
+    }
   }
 
   function renderNews() {

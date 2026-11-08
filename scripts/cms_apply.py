@@ -147,7 +147,7 @@ def main():
 
     elif action == "update_homepage":
         homepage = payload.get("homepage", {})
-        allowed = ("heroCopy", "aboutTitle", "aboutCopy")
+        allowed = ("heroCopy", "modsKicker", "modsTitle", "modsCopy", "utilitiesKicker", "utilitiesTitle", "utilitiesCopy", "newsKicker", "newsTitle", "newsCopy", "aboutKicker", "aboutTitle", "aboutCopy")
         for key in allowed:
             if key in homepage:
                 data["homepage"][key] = safe_text(homepage[key], key, 1000)

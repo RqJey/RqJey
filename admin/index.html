@@ -88,9 +88,25 @@
       <section class="view" id="view-homepage">
         <div class="panel"><div class="panel-head"><div><h3>Тексты главной страницы</h3><p>Изменения появятся после публикации.</p></div></div>
           <form id="homepageForm" class="form-grid">
-            <label class="wide">Текст главного блока<textarea id="hHero" rows="3" maxlength="1000"></textarea></label>
-            <label class="wide">Заголовок блока «О проекте»<input id="hAboutTitle" maxlength="100"></label>
-            <label class="wide">Описание блока «О проекте»<textarea id="hAboutCopy" rows="3" maxlength="1000"></textarea></label>
+            <div class="wide"><h4>Верхний блок</h4></div>
+            <label class="wide">Описание под главным заголовком<textarea id="hHero" rows="3" maxlength="1000"></textarea></label>
+            <div class="wide"><h4>Раздел модов</h4></div>
+            <label>Надпись над заголовком<input id="hModsKicker" maxlength="120"></label>
+            <label>Заголовок<input id="hModsTitle" maxlength="160"></label>
+            <label class="wide">Подзаголовок<textarea id="hModsCopy" rows="2" maxlength="500"></textarea></label>
+            <div class="wide"><h4>Раздел утилит</h4></div>
+            <label>Надпись над заголовком<input id="hUtilitiesKicker" maxlength="120"></label>
+            <label>Заголовок<input id="hUtilitiesTitle" maxlength="160"></label>
+            <label class="wide">Подзаголовок<textarea id="hUtilitiesCopy" rows="2" maxlength="500"></textarea></label>
+            <div class="wide"><h4>Раздел новостей</h4></div>
+            <label>Надпись над заголовком<input id="hNewsKicker" maxlength="120"></label>
+            <label>Заголовок<input id="hNewsTitle" maxlength="160"></label>
+            <label class="wide">Подзаголовок<textarea id="hNewsCopy" rows="2" maxlength="500"></textarea></label>
+            <div class="wide"><h4>Блок «О проекте»</h4></div>
+            <label>Надпись над заголовком<input id="hAboutKicker" maxlength="120"></label>
+            <label>Заголовок<input id="hAboutTitle" maxlength="160"></label>
+            <label class="wide">Описание<textarea id="hAboutCopy" rows="3" maxlength="1000"></textarea></label>
+            <p class="hint wide">Здесь редактируются только тексты и заголовки секций. Карточки модов и утилит не затрагиваются. Поддерживается **жирный** и *курсив*.</p>
             <div class="form-actions wide"><button class="primary" type="submit">Подготовить изменения</button></div>
           </form>
         </div>
