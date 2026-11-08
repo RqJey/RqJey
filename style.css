@@ -1124,3 +1124,40 @@ html.sakura-mode .page-shell{position:relative;z-index:1}
 .news-page-button:disabled{opacity:.35;cursor:not-allowed}
 .news-page-arrow{font-size:15px}
 /* News cards stay in one three-column row on mobile too. */
+
+
+/* RqJey tools chooser — opens from the existing analyzer shortcut. */
+.tools-choice-backdrop{
+  position:fixed;inset:0;z-index:120;display:grid;place-items:center;
+  padding:20px;background:#05060bb8;backdrop-filter:blur(15px);
+  -webkit-backdrop-filter:blur(15px);opacity:1;transition:opacity .22s ease;
+}
+.tools-choice-backdrop.hidden{display:none}
+.tools-choice-dialog{
+  position:relative;width:min(490px,100%);max-height:min(760px,calc(100vh - 40px));
+  overflow:auto;padding:30px;border:1px solid var(--line);border-radius:20px;
+  background:linear-gradient(145deg,color-mix(in srgb,var(--accent) 9%,var(--surface)),var(--surface) 52%);
+  box-shadow:0 28px 90px #0007;animation:tools-choice-enter .24s cubic-bezier(.2,.7,.2,1) both;
+}
+@keyframes tools-choice-enter{from{opacity:0;transform:translateY(12px) scale(.985)}to{opacity:1;transform:translateY(0) scale(1)}}
+.tools-choice-close{
+  position:absolute;right:17px;top:15px;width:34px;height:34px;border:1px solid var(--line);
+  border-radius:10px;background:var(--surface2);color:var(--muted);font-size:21px;cursor:pointer;
+}
+.tools-choice-kicker{margin-bottom:13px;color:var(--accent);font:800 9px Manrope,sans-serif;letter-spacing:2px}
+.tools-choice-kicker span{color:var(--muted)}
+.tools-choice-dialog h2{margin:0 40px 8px 0;color:var(--text);font:800 27px Manrope,sans-serif;letter-spacing:-1px}
+.tools-choice-dialog>p{margin:0 0 20px;color:var(--muted);font-size:12px;line-height:1.7}
+.tools-choice-link{
+  display:flex;align-items:center;gap:13px;margin-top:9px;padding:13px;
+  border:1px solid var(--line);border-radius:13px;background:color-mix(in srgb,var(--surface2) 72%,transparent);
+  color:var(--text);transition:transform .2s,border-color .2s,background .2s;
+}
+.tools-choice-link:hover{transform:translateY(-2px);border-color:var(--accent);background:color-mix(in srgb,var(--accent) 8%,var(--surface2))}
+.tools-choice-icon{width:39px;height:39px;flex:0 0 39px;display:grid;place-items:center;border:1px solid color-mix(in srgb,var(--accent) 40%,var(--line));border-radius:11px;background:color-mix(in srgb,var(--accent) 12%,transparent);color:var(--accent);font:700 19px Manrope}
+.tools-choice-link>span:nth-child(2){min-width:0;display:grid;gap:4px}
+.tools-choice-link strong{font:750 11px Manrope,sans-serif}
+.tools-choice-link small{color:var(--muted);font-size:9px;line-height:1.5}
+.tools-choice-arrow{margin-left:auto;color:var(--accent);font-size:15px}
+@media(max-width:520px){.tools-choice-dialog{padding:25px 17px;border-radius:16px}.tools-choice-dialog h2{font-size:23px}.tools-choice-link{gap:10px;padding:11px}.tools-choice-icon{width:35px;height:35px;flex-basis:35px}}
+@media(prefers-reduced-motion:reduce){.tools-choice-dialog{animation:none}.tools-choice-link{transition:none}}
