@@ -1,0 +1,99 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="robots" content="noindex,nofollow,noarchive">
+  <meta name="theme-color" content="#0b0c10">
+  <title>RQJEY CMS · Control Center</title>
+  <link rel="icon" href="../assets/logo.png">
+  <link rel="stylesheet" href="admin.css">
+</head>
+<body>
+  <div class="admin-shell">
+    <aside class="sidebar">
+      <a class="brand" href="../"><img src="../assets/logo.png" alt=""><span>RQJEY <small>CMS / CONTROL</small></span></a>
+      <div class="side-label">WORKSPACE</div>
+      <nav id="sideNav">
+        <button class="nav-item active" data-view="overview"><span>◫</span> Обзор</button>
+        <button class="nav-item" data-view="projects"><span>◇</span> Проекты</button>
+        <button class="nav-item" data-view="news"><span>▤</span> Новости</button>
+        <button class="nav-item" data-view="categories"><span>▦</span> Категории</button>
+        <button class="nav-item" data-view="homepage"><span>⌂</span> Главная страница</button>
+        <button class="nav-item" data-view="publish"><span>↗</span> Публикация</button>
+      </nav>
+      <div class="sidebar-bottom"><span class="status-dot"></span> GitHub-powered CMS <small>STATIC · NO EXTERNAL SERVER</small></div>
+    </aside>
+    <main class="main">
+      <header class="topbar"><div><div class="eyebrow">RQJEY STUDIO / AURORA</div><h1 id="pageTitle">Обзор</h1></div><a class="site-link" href="../" target="_blank" rel="noopener">Открыть сайт ↗</a></header>
+      <div class="notice"><b>Безопасная публикация через GitHub.</b> Панель не хранит пароли или токены. Изменения отправляются в GitHub Actions, а затем создаётся Pull Request для проверки.</div>
+
+      <section class="view active" id="view-overview">
+        <div class="welcome"><div><span class="eyebrow">CONTROL CENTER</span><h2>Всё под контролем<span>.</span></h2><p>Управляй содержимым RQJEY STUDIO в одном месте.</p></div><div class="orb">RQ</div></div>
+        <div class="stats"><article><small>ПРОЕКТЫ</small><strong id="statProjects">—</strong></article><article><small>НОВОСТИ</small><strong id="statNews">—</strong></article><article><small>КАТЕГОРИИ</small><strong id="statCategories">—</strong></article></div>
+        <div class="panel"><div class="panel-head"><div><h3>Быстрые действия</h3><p>Выбери, что хочешь изменить.</p></div></div><div class="quick-actions"><button data-go="projects">＋ Добавить проект</button><button data-go="news">＋ Опубликовать новость</button><button data-go="homepage">✎ Изменить главную</button></div></div>
+        <div class="panel"><div class="panel-head"><div><h3>Как публиковать изменения</h3><p>Три простых шага — никакого отдельного сервера.</p></div></div><ol class="steps"><li>Внеси изменения в нужном разделе и нажми «Подготовить публикацию».</li><li>Скопируй JSON, открой GitHub Actions и вставь его в поле payload.</li><li>Запусти workflow. GitHub создаст Pull Request — проверь его и объедини.</li></ol></div>
+      </section>
+
+      <section class="view" id="view-projects">
+        <div class="panel"><div class="panel-head"><div><h3>Каталог проектов</h3><p>Создавай карточки и редактируй существующие.</p></div></div><div id="projectList" class="record-list"></div></div>
+        <div class="panel"><div class="panel-head"><div><h3 id="projectFormTitle">Новый проект</h3><p>Поля описания, категории и оформления.</p></div></div>
+          <form id="projectForm" class="form-grid">
+            <label>Название<input id="pName" required maxlength="80" placeholder="Например, FriendHub"></label>
+            <label>ID (латиница, цифры, дефис)<input id="pId" required pattern="[a-z0-9][a-z0-9-]*" maxlength="80" placeholder="friendhub"></label>
+            <label>Категория<input id="pCategory" required list="categoryOptions" maxlength="60" placeholder="Общение"><datalist id="categoryOptions"></datalist></label>
+            <label>Версия Minecraft<input id="pMinecraft" maxlength="40" value="26.3"></label>
+            <label>Иконка (эмодзи/символ)<input id="pIcon" maxlength="8" value="✳"></label>
+            <label>Цвет карточки<select id="pAccent"><option>violet</option><option>blue</option><option>green</option><option>purple</option><option>orange</option></select></label>
+            <label class="wide">Описание<textarea id="pDescription" required maxlength="2000" rows="3"></textarea></label>
+            <label class="wide">Функции (каждая с новой строки)<textarea id="pFeatures" rows="3" placeholder="Список друзей&#10;Личные сообщения"></textarea></label>
+            <label class="wide">Изображение по HTTPS-ссылке (необязательно)<input id="pImage" type="url" placeholder="https://example.com/image.png"><small>GitHub Actions загрузит картинку в assets/cms/. До 5 МБ, PNG/JPG/WEBP/GIF.</small></label>
+            <div class="form-actions wide"><button class="primary" type="submit">Подготовить сохранение</button><button class="ghost" type="button" id="resetProject">Очистить</button></div>
+          </form>
+        </div>
+      </section>
+
+      <section class="view" id="view-news">
+        <div class="panel"><div class="panel-head"><div><h3>Опубликованные новости</h3><p>Последние 30 записей показываются на главной странице.</p></div></div><div id="newsList" class="record-list"></div></div>
+        <div class="panel"><div class="panel-head"><div><h3>Новая новость</h3><p>Коротко расскажи об обновлении или событии.</p></div></div>
+          <form id="newsForm" class="form-grid">
+            <label>Заголовок<input id="nTitle" required maxlength="120"></label>
+            <label>ID новости<input id="nId" required pattern="[a-z0-9][a-z0-9-]*" maxlength="80" placeholder="update-november"></label>
+            <label class="wide">Текст новости<textarea id="nBody" required rows="5" maxlength="4000"></textarea></label>
+            <label class="wide">Изображение по HTTPS-ссылке (необязательно)<input id="nImage" type="url" placeholder="https://example.com/banner.webp"></label>
+            <div class="form-actions wide"><button class="primary" type="submit">Подготовить новость</button></div>
+          </form>
+        </div>
+      </section>
+
+      <section class="view" id="view-categories">
+        <div class="panel"><div class="panel-head"><div><h3>Категории</h3><p>Одна категория на строку. Категории используются в каталоге и фильтрах.</p></div></div>
+          <form id="categoriesForm"><label>Список категорий<textarea id="categoriesText" rows="9"></textarea></label><div class="form-actions"><button class="primary" type="submit">Подготовить категории</button></div></form>
+        </div>
+      </section>
+
+      <section class="view" id="view-homepage">
+        <div class="panel"><div class="panel-head"><div><h3>Тексты главной страницы</h3><p>Изменения появятся после публикации.</p></div></div>
+          <form id="homepageForm" class="form-grid">
+            <label class="wide">Текст главного блока<textarea id="hHero" rows="3" maxlength="1000"></textarea></label>
+            <label class="wide">Заголовок блока «О проекте»<input id="hAboutTitle" maxlength="100"></label>
+            <label class="wide">Описание блока «О проекте»<textarea id="hAboutCopy" rows="3" maxlength="1000"></textarea></label>
+            <div class="form-actions wide"><button class="primary" type="submit">Подготовить изменения</button></div>
+          </form>
+        </div>
+      </section>
+
+      <section class="view" id="view-publish">
+        <div class="panel"><div class="panel-head"><div><h3>Подготовка публикации</h3><p>JSON-команда для защищённого GitHub Actions workflow.</p></div><span class="tag" id="payloadState">ОЖИДАЕТ ДЕЙСТВИЯ</span></div>
+          <textarea id="payload" class="payload" spellcheck="false" placeholder="Сначала подготовь изменение в одном из разделов..."></textarea>
+          <div class="publish-actions"><button class="primary" id="copyPayload" type="button">Скопировать JSON</button><a class="secondary" id="workflowLink" href="https://github.com/RqJey/RqJey/actions/workflows/cms-publish.yml" target="_blank" rel="noopener">Открыть GitHub Actions ↗</a></div>
+          <p class="hint">После открытия workflow нажми <b>Run workflow</b>, вставь JSON в поле <code>payload</code> и запусти. Затем открой созданный Pull Request, проверь изменения и объедини его в main.</p>
+        </div>
+      </section>
+      <footer>RQJEY CMS <span>·</span> CONTENT MANAGEMENT WITHOUT AN EXTERNAL SERVER</footer>
+    </main>
+  </div>
+  <div class="toast" id="toast" role="status"></div>
+  <script src="admin.js"></script>
+</body>
+</html>
