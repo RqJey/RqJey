@@ -1,0 +1,94 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#0b0c10">
+  <meta name="description" content="Инструменты Minecraft от RqJey STUDIO: калькуляторы и генератор баннеров.">
+  <title>Minecraft Tools — RqJey STUDIO</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="minecraft-tools.css">
+</head>
+<body>
+  <div class="page-shell mc-tools-shell">
+    <header class="topbar analyzer-topbar">
+      <a class="brand" href="index.html"><span class="brand-mark"><img src="https://rqjey.github.io/RqJey/assets/logo.png" alt=""></span><span class="brand-name">Minecraft <span class="brand-muted">Tools</span></span></a>
+      <a class="analyzer-back" href="index.html">← На главную</a>
+    </header>
+    <main class="mc-tools-main">
+      <div class="mc-tools-eyebrow"><span></span> RQJEY STUDIO / MINECRAFT TOOLKIT</div>
+      <h1>Полезные <em>инструменты</em><span>.</span></h1>
+      <p class="mc-tools-lead">Небольшие калькуляторы и конструкторы для Minecraft. Всё работает прямо в браузере.</p>
+
+      <nav class="mc-tool-tabs" aria-label="Выбор инструмента">
+        <button type="button" data-tool-tab="enchantments">✦ Зачарования</button>
+        <button type="button" data-tool-tab="portals">◇ Порталы</button>
+        <button type="button" data-tool-tab="banners">▤ Баннеры</button>
+      </nav>
+
+      <section class="mc-tool-panel" id="tool-enchantments" data-tool-panel="enchantments">
+        <div class="mc-tool-heading"><div><div class="mc-tool-kicker">ANVIL CALCULATOR</div><h2>Калькулятор зачарований</h2><p>Оцени стоимость объединения зачарованной книги с предметом на наковальне.</p></div><span class="mc-tool-symbol">✦</span></div>
+        <div class="mc-form-grid">
+          <label class="mc-field"><span>Предыдущие работы с целевым предметом</span><select id="targetWork"><option value="0">Не использовался</option><option value="1">1 раз</option><option value="2">2 раза</option><option value="3">3 раза</option><option value="4">4 раза</option><option value="5">5 раз</option></select></label>
+          <label class="mc-field"><span>Предыдущие работы с книгой</span><select id="bookWork"><option value="0">Не использовалась</option><option value="1">1 раз</option><option value="2">2 раза</option><option value="3">3 раза</option><option value="4">4 раза</option><option value="5">5 раз</option></select></label>
+        </div>
+        <div class="mc-add-enchant">
+          <label class="mc-field"><span>Зачарование</span><select id="enchantSelect"></select></label>
+          <label class="mc-field"><span>Уровень</span><select id="enchantLevel"></select></label>
+          <button class="mc-primary-button" id="addEnchant" type="button">Добавить в книгу +</button>
+        </div>
+        <div class="mc-enchant-list-wrap">
+          <div class="mc-subheading"><strong>Зачарования на книге</strong><button class="mc-text-button" id="clearEnchants" type="button">Очистить</button></div>
+          <div id="enchantList" class="mc-enchant-list"><p class="mc-empty">Пока ничего не добавлено.</p></div>
+        </div>
+        <button class="mc-primary-button mc-calculate-button" id="calculateEnchant" type="button">Рассчитать стоимость</button>
+        <div class="mc-result-card" id="enchantResult" aria-live="polite"><span class="mc-result-label">РЕЗУЛЬТАТ</span><strong>Добавь зачарования и запусти расчёт</strong></div>
+        <p class="mc-note">Это ориентировочная оценка для Java Edition. Итог зависит от совместимости зачарований, типа предмета, уже имеющихся чар и версии игры. В выживании стоимость от 40 уровней блокируется наковальней.</p>
+      </section>
+
+      <section class="mc-tool-panel" id="tool-portals" data-tool-panel="portals" hidden>
+        <div class="mc-tool-heading"><div><div class="mc-tool-kicker">PORTAL COORDINATES</div><h2>Калькулятор порталов</h2><p>Переводи координаты между Верхним миром и Незером с масштабом 8:1.</p></div><span class="mc-tool-symbol">◇</span></div>
+        <div class="mc-form-grid">
+          <label class="mc-field"><span>Откуда перемещаемся</span><select id="portalDirection"><option value="overworld">Верхний мир → Незер</option><option value="nether">Незер → Верхний мир</option></select></label>
+          <label class="mc-field"><span>Координата Y (не меняется)</span><input id="portalY" type="number" step="any" placeholder="Например, 64"></label>
+        </div>
+        <div class="mc-form-grid">
+          <label class="mc-field"><span>Координата X</span><input id="portalX" type="number" step="any" placeholder="Например, 1200"></label>
+          <label class="mc-field"><span>Координата Z</span><input id="portalZ" type="number" step="any" placeholder="Например, -640"></label>
+        </div>
+        <button class="mc-primary-button mc-calculate-button" id="calculatePortal" type="button">Рассчитать координаты</button>
+        <div class="mc-result-card" id="portalResult" aria-live="polite"><span class="mc-result-label">ЦЕЛЕВЫЕ КООРДИНАТЫ</span><strong>Введи X и Z</strong></div>
+        <p class="mc-note">Калькулятор показывает математическое соответствие координат. Фактическая привязка портала также зависит от высоты, существующих порталов и поиска ближайшей точки входа.</p>
+      </section>
+
+      <section class="mc-tool-panel" id="tool-banners" data-tool-panel="banners" hidden>
+        <div class="mc-tool-heading"><div><div class="mc-tool-kicker">BANNER DESIGNER</div><h2>Генератор баннеров</h2><p>Собирай дизайн из слоёв, смотри предпросмотр и копируй команду для Minecraft Java.</p></div><span class="mc-tool-symbol">▤</span></div>
+        <div class="mc-banner-layout">
+          <div class="mc-banner-controls">
+            <label class="mc-field"><span>Основной цвет</span><select id="bannerBase"></select></label>
+            <div class="mc-form-grid">
+              <label class="mc-field"><span>Узор</span><select id="bannerPattern"></select></label>
+              <label class="mc-field"><span>Цвет узора</span><select id="bannerColor"></select></label>
+            </div>
+            <button class="mc-primary-button" id="addPattern" type="button">Добавить слой +</button>
+            <div class="mc-subheading"><strong>Слои дизайна</strong><button class="mc-text-button" id="clearPatterns" type="button">Сбросить</button></div>
+            <div class="mc-pattern-list" id="patternList"><p class="mc-empty">Добавь первый узор.</p></div>
+            <div class="mc-banner-actions"><button class="mc-primary-button" id="downloadBanner" type="button">Скачать PNG</button><button class="mc-secondary-button" id="copyBannerCommand" type="button">Копировать команду</button></div>
+            <p class="mc-note">Предпросмотр стилизованный. В игре итоговый вид зависит от точного рисунка Minecraft. Команда рассчитана на Java Edition 1.20.5+.</p>
+          </div>
+          <div class="mc-banner-preview">
+            <div class="mc-preview-label">LIVE PREVIEW</div>
+            <canvas id="bannerCanvas" width="300" height="450" aria-label="Предпросмотр баннера Minecraft"></canvas>
+            <div class="mc-preview-caption">BANNER / 300 × 450</div>
+          </div>
+        </div>
+      </section>
+      <footer class="mc-tools-footer"><a href="index.html">← Вернуться на главную</a><span>RQJEY STUDIO · MINECRAFT TOOLKIT</span></footer>
+    </main>
+  </div>
+  <script src="minecraft-tools.js"></script>
+</body>
+</html>
