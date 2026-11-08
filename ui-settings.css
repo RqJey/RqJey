@@ -44,3 +44,43 @@
 .ui-settings-toast.is-visible{opacity:1;transform:translate(-50%,0)}
 @media(max-width:650px){.ui-settings-trigger{left:14px;bottom:62px;min-height:38px;padding:0 11px}.ui-settings-backdrop{padding:10px}.ui-settings-dialog{max-height:calc(100vh - 20px);border-radius:19px}.ui-settings-header{padding:21px 20px 17px}.ui-settings-content{padding:16px}.ui-settings-list{grid-template-columns:1fr}.ui-theme-options{grid-template-columns:1fr}.ui-theme-choice{padding:9px 11px}.ui-settings-footer{align-items:flex-start;flex-direction:column}}
 @media(prefers-reduced-motion:reduce){.ui-settings-trigger,.ui-setting-row,.ui-switch,.ui-switch:before,.ui-theme-choice,.ui-settings-dialog,.ui-settings-toast{transition:none!important}}
+
+
+/* RQJEY UI SETTINGS — effect layer */
+@property --ui-rainbow-angle{syntax:"<angle>";initial-value:0deg;inherits:false}
+.ui-cursor-glow{position:fixed;inset:0;z-index:2;pointer-events:none;opacity:0;background:radial-gradient(340px circle at var(--ui-pointer-x,-1000px) var(--ui-pointer-y,-1000px),#b9a5f61b,transparent 72%);mix-blend-mode:screen;transition:opacity .35s}
+.ui-cursor-glow[data-enabled="true"]{opacity:1}
+.ui-scroll-progress{position:fixed;z-index:130;left:0;top:0;width:100%;height:3px;transform:scaleX(0);transform-origin:left center;background:linear-gradient(90deg,#a58ce5,#91e6c8,#8dbbff);box-shadow:0 0 12px #a58ce56b;pointer-events:none;opacity:0;transition:opacity .2s}
+.ui-scroll-progress[data-enabled="true"]{opacity:1}
+html.ui-glass .topbar,html.ui-glass .project-card,html.ui-glass .filter-bar,html.ui-glass .about-strip,html.ui-glass .release-modal,html.ui-glass .analyzer-panel,html.ui-glass .mc-tool-panel,html.ui-glass .faq-warning-card{backdrop-filter:blur(22px) saturate(1.35);-webkit-backdrop-filter:blur(22px) saturate(1.35)}
+html.ui-glass .project-card,html.ui-glass .filter-bar,html.ui-glass .about-strip{background-color:color-mix(in srgb,var(--surface,#171922) 68%,transparent)}
+html.ui-glass .release-modal,html.ui-glass .ui-settings-dialog{background:color-mix(in srgb,var(--surface,#171922) 78%,transparent)}
+html.ui-rainbow .project-card{border:1px solid transparent;background:linear-gradient(145deg,#171922,#101116) padding-box,conic-gradient(from var(--ui-rainbow-angle),#b9a5f6,#91e6c8,#8dbbff,#e2a8e8,#b9a5f6) border-box}
+html.ui-rainbow .project-card:hover{animation:ui-rainbow-spin 4s linear infinite;box-shadow:0 22px 65px #0005,0 0 26px #a58ce51a}
+html[data-theme="light"].ui-rainbow .project-card{background:linear-gradient(145deg,#fff,#f8f7fb) padding-box,conic-gradient(from var(--ui-rainbow-angle),#8a72ce,#56b99a,#6b9fe0,#c17bb7,#8a72ce) border-box}
+@keyframes ui-rainbow-spin{to{--ui-rainbow-angle:360deg}}
+html.ui-animatedBorders .filter-bar,html.ui-animatedBorders .about-strip,html.ui-animatedBorders .release-modal,html.ui-animatedBorders .analyzer-panel,html.ui-animatedBorders .mc-tool-panel{animation:ui-border-breathe 7s ease-in-out infinite}
+@keyframes ui-border-breathe{0%,100%{box-shadow:0 14px 42px #0002,0 0 0 1px #b9a5f610}50%{box-shadow:0 18px 48px #0003,0 0 0 1px #91e6c82a,0 0 26px #b9a5f610}}
+html.ui-magnetic .ui-magnetic-item{translate:var(--ui-magnet-x,0) var(--ui-magnet-y,0);transition:translate .22s cubic-bezier(.2,.8,.2,1)}
+html.ui-customCursor a,html.ui-customCursor button,html.ui-customCursor [role="button"]{cursor:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24'%3E%3Cpath d='M5 3l12 11-6 1-3 6z' fill='%23b9a5f6' stroke='%23fff' stroke-width='1.3' stroke-linejoin='round'/%3E%3C/svg%3E") 4 3,pointer}
+html.ui-modalDepth body:has(.modal-backdrop:not(.hidden)) .page-shell,html.ui-modalDepth body:has(.tools-choice-backdrop:not(.hidden)) .page-shell,html.ui-modalDepth body:has(.social-choice-backdrop:not(.hidden)) .page-shell,html.ui-modalDepth body:has(.github-choice-backdrop:not(.hidden)) .page-shell,body.ui-settings-open .page-shell{filter:blur(2px);transform:scale(.988);transition:filter .35s,transform .35s}
+html.ui-modalDepth body:has(.modal-backdrop:not(.hidden)),html.ui-modalDepth body:has(.tools-choice-backdrop:not(.hidden)),html.ui-modalDepth body:has(.social-choice-backdrop:not(.hidden)),html.ui-modalDepth body:has(.github-choice-backdrop:not(.hidden)){overflow:hidden}
+html.ui-iconMotion button svg,html.ui-iconMotion .project-icon,html.ui-iconMotion .tools-choice-icon,html.ui-iconMotion .social-choice-icon{transition:transform .35s cubic-bezier(.2,.8,.2,1),filter .35s}
+html.ui-iconMotion .ui-icon-active{transform:translateY(-2px) rotate(-7deg) scale(1.12);filter:drop-shadow(0 4px 9px #a58ce55c)}
+.ui-heading-reveal{opacity:1;transform:translateY(0);transition:opacity .7s cubic-bezier(.2,.8,.2,1),transform .7s cubic-bezier(.2,.8,.2,1)}
+html.ui-headingReveal .ui-heading-reveal:not(.ui-heading-visible){opacity:0;transform:translateY(15px)}
+html.ui-pageTransitions{view-transition-name:root}
+@view-transition{navigation:auto}
+::view-transition-old(root){animation:ui-page-out .22s ease both}
+::view-transition-new(root){animation:ui-page-in .38s cubic-bezier(.2,.8,.2,1) both}
+@keyframes ui-page-out{to{opacity:0;filter:blur(3px);transform:translateY(-5px)}}
+@keyframes ui-page-in{from{opacity:0;filter:blur(5px);transform:translateY(8px)}to{opacity:1;filter:blur(0);transform:none}}
+html.ui-settings-open{overflow:hidden}
+html[data-theme="light"] .ui-settings-dialog{background:linear-gradient(145deg,#fff,#f4f1fa);color:#252333;border-color:#d8ccec}
+html[data-theme="light"] .ui-setting-row{background:#ffffffb8;border-color:#e5e0ec}
+html[data-theme="light"] .ui-setting-copy strong{color:#252333}
+html[data-theme="light"] .ui-theme-choice{color:#252333;background:#fff;border-color:#e5e0ec}
+html[data-theme="light"] .ui-settings-footer{border-color:#e5e0ec}
+@media(max-width:760px){.ui-cursor-glow{display:none}}
+@media(hover:none){html.ui-rainbow .project-card{animation:none}}
+@media(prefers-reduced-motion:reduce){.ui-cursor-glow,.ui-scroll-progress{transition:none}.ui-heading-reveal{opacity:1!important;transform:none!important}.ui-settings-dialog,.ui-setting-row{transition:none!important}}
