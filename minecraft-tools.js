@@ -53,7 +53,7 @@
       const bs=rawBooks.slice().sort((a,b)=>nodeKey(a).localeCompare(nodeKey(b)));
       const key=targetIds.slice().sort().join(",")+"#"+targetPenalty+"#"+bs.map(nodeKey).join("|");
       if(memo.has(key))return memo.get(key);
-      if(++states>45000) return null;
+      if(++states>200000) return null;
       let best=null;
       const consider=(step,nextTarget,nextPenalty,nextBooks)=>{
         const tail=solve(nextTarget,nextPenalty,nextBooks);if(!tail)return;
