@@ -13,63 +13,99 @@
   showTool(initialTool, false);
 
   const enchantments = [
-    ["Защита","protection",1,4],["Огнеупорность","fire_protection",1,4],["Взрывоустойчивость","blast_protection",2,4],["Защита от снарядов","projectile_protection",1,4],
-    ["Шипы","thorns",4,3],["Подводное дыхание","respiration",2,3],["Подводник","aqua_affinity",4,1],["Подводная ходьба","depth_strider",2,3],
-    ["Ледоход","frost_walker",2,2],["Скорость души","soul_speed",4,3],["Бесшумное передвижение","swift_sneak",4,3],
-    ["Острота","sharpness",1,5],["Небесная кара","smite",2,5],["Бич членистоногих","bane_of_arthropods",2,5],["Отбрасывание","knockback",2,2],
-    ["Заговор огня","fire_aspect",4,2],["Мародёрство","looting",2,3],["Разящий клинок","sweeping_edge",2,3],
-    ["Эффективность","efficiency",1,5],["Шёлковое касание","silk_touch",4,1],["Прочность","unbreaking",2,3],["Удача","fortune",4,3],
-    ["Сила","power",1,5],["Откидывание","punch",4,2],["Воспламенение","flame",2,1],["Бесконечность","infinity",8,1],
-    ["Морская удача","luck_of_the_sea",2,3],["Приманка","lure",2,3],["Верность","loyalty",1,3],["Пронзатель","impaling",2,5],
-    ["Тягун","riptide",2,3],["Громовержец","channeling",4,1],["Мультивыстрел","multishot",4,1],["Пронзающая стрела","piercing",1,4],
-    ["Быстрая перезарядка","quick_charge",2,3],["Починка","mending",4,1],["Проклятие утраты","vanishing_curse",8,1],["Проклятие несъёмности","binding_curse",8,1],
-    ["Плотность","density",1,5],["Пробитие","breach",2,4],["Порыв ветра","wind_burst",4,3]
+    ["Защита","protection",4,1,["helmet","turtle_helmet","chestplate","leggings","boots"]],
+    ["Огнеупорность","fire_protection",4,2,["helmet","turtle_helmet","chestplate","leggings","boots"]],
+    ["Взрывоустойчивость","blast_protection",4,2,["helmet","turtle_helmet","chestplate","leggings","boots"]],
+    ["Защита от снарядов","projectile_protection",4,2,["helmet","turtle_helmet","chestplate","leggings","boots"]],
+    ["Шипы","thorns",3,4,["chestplate","helmet","turtle_helmet","leggings","boots"]],
+    ["Подводное дыхание","respiration",3,2,["helmet","turtle_helmet"]],
+    ["Подводник","aqua_affinity",1,2,["helmet","turtle_helmet"]],
+    ["Подводная ходьба","depth_strider",3,4,["boots"]],
+    ["Ледоход","frost_walker",2,4,["boots"]],
+    ["Скорость души","soul_speed",3,4,["boots"]],
+    ["Бесшумное передвижение","swift_sneak",3,4,["leggings"]],
+    ["Острота","sharpness",5,1,["sword","axe"]],
+    ["Небесная кара","smite",5,2,["sword","axe"]],
+    ["Бич членистоногих","bane_of_arthropods",5,2,["sword","axe"]],
+    ["Отбрасывание","knockback",2,2,["sword"]],
+    ["Заговор огня","fire_aspect",2,4,["sword"]],
+    ["Мародёрство","looting",3,4,["sword"]],
+    ["Разящий клинок","sweeping_edge",3,2,["sword"]],
+    ["Эффективность","efficiency",5,1,["pickaxe","axe","shovel","hoe","shears"]],
+    ["Шёлковое касание","silk_touch",1,4,["pickaxe","axe","shovel","hoe"]],
+    ["Прочность","unbreaking",3,1,["helmet","turtle_helmet","chestplate","leggings","boots","elytra","sword","axe","pickaxe","shovel","hoe","bow","crossbow","trident","fishing_rod","mace","shield","shears","flint_and_steel"]],
+    ["Удача","fortune",3,2,["pickaxe","shovel","axe","hoe"]],
+    ["Сила","power",5,1,["bow"]],
+    ["Откидывание","punch",2,2,["bow"]],
+    ["Воспламенение","flame",1,2,["bow"]],
+    ["Бесконечность","infinity",1,4,["bow"]],
+    ["Морская удача","luck_of_the_sea",3,2,["fishing_rod"]],
+    ["Приманка","lure",3,2,["fishing_rod"]],
+    ["Верность","loyalty",3,1,["trident"]],
+    ["Пронзатель","impaling",5,2,["trident"]],
+    ["Тягун","riptide",3,2,["trident"]],
+    ["Громовержец","channeling",1,4,["trident"]],
+    ["Мультивыстрел","multishot",1,2,["crossbow"]],
+    ["Пронзающая стрела","piercing",4,1,["crossbow"]],
+    ["Быстрая перезарядка","quick_charge",3,1,["crossbow"]],
+    ["Починка","mending",1,4,["helmet","turtle_helmet","chestplate","leggings","boots","elytra","sword","axe","pickaxe","shovel","hoe","bow","crossbow","trident","fishing_rod","mace","shield","shears","flint_and_steel"]],
+    ["Проклятие утраты","vanishing_curse",1,4,["helmet","turtle_helmet","chestplate","leggings","boots","elytra","sword","axe","pickaxe","shovel","hoe","bow","crossbow","trident","fishing_rod","mace","shield","shears","flint_and_steel"]],
+    ["Проклятие несъёмности","binding_curse",1,4,["helmet","turtle_helmet","chestplate","leggings","boots","elytra"]],
+    ["Плотность","density",5,2,["mace"]],
+    ["Пробитие","breach",4,4,["mace"]],
+    ["Порыв ветра","wind_burst",3,4,["mace"]]
   ];
-  const enchantSelect = $("enchantSelect"), levelSelect = $("enchantLevel");
-  enchantments.forEach((item,index) => {
-    const option = document.createElement("option"); option.value = String(index); option.textContent = item[0]; enchantSelect.appendChild(option);
-  });
-  function updateLevels() {
-    const item = enchantments[Number(enchantSelect.value)] || enchantments[0];
-    levelSelect.replaceChildren();
-    for (let level=1; level<=item[3]; level++) {
-      const option=document.createElement("option"); option.value=String(level); option.textContent="Уровень " + level; levelSelect.appendChild(option);
-    }
+  const enchantItem=$("enchantItem"), choices=$("enchantChoices");
+  const incompatible=[
+    ["protection","fire_protection","blast_protection","projectile_protection"],
+    ["sharpness","smite","bane_of_arthropods"],
+    ["depth_strider","frost_walker"],
+    ["silk_touch","fortune"],
+    ["infinity","mending"],
+    ["multishot","piercing"],
+    ["loyalty","riptide"]
+  ];
+  function isIncompatible(id,selectedId) {
+    return incompatible.some(group=>group.includes(id)&&group.includes(selectedId));
   }
-  enchantSelect.addEventListener("change", updateLevels); updateLevels();
-  let selectedEnchants = [];
-  function renderEnchantList() {
-    const list=$("enchantList"); list.replaceChildren();
-    if (!selectedEnchants.length) { const p=document.createElement("p"); p.className="mc-empty"; p.textContent="Пока ничего не добавлено."; list.appendChild(p); return; }
-    selectedEnchants.forEach((entry,index) => {
-      const row=document.createElement("div"); row.className="mc-list-row";
-      const label=document.createElement("span"); label.textContent=entry.name + " " + entry.level;
-      const cost=document.createElement("small"); cost.textContent="множитель " + entry.multiplier;
-      const remove=document.createElement("button"); remove.className="mc-remove"; remove.type="button"; remove.textContent="×"; remove.setAttribute("aria-label","Удалить " + entry.name);
-      remove.addEventListener("click",()=>{selectedEnchants.splice(index,1);renderEnchantList();});
-      row.append(label,cost,remove); list.appendChild(row);
+  function renderEnchantChoices() {
+    choices.replaceChildren();
+    const available=enchantments.filter(item=>item[4].includes(enchantItem.value));
+    available.forEach(item=>{
+      const id=item[1], checked=selectedEnchants.has(id);
+      const row=document.createElement("label"); row.className="mc-enchant-option";
+      const checkbox=document.createElement("input"); checkbox.type="checkbox"; checkbox.checked=checked;
+      checkbox.addEventListener("change",()=>{
+        if(checkbox.checked) selectedEnchants.add(id); else selectedEnchants.delete(id);
+        renderEnchantChoices(); updateEnchantCost();
+      });
+      const name=document.createElement("span"); name.className="mc-enchant-name"; name.textContent=item[0];
+      const level=document.createElement("span"); level.className="mc-enchant-level"; level.textContent="Уровень "+item[2];
+      const price=document.createElement("span"); price.className="mc-enchant-price"; price.textContent=(item[2]*item[3])+" ур.";
+      const conflict=[...selectedEnchants].some(selectedId=>selectedId!==id&&isIncompatible(id,selectedId));
+      if(conflict){row.classList.add("is-conflict");price.textContent="Несовместимо";}
+      row.append(checkbox,name,level,price); choices.appendChild(row);
     });
+    $("enchantCount").textContent="Выбрано: "+selectedEnchants.size;
   }
-  $("addEnchant").addEventListener("click",()=>{
-    const item=enchantments[Number(enchantSelect.value)], level=Number(levelSelect.value);
-    if (!item) return;
-    const existing=selectedEnchants.find(entry=>entry.id===item[1]);
-    if (existing) existing.level=Math.max(existing.level,level);
-    else selectedEnchants.push({name:item[0],id:item[1],multiplier:item[2],level});
-    renderEnchantList();
-  });
-  $("clearEnchants").addEventListener("click",()=>{selectedEnchants=[];renderEnchantList();$("enchantResult").innerHTML='<span class="mc-result-label">РЕЗУЛЬТАТ</span><strong>Добавь зачарования и запусти расчёт</strong>';});
-  const priorPenalty = count => count <= 0 ? 0 : Math.pow(2,count)-1;
-  $("calculateEnchant").addEventListener("click",()=>{
-    const result=$("enchantResult");
-    if (!selectedEnchants.length) { result.innerHTML='<span class="mc-result-label">РЕЗУЛЬТАТ</span><strong>Сначала добавь хотя бы одно зачарование</strong>'; return; }
-    const targetPenalty=priorPenalty(Number($("targetWork").value));
-    const bookPenalty=priorPenalty(Number($("bookWork").value));
-    const enchantCost=selectedEnchants.reduce((sum,item)=>sum+Math.max(1,Math.ceil(item.multiplier*item.level/2)),0);
-    const total=enchantCost+targetPenalty+bookPenalty;
-    const status=total>=40 ? "В обычном выживании наковальня покажет «Слишком дорого!»." : "Стоимость не превышает лимит 39 уровней в обычном выживании.";
-    result.innerHTML='<span class="mc-result-label">ПРИМЕРНАЯ СТОИМОСТЬ</span><strong>'+total+' уровней опыта</strong><p>Зачарования: '+enchantCost+' · Штраф целевого предмета: '+targetPenalty+' · Штраф книги: '+bookPenalty+'</p><p>'+status+'</p>';
-  });
+  let selectedEnchants=new Set();
+  function updateEnchantCost() {
+    const selected=enchantments.filter(item=>selectedEnchants.has(item[1])&&item[4].includes(enchantItem.value));
+    const enchantCost=selected.reduce((sum,item)=>sum+item[2]*item[3],0);
+    const workPenalty=Math.pow(2,Number($("targetWork").value))-1;
+    const total=enchantCost+workPenalty;
+    $("enchantCost").textContent=total+" "+(total===1?"уровень":"уровней");
+    const conflicts=incompatible.some(group=>group.filter(id=>selectedEnchants.has(id)).length>1);
+    let details="Зачарования: "+enchantCost+" · Предыдущие работы: "+workPenalty;
+    let status=total>=40?"Слишком дорого! В обычном выживании операция недоступна.":"Стоимость укладывается в лимит 39 уровней.";
+    if(conflicts) status+=" Есть несовместимые зачарования — их нельзя применить вместе.";
+    $("enchantResult").innerHTML='<span class="mc-result-label">СТОИМОСТЬ НА НАКОВАЛЬНЕ</span><strong>'+total+' уровней опыта</strong><p>'+details+'</p><p>'+status+'</p>';
+    $("enchantCount").textContent="Выбрано: "+selected.length;
+  }
+  enchantItem.addEventListener("change",()=>{selectedEnchants.clear();renderEnchantChoices();updateEnchantCost();});
+  $("targetWork").addEventListener("change",updateEnchantCost);
+  $("clearEnchants").addEventListener("click",()=>{selectedEnchants.clear();renderEnchantChoices();updateEnchantCost();});
+  renderEnchantChoices(); updateEnchantCost();
 
   $("calculatePortal").addEventListener("click",()=>{
     const x=Number($("portalX").value),z=Number($("portalZ").value),y=$("portalY").value.trim();
