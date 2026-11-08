@@ -1022,3 +1022,64 @@ body:not(.rq-loading) > .page-shell {
   .admin-float-button{left:14px;bottom:14px;min-height:38px;padding:0 11px;font-size:9px}
 }
 @media(prefers-reduced-motion:reduce){.admin-float-button{transition:none}}
+
+
+/* Sakura theme — warm cherry-blossom palette with softly drifting petals. */
+html.sakura-mode{
+  --bg:#1d111b;--surface:#291a28;--surface2:#382238;--line:#68415d;
+  --text:#fff0f5;--muted:#d6adbf;--subtle:#ad8298;--accent:#ff9fc5;--mint:#f5c1d8;
+  color-scheme:dark
+}
+html.sakura-mode body{
+  background:#1d111b;
+  background-image:radial-gradient(ellipse at 12% 12%,#e76da52b,transparent 38%),radial-gradient(ellipse at 88% 28%,#b65c9c25,transparent 42%),radial-gradient(ellipse at 50% 100%,#7c416c22,transparent 48%),linear-gradient(155deg,#211421,#160f1b 65%,#21131d)
+}
+html.sakura-mode body:before{
+  background-image:radial-gradient(ellipse at 18% 14%,#ffb7d51c,transparent 34%),radial-gradient(ellipse at 78% 22%,#f08fbd18,transparent 38%);
+  opacity:.9
+}
+html.sakura-mode body:after{
+  content:"";position:fixed;inset:-12%;z-index:0;pointer-events:none;opacity:.36;
+  background-image:radial-gradient(ellipse 5px 9px at 8% 18%,#ffd2e4 45%,transparent 75%),radial-gradient(ellipse 4px 7px at 24% 66%,#f7a9ca 45%,transparent 75%),radial-gradient(ellipse 5px 8px at 46% 32%,#ffe0ec 45%,transparent 75%),radial-gradient(ellipse 4px 7px at 69% 78%,#e98db7 45%,transparent 75%),radial-gradient(ellipse 5px 8px at 88% 42%,#ffd2e4 45%,transparent 75%);
+  background-size:370px 420px,490px 520px,560px 460px,430px 510px,610px 540px;
+  animation:sakura-fall 34s linear infinite
+}
+html.sakura-mode .brand-mark,html.sakura-mode .project-icon,html.sakura-mode .modal-icon,html.sakura-mode .about-symbol{
+  border-color:#ff9fc555;background:linear-gradient(145deg,#63334f,#342039);color:#ffe5ef;box-shadow:0 0 25px #ed83b51c,inset 0 1px #ffffff18
+}
+html.sakura-mode .eyebrow,html.sakura-mode .section-kicker,html.sakura-mode .modal-kicker{color:#ffc0d9}
+html.sakura-mode .primary-cta{background:linear-gradient(110deg,#ff9fc5,#d99bdc);color:#291322}
+html.sakura-mode .theme-picker{border-color:#80516f;background:#291a28ef}
+html.sakura-mode .theme-option[aria-pressed="true"]{border-color:#ff9fc588;background:#ff9fc51a}
+
+/* Arctic theme — crisp glacial blues, frosted surfaces and slow snowfall. */
+html.arctic-mode{
+  --bg:#091723;--surface:#102535;--surface2:#183548;--line:#31566c;
+  --text:#eaf8ff;--muted:#b0cbd9;--subtle:#7e9eaf;--accent:#8bdcff;--mint:#b8efff;
+  color-scheme:dark
+}
+html.arctic-mode body{
+  background:#091723;
+  background-image:radial-gradient(ellipse at 14% 12%,#4ca9d42b,transparent 38%),radial-gradient(ellipse at 88% 26%,#b5eaff20,transparent 42%),radial-gradient(ellipse at 50% 100%,#246c9a26,transparent 48%),linear-gradient(160deg,#091723,#102b3d 58%,#07131f)
+}
+html.arctic-mode body:before{
+  background-image:radial-gradient(ellipse at 18% 12%,#b8edff18,transparent 35%),radial-gradient(ellipse at 76% 24%,#76c9ef18,transparent 38%);
+  opacity:.9
+}
+html.arctic-mode body:after{
+  content:"";position:fixed;inset:-10%;z-index:0;pointer-events:none;opacity:.42;
+  background-image:radial-gradient(2px 2px at 8% 18%,#effaff 98%,transparent),radial-gradient(1.5px 1.5px at 24% 66%,#c8efff 98%,transparent),radial-gradient(2px 2px at 46% 32%,#fff 98%,transparent),radial-gradient(1.5px 1.5px at 69% 78%,#d9f5ff 98%,transparent),radial-gradient(2px 2px at 88% 42%,#effaff 98%,transparent);
+  background-size:280px 310px,390px 420px,470px 360px,330px 410px,520px 440px;
+  animation:arctic-snow 26s linear infinite
+}
+html.arctic-mode .brand-mark,html.arctic-mode .project-icon,html.arctic-mode .modal-icon,html.arctic-mode .about-symbol{
+  border-color:#8bdcff55;background:linear-gradient(145deg,#174a64,#182e48);color:#e0f8ff;box-shadow:0 0 25px #6ecdf01c,inset 0 1px #ffffff18
+}
+html.arctic-mode .eyebrow,html.arctic-mode .section-kicker,html.arctic-mode .modal-kicker{color:#a8e7ff}
+html.arctic-mode .primary-cta{background:linear-gradient(110deg,#75d5f4,#b4eaff);color:#09202e}
+html.arctic-mode .theme-picker{border-color:#46748d;background:#102535ef}
+html.arctic-mode .theme-option[aria-pressed="true"]{border-color:#8bdcff88;background:#8bdcff18}
+@keyframes sakura-fall{from{background-position:0 -520px,0 -610px,0 -430px,0 -570px,0 -490px}to{background-position:100px 520px,-80px 610px,70px 430px,-110px 570px,90px 490px}}
+@keyframes arctic-snow{from{background-position:0 -440px,0 -520px,0 -390px,0 -480px,0 -560px}to{background-position:35px 440px,-25px 520px,20px 390px,-35px 480px,25px 560px}}
+html.sakura-mode .page-shell,html.arctic-mode .page-shell{position:relative;z-index:1}
+@media(prefers-reduced-motion:reduce){html.sakura-mode body:after,html.arctic-mode body:after{animation:none}}
