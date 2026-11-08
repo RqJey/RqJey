@@ -377,7 +377,7 @@
 
     const message = document.createElement("p");
     message.className = "release-load-message";
-    message.textContent = `${tr("loadError")}: ${error.message}. ${language === "ru" ? "Проверь настройки config.js и публичный доступ к репозиторию." : "Check config.js and make sure the repository is public."}`;
+    message.textContent = `${tr("loadError")}: ${error.message}.`;
 
     const hint = document.createElement("p");
     hint.className = "release-load-hint";
