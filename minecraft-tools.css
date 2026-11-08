@@ -71,3 +71,85 @@
 .mc-enchant-choices{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:7px}.mc-enchant-pick{display:flex;align-items:center;gap:7px;min-width:0;padding:9px;border:1px solid var(--line);border-radius:9px;background:color-mix(in srgb,var(--surface2) 50%,transparent);color:var(--text);text-align:left;cursor:pointer}.mc-enchant-pick:hover:not(:disabled){border-color:var(--accent);background:color-mix(in srgb,var(--accent) 9%,var(--surface))}.mc-enchant-pick:disabled{opacity:.45;cursor:default}.mc-pick-plus{color:var(--accent);font-size:15px}.mc-pick-name{min-width:0;flex:1;font-size:9px;font-weight:700}.mc-enchant-pick small{color:var(--muted);font-size:8px;white-space:nowrap}.mc-book-list-wrap{margin-top:20px}.mc-book-list-heading{display:flex;justify-content:space-between;align-items:center;margin-bottom:9px;color:var(--text);font-size:11px}.mc-selected-books{display:grid;gap:7px}.mc-selected-book{display:grid;grid-template-columns:minmax(0,1fr) minmax(120px,auto) 26px;align-items:center;gap:10px;padding:9px 11px;border:1px solid color-mix(in srgb,var(--accent) 35%,var(--line));border-radius:9px;background:color-mix(in srgb,var(--accent) 5%,var(--surface))}.mc-selected-book strong{color:var(--text);font-size:10px}.mc-selected-book select{min-height:31px;padding:0 8px;border:1px solid var(--line);border-radius:7px;background:var(--bg);color:var(--text);font-size:9px}.mc-remove-book{width:25px;height:25px;border:0;border-radius:6px;background:transparent;color:#e58d98;font-size:18px;cursor:pointer}.mc-anvil-summary{margin:0 0 17px}.mc-danger{color:#e58d98!important}.mc-success{color:var(--mint)!important}.mc-tree-title,.mc-steps-title{margin:17px 0 9px;color:var(--text);font:800 12px Manrope}.mc-tree-row{display:grid;grid-template-columns:26px minmax(0,1fr) auto;align-items:center;gap:9px;padding:10px;border:1px solid var(--line);border-radius:9px;margin-bottom:6px;background:color-mix(in srgb,var(--surface2) 45%,transparent)}.mc-tree-number{display:grid;place-items:center;width:23px;height:23px;border-radius:7px;background:color-mix(in srgb,var(--accent) 14%,var(--surface));color:var(--accent);font:800 10px Manrope}.mc-tree-desc{display:grid;gap:4px;min-width:0}.mc-tree-desc strong{color:var(--text);font-size:9px}.mc-tree-desc small{overflow-wrap:anywhere;color:var(--muted);font-size:8px}.mc-tree-row>b{color:var(--accent);font:800 10px Manrope;white-space:nowrap}.mc-operation-card{margin-bottom:7px;padding:12px;border:1px solid var(--line);border-radius:9px;background:color-mix(in srgb,var(--surface2) 42%,transparent)}.mc-operation-head{display:flex;justify-content:space-between;gap:10px}.mc-operation-head strong{color:var(--text);font-size:10px}.mc-operation-head b{color:var(--accent);font:800 10px Manrope;white-space:nowrap}.mc-operation-card p{margin:7px 0 0;color:var(--muted);font-size:9px;line-height:1.6}
 @media(max-width:680px){.mc-enchant-choices{grid-template-columns:repeat(2,minmax(0,1fr))}.mc-existing-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
 @media(max-width:460px){.mc-enchant-choices{grid-template-columns:1fr}.mc-selected-book{grid-template-columns:minmax(0,1fr) minmax(105px,auto) 24px}.mc-anvil-topline{flex-wrap:wrap}}
+
+
+/* Readability and visual polish pass */
+.mc-tools-main{width:min(1040px,calc(100% - 36px));padding-top:76px}
+.mc-tools-eyebrow{font-size:11px;letter-spacing:2.2px}
+.mc-tools-lead{font-size:15px;line-height:1.85}
+.mc-tool-tabs{gap:10px;padding:8px;border-radius:16px;background:var(--surface);box-shadow:0 8px 24px #00000012}
+.mc-tool-tabs button{min-height:48px;font-size:13px;letter-spacing:.1px;color:var(--text);opacity:.82}
+.mc-tool-tabs button[aria-selected="true"]{opacity:1;box-shadow:0 4px 14px #00000018}
+.mc-tool-panel{padding:clamp(22px,4vw,36px);border-radius:22px;box-shadow:0 20px 55px #00000020}
+.mc-tool-heading{margin-bottom:30px}
+.mc-tool-kicker{font-size:10px;letter-spacing:2px}
+.mc-tool-heading h2{font-size:clamp(23px,3.4vw,31px)}
+.mc-tool-heading p{max-width:700px;font-size:14px;line-height:1.8;color:color-mix(in srgb,var(--muted),var(--text) 28%)}
+.mc-tool-symbol{width:52px;height:52px;flex-basis:52px;border-radius:16px;font-size:25px}
+.mc-anvil-topline{font-size:12px;color:color-mix(in srgb,var(--muted),var(--text) 30%)}
+.mc-anvil-section{padding:25px 0}
+.mc-step-title{gap:13px;margin-bottom:19px}
+.mc-step-title>span{width:32px;height:32px;border-radius:10px;font-size:13px}
+.mc-step-title strong{font-size:15px}
+.mc-step-title small{font-size:12px;line-height:1.6;color:color-mix(in srgb,var(--muted),var(--text) 28%)}
+.mc-field{gap:9px;color:var(--text);font-size:13px;font-weight:800}
+.mc-field input,.mc-field select{min-height:48px;padding:0 14px;border-radius:12px;font-size:14px;color:var(--text);background:var(--bg)}
+.mc-field select option{color:var(--text);background:var(--surface)}
+.mc-existing-details{padding:16px;border-radius:13px}
+.mc-existing-details summary{font-size:13px;color:var(--text);font-weight:800}
+.mc-existing-details p{font-size:12px;line-height:1.75;color:color-mix(in srgb,var(--muted),var(--text) 30%)}
+.mc-existing-grid{gap:10px}
+.mc-existing-option{gap:8px;font-size:12px;color:var(--text);line-height:1.45}
+.mc-existing-option input{width:16px;height:16px;flex:0 0 16px}
+.mc-enchant-toolbar{margin-bottom:13px;font-size:14px}
+.mc-enchant-toolbar span{font-size:12px;color:color-mix(in srgb,var(--muted),var(--text) 30%)}
+.mc-enchant-choices{gap:9px}
+.mc-enchant-pick{min-height:48px;padding:11px 12px;border-radius:11px;gap:9px}
+.mc-enchant-pick:hover:not(:disabled){transform:translateY(-1px)}
+.mc-pick-plus{font-size:18px}
+.mc-pick-name{font-size:12px;line-height:1.35}
+.mc-enchant-pick small{font-size:11px;color:color-mix(in srgb,var(--muted),var(--text) 30%)}
+.mc-book-list-heading{margin-bottom:12px;font-size:14px}
+.mc-text-button{font-size:12px}
+.mc-selected-book{min-height:52px;padding:10px 12px;border-radius:11px}
+.mc-selected-book strong{font-size:13px;line-height:1.35}
+.mc-selected-book select{min-height:36px;font-size:12px;color:var(--text)}
+.mc-remove-book{font-size:21px}
+.mc-empty{padding:18px;font-size:12px;color:color-mix(in srgb,var(--muted),var(--text) 30%)}
+.mc-result-card{gap:9px;padding:21px;border-radius:15px}
+.mc-result-label{font-size:10px;letter-spacing:1.8px}
+.mc-result-card strong{font-size:clamp(17px,2vw,21px)}
+.mc-result-card p{font-size:12px;line-height:1.75;color:color-mix(in srgb,var(--muted),var(--text) 28%)}
+.mc-tree-title,.mc-steps-title{font-size:15px;margin:21px 0 12px}
+.mc-tree-row{grid-template-columns:32px minmax(0,1fr) auto;gap:12px;padding:13px;border-radius:12px}
+.mc-tree-number{width:28px;height:28px;font-size:12px}
+.mc-tree-desc{gap:5px}
+.mc-tree-desc strong{font-size:12px}
+.mc-tree-desc small{font-size:11px;line-height:1.55;color:color-mix(in srgb,var(--muted),var(--text) 28%)}
+.mc-tree-row>b{font-size:12px}
+.mc-operation-card{padding:15px;border-radius:12px}
+.mc-operation-head strong{font-size:13px}
+.mc-operation-head b{font-size:12px}
+.mc-operation-card p{font-size:11px;line-height:1.7;color:color-mix(in srgb,var(--muted),var(--text) 28%)}
+.mc-note{margin-top:18px;font-size:11px;line-height:1.8;color:color-mix(in srgb,var(--muted),var(--text) 28%)}
+.mc-primary-button,.mc-secondary-button{min-height:48px;padding:0 18px;font-size:12px}
+.mc-tools-footer{font-size:10px}
+.mc-tools-footer a{font-size:12px}
+@media(max-width:680px){
+  .mc-tools-main{width:min(100% - 24px,1040px);padding-top:48px}
+  .mc-tool-panel{padding:20px}
+  .mc-enchant-choices{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .mc-existing-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+}
+@media(max-width:460px){
+  .mc-tools-main{width:calc(100% - 20px);padding-top:35px}
+  .mc-tool-panel{padding:16px;border-radius:16px}
+  .mc-tool-heading p{font-size:13px}
+  .mc-tool-tabs button{min-height:46px;font-size:12px}
+  .mc-enchant-choices{grid-template-columns:1fr}
+  .mc-pick-name{font-size:12px}
+  .mc-existing-grid{grid-template-columns:1fr 1fr}
+  .mc-tree-row{grid-template-columns:28px minmax(0,1fr);gap:9px}
+  .mc-tree-row>b{grid-column:2}
+  .mc-tools-footer{flex-direction:column}
+}
