@@ -4,6 +4,7 @@
   'use strict';
   const STORAGE_KEY = 'rqjey-ui-settings-v1';
   const THEME_KEY = 'rqjey-ui-theme';
+  const CURSOR_MIGRATION_KEY = 'rqjey-cursor-global-v1';
   const defaults = {
     glass:true, cursorLight:true, magnetic:false, modalDepth:true, animatedBorders:true,
     customCursor:true, pageTransitions:true, scrollProgress:true, headingReveal:true,
@@ -15,7 +16,7 @@
     {id:'magnetic',group:'effects',title:'Магнитные кнопки',description:'Интерактивные элементы слегка тянутся к курсору.'},
     {id:'modalDepth',group:'effects',title:'Искажение пространства',description:'Фон за открытым окном размывается и отдаляется.'},
     {id:'animatedBorders',group:'effects',title:'Анимированные границы',description:'Тонкие контуры медленно переливаются.'},
-    {id:'customCursor',group:'quality',title:'Кастомный курсор',description:'Особый курсор для ссылок и кнопок.'},
+    {id:'customCursor',group:'quality',title:'Кастомный курсор',description:'Кастомный курсор для всех элементов сайта.'},
     {id:'pageTransitions',group:'quality',title:'Переходы страниц',description:'Плавное появление и исчезновение при навигации.'},
     {id:'scrollProgress',group:'quality',title:'Индикатор прокрутки',description:'Тонкая полоска показывает прогресс страницы.'},
     {id:'headingReveal',group:'quality',title:'Появление заголовков',description:'Заголовки проявляются при прокрутке.'},
@@ -25,6 +26,13 @@
   ];
   let settings = {...defaults};
   try { settings = {...defaults, ...JSON.parse(localStorage.getItem(STORAGE_KEY) || '{}')}; } catch (_) {}
+  try {
+    if (!localStorage.getItem(CURSOR_MIGRATION_KEY)) {
+      settings.customCursor = true;
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(settings));
+      localStorage.setItem(CURSOR_MIGRATION_KEY, '1');
+    }
+  } catch (_) {}
   let activeTheme = 'dark';
   let changingThemeFromPanel = false;
   try { activeTheme = localStorage.getItem('rqjey-site-theme') === 'cosmic' ? 'cosmic' : (localStorage.getItem('rqjey-theme') === 'light' ? 'light' : 'dark'); } catch (_) {}
