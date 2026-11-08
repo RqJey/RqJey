@@ -698,6 +698,53 @@
 
   let newsPage = 1;
   const NEWS_PER_PAGE = 3;
+  let newsPageTransitioning = false;
+
+  async function changeNewsPage(page, pageCount) {
+    const list = document.getElementById("newsGrid");
+    if (!list || newsPageTransitioning || page < 1 || page > pageCount || page === newsPage) return;
+
+    const reduceMotion = window.matchMedia?.("(prefers-reduced-motion: reduce)").matches;
+    if (reduceMotion || typeof list.animate !== "function") {
+      newsPage = page;
+      renderNews();
+      return;
+    }
+
+    newsPageTransitioning = true;
+    const startHeight = list.getBoundingClientRect().height;
+    list.style.height = startHeight + "px";
+    list.style.overflow = "hidden";
+
+    try {
+      await list.animate(
+        [{ opacity: 1, transform: "translateY(0)" }, { opacity: 0, transform: "translateY(7px)" }],
+        { duration: 130, easing: "ease-in", fill: "forwards" }
+      ).finished;
+
+      newsPage = page;
+      renderNews();
+
+      const endHeight = list.scrollHeight;
+      const heightAnimation = list.animate(
+        [{ height: startHeight + "px" }, { height: endHeight + "px" }],
+        { duration: 260, easing: "cubic-bezier(.2,.7,.2,1)" }
+      );
+      const enterAnimation = list.animate(
+        [{ opacity: 0, transform: "translateY(7px)" }, { opacity: 1, transform: "translateY(0)" }],
+        { duration: 260, easing: "ease-out" }
+      );
+      await Promise.all([heightAnimation.finished, enterAnimation.finished]);
+    } catch (error) {
+      // If an animation is interrupted, keep the newly selected page usable.
+    } finally {
+      list.style.height = "";
+      list.style.overflow = "";
+      list.style.opacity = "";
+      list.style.transform = "";
+      newsPageTransitioning = false;
+    }
+  }
 
   function renderNews() {
     const section = document.getElementById("newsSection");
@@ -750,10 +797,7 @@
         button.disabled = disabled;
         if (current) button.setAttribute("aria-current", "page");
         button.addEventListener("click", () => {
-          if (page === newsPage || page < 1 || page > pageCount) return;
-          newsPage = page;
-          renderNews();
-          document.getElementById("newsSection")?.scrollIntoView({ behavior: "smooth", block: "start" });
+          changeNewsPage(page, pageCount);
         });
         pagination.appendChild(button);
       };
