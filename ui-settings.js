@@ -141,7 +141,7 @@
   let toast=create('div','ui-settings-toast'); toast.setAttribute('role','status'); toast.setAttribute('aria-live','polite'); document.body.appendChild(toast);
   let toastTimer;
   window.rqjeyNotify=(message)=>{
-    if(!settings.customNotifications){toast.textContent=String(message);toast.classList.add('is-visible');clearTimeout(toastTimer);toastTimer=setTimeout(()=>toast.classList.remove('is-visible'),2800);return;}
+    if(!settings.customNotifications){nativeAlert?.(String(message));return;}
     toast.textContent=String(message);toast.classList.add('is-visible');clearTimeout(toastTimer);toastTimer=setTimeout(()=>toast.classList.remove('is-visible'),3200);
   };
   const nativeAlert=window.alert?.bind(window);
