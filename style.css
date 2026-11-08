@@ -261,6 +261,7 @@ html[data-theme="light"] .boot-screen{background:radial-gradient(ellipse at 50% 
 .swatch-standard{background:linear-gradient(135deg,#aeb7c4,#343b49)}
 .swatch-cosmic{background:radial-gradient(circle at 65% 30%,#f4c27c 0 8%,transparent 10%),linear-gradient(135deg,#111a35,#8a573a)}
 .swatch-aurora{background:linear-gradient(145deg,#071e2a,#087e78 48%,#8c63b5)}
+.swatch-aurora-arctic{display:grid;place-items:center;background:linear-gradient(145deg,#102b4b 0%,#087e78 48%,#8bdcff 100%);color:#e9fbff;font-size:17px;text-shadow:0 0 8px #b8f5ff}
 @keyframes theme-picker-in{from{opacity:0;transform:translateY(7px) scale(.97)}to{opacity:1;transform:translateY(0) scale(1)}}
 @media(max-width:600px){.theme-picker-wrap{right:14px;bottom:14px}.theme-picker-wrap .cosmic-toggle{width:38px;height:38px;opacity:.82}}
 @media(prefers-reduced-motion:reduce){.theme-picker{animation:none}}
@@ -1081,5 +1082,16 @@ html.arctic-mode .theme-picker{border-color:#46748d;background:#102535ef}
 html.arctic-mode .theme-option[aria-pressed="true"]{border-color:#8bdcff88;background:#8bdcff18}
 @keyframes sakura-fall{from{background-position:0 -520px,0 -610px,0 -430px,0 -570px,0 -490px}to{background-position:100px 520px,-80px 610px,70px 430px,-110px 570px,90px 490px}}
 @keyframes arctic-snow{from{background-position:0 -440px,0 -520px,0 -390px,0 -480px,0 -560px}to{background-position:35px 440px,-25px 520px,20px 390px,-35px 480px,25px 560px}}
-html.sakura-mode .page-shell,html.arctic-mode .page-shell{position:relative;z-index:1}
-@media(prefers-reduced-motion:reduce){html.sakura-mode body:after,html.arctic-mode body:after{animation:none}}
+html.sakura-mode .page-shell{position:relative;z-index:1}
+@media(prefers-reduced-motion:reduce){html.sakura-mode body:after{animation:none}}
+
+/* Aurora + Arctic blend: glacial night sky, turquoise aurora and drifting snow. */
+html.aurora-mode body:after{
+  content:"";position:fixed;inset:-10%;z-index:0;pointer-events:none;opacity:.48;
+  background-image:radial-gradient(2px 2px at 8% 18%,#effaff 98%,transparent),radial-gradient(1.5px 1.5px at 24% 66%,#c8efff 98%,transparent),radial-gradient(2px 2px at 46% 32%,#fff 98%,transparent),radial-gradient(1.5px 1.5px at 69% 78%,#d9f5ff 98%,transparent),radial-gradient(2px 2px at 88% 42%,#effaff 98%,transparent);
+  background-size:280px 310px,390px 420px,470px 360px,330px 410px,520px 440px;
+  animation:arctic-snow 26s linear infinite
+}
+html.aurora-mode .page-shell{position:relative;z-index:1}
+html.aurora-mode .brand-mark,html.aurora-mode .project-icon,html.aurora-mode .modal-icon{border-color:#8bdcff55}
+@media(prefers-reduced-motion:reduce){html.aurora-mode body:after{animation:none}}
