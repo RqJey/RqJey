@@ -1098,8 +1098,8 @@ html.aurora-mode .brand-mark,html.aurora-mode .project-icon,html.aurora-mode .mo
 
 /* A blossom-heavy sakura branch occupies the same upper-right focal area as the cosmic planet. */
 .sakura-branch-scene{
-  position:fixed;right:clamp(-135px,3.5vw,72px);top:clamp(76px,14vh,170px);
-  width:clamp(350px,49vw,700px);height:clamp(330px,48vw,590px);
+  position:fixed;right:clamp(0px,1.5vw,24px);top:clamp(70px,12vh,145px);
+  width:clamp(430px,57vw,790px);height:clamp(390px,55vw,680px);
   z-index:0;pointer-events:none;opacity:0;transform:translate3d(22px,12px,0) scale(.96);
   transition:opacity 1.15s ease,transform 1.5s cubic-bezier(.2,.7,.2,1);
 }
@@ -1107,7 +1107,7 @@ html.aurora-mode .brand-mark,html.aurora-mode .project-icon,html.aurora-mode .mo
 html.sakura-mode .sakura-branch-scene{opacity:.9;transform:translate3d(0,0,0) scale(1)}
 html.sakura-mode .page-shell{position:relative;z-index:1}
 @media(max-width:760px){
-  .sakura-branch-scene{right:-155px;top:105px;width:min(94vw,470px);height:min(90vw,450px);opacity:0}
+  .sakura-branch-scene{right:-55px;top:105px;width:min(108vw,560px);height:min(100vw,520px);opacity:0}
   html.sakura-mode .sakura-branch-scene{opacity:.55}
 }
 @media(prefers-reduced-motion:reduce){.sakura-branch-scene{transition:none;transform:none!important}}
