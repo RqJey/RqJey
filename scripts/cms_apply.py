@@ -82,9 +82,9 @@ def main():
         features = project.get("features", [])
         if not isinstance(features, list) or len(features) > 12 or any(not isinstance(x, str) or len(x) > 120 for x in features):
             fail("Invalid features")
-        image_path = download_image(project.get("image_url", ""), item_id) if project.get("image_url") else project.get("image", "")
+        image_path = download_image(project.get("image_url", ""), item_id) if project.get("image_url") else ("" if project.get("clear_image") else project.get("image", ""))
         record = {
-            "id": item_id, "name": name, "icon": safe_text(project.get("icon", "✳"), "icon", 8),
+            "id": item_id, "name": name, "icon": safe_text(project.get("icon", "✳"), "icon", 32),
             "category": category, "description": description,
             "minecraft": safe_text(project.get("minecraft", "Любая"), "minecraft", 40),
             "accent": accent, "features": features

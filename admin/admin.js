@@ -39,6 +39,7 @@
   const WORKFLOW_URL = "https://github.com/RqJey/RqJey/actions/workflows/cms-publish.yml";
   let content = {homepage:{},categories:[],projects:[],news:[]};
   let pending = null;
+  let editingProjectOriginalIcon = null;
   const $ = id => document.getElementById(id);
   const toast = message => { const el=$("toast"); el.textContent=message; el.classList.add("show"); clearTimeout(toast.timer); toast.timer=setTimeout(()=>el.classList.remove("show"),2600); };
   const esc = value => String(value ?? "").replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
@@ -62,10 +63,11 @@
     $("newsList").innerHTML=content.news.map(n=>'<article class="content-record news-record">'+(n.image?'<img class="content-record-image" src="../'+esc(n.image)+'" alt="">':"")+'<div class="content-record-main"><div class="content-record-title"><strong>'+esc(n.title)+'</strong><span class="content-record-date">'+esc(n.date||"") + '</span></div><small>ID: '+esc(n.id)+'</small><p class="news-record-body">'+esc(n.body||"")+'</p></div><div class="record-actions"><button data-edit-news="'+esc(n.id)+'">Изменить</button><button class="danger" data-delete-news="'+esc(n.id)+'">Удалить</button></div></article>').join("")||'<p class="hint">Новостей пока нет.</p>';
   }
   function resetProject() {
-    $("projectForm").reset(); $("pIcon").value="✳"; $("pMinecraft").value="26.3"; $("pAccent").value="violet"; $("projectFormTitle").textContent="Новый проект"; $("pId").disabled=false;
+    $("projectForm").reset(); editingProjectOriginalIcon = null; $("pIcon").value="✳"; $("pMinecraft").value="26.3"; $("pAccent").value="violet"; $("projectFormTitle").textContent="Новый проект"; $("pId").disabled=false;
   }
   function editProject(id) {
     const p=content.projects.find(x=>x.id===id); if(!p)return;
+    editingProjectOriginalIcon = p.icon || "✳";
     $("pId").value=p.id; $("pId").disabled=true; $("pName").value=p.name||""; $("pCategory").value=p.category||""; $("pMinecraft").value=p.minecraft||""; $("pIcon").value=p.icon||"✳"; $("pAccent").value=p.accent||"violet"; $("pDescription").value=p.description||""; $("pFeatures").value=(p.features||[]).join("\n"); $("pImage").value="";
     $("projectFormTitle").textContent="Редактировать: "+p.name; $("projectForm").scrollIntoView({behavior:"smooth",block:"start"});
   }
@@ -87,7 +89,10 @@
     const id=$("pId").value.trim().toLowerCase();
     if(!/^[a-z0-9][a-z0-9-]*$/.test(id)){toast("Проверь ID проекта");return;}
     const old=content.projects.find(p=>p.id===id);
-    setPayload({action:"save_project",project:{id,name:$("pName").value.trim(),category:$("pCategory").value.trim(),minecraft:$("pMinecraft").value.trim()||"Любая",icon:$("pIcon").value.trim()||"✳",accent:$("pAccent").value,description:$("pDescription").value.trim(),features:$("pFeatures").value.split("\n").map(x=>x.trim()).filter(Boolean),image_url:$("pImage").value.trim(),...(old?.image&&!$("pImage").value.trim()?{image:old.image}:{})}});
+    const icon=$("pIcon").value.trim()||"✳";
+    const imageUrl=$("pImage").value.trim();
+    const clearImage=!!old?.image && !!editingProjectOriginalIcon && icon!==editingProjectOriginalIcon && !imageUrl;
+    setPayload({action:"save_project",project:{id,name:$("pName").value.trim(),category:$("pCategory").value.trim(),minecraft:$("pMinecraft").value.trim()||"Любая",icon,accent:$("pAccent").value,description:$("pDescription").value.trim(),features:$("pFeatures").value.split("\n").map(x=>x.trim()).filter(Boolean),image_url:imageUrl,...(clearImage?{clear_image:true}:{}),...(old?.image&&!imageUrl&&!clearImage?{image:old.image}:{})}});
   });
   $("newsForm").addEventListener("submit",e=>{
     e.preventDefault();const id=$("nId").value.trim().toLowerCase();if(!/^[a-z0-9][a-z0-9-]*$/.test(id)){toast("Проверь ID новости");return;}
@@ -139,7 +144,7 @@
           item.minecraft === expected.minecraft && item.icon === expected.icon &&
           item.accent === expected.accent && item.description === expected.description &&
           JSON.stringify(item.features || []) === JSON.stringify(expected.features || []) &&
-          (expected.image_url ? (typeof item.image === "string" && item.image.startsWith("assets/cms/")) : (!expected.image || item.image === expected.image));
+          (expected.image_url ? (typeof item.image === "string" && item.image.startsWith("assets/cms/")) : (expected.clear_image ? !item.image : (!expected.image || item.image === expected.image)));
       }
       case "delete_project":
         return (data.hiddenProjects || []).includes(payload.id) || !(data.projects || []).some(item => item.id === payload.id);
