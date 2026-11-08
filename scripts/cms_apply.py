@@ -77,14 +77,26 @@ def main():
                 fail(f"Backup {key} must be a list")
         if len(restored.get("categories", [])) > 50 or len(restored.get("projects", [])) > 100 or len(restored.get("news", [])) > 30:
             fail("Backup contains too many records")
+        project_ids = []
         for project in restored.get("projects", []):
             if not isinstance(project, dict):
                 fail("Invalid project in backup")
-            safe_id(project.get("id", ""))
+            project_ids.append(safe_id(project.get("id", "")))
+        if len(project_ids) != len(set(project_ids)):
+            fail("Backup contains duplicate project IDs")
+        news_ids = []
         for item in restored.get("news", []):
             if not isinstance(item, dict):
                 fail("Invalid news item in backup")
-            safe_id(item.get("id", ""))
+            news_ids.append(safe_id(item.get("id", "")))
+        if len(news_ids) != len(set(news_ids)):
+            fail("Backup contains duplicate news IDs")
+        hidden = restored.get("hiddenProjects", [])
+        if not isinstance(hidden, list) or any(not isinstance(item, str) for item in hidden):
+            fail("Backup hiddenProjects must be a list of IDs")
+        history = restored.get("adminLog", [])
+        if not isinstance(history, list):
+            fail("Backup adminLog must be a list")
         data = {"homepage": restored.get("homepage", {}), "categories": restored.get("categories", []),
                 "projects": restored.get("projects", []), "news": restored.get("news", []),
                 "hiddenProjects": restored.get("hiddenProjects", []), "adminLog": restored.get("adminLog", [])}
