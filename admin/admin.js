@@ -114,6 +114,8 @@
     if(originalId && id!==originalId && content.news.some(item=>item.id===id)){toast("Такой ID новости уже занят");return;}
     const imageUrl=$("nImage").value.trim();
     setPayload({action:"publish_news",...(originalId?{original_id:originalId}:{}),news:{id,title:$("nTitle").value.trim(),body:$("nBody").value.trim(),image_url:imageUrl,...(old?.image&&!imageUrl?{image:old.image}:{})}});
+    editingNewsOriginalId=null;
+    $("newsForm").querySelector('button[type="submit"]').textContent="Подготовить новость";
   });
   $("categoriesForm").addEventListener("submit",e=>{e.preventDefault();setPayload({action:"save_categories",categories:$("categoriesText").value.split("\n").map(x=>x.trim()).filter(Boolean)});});
   $("homepageForm").addEventListener("submit",e=>{e.preventDefault();setPayload({action:"update_homepage",homepage:{heroCopy:$("hHero").value.trim(),aboutTitle:$("hAboutTitle").value.trim(),aboutCopy:$("hAboutCopy").value.trim()}});});
