@@ -81,7 +81,7 @@
     if(!books.size){$("enchantResult").innerHTML='<span class="mc-result-label">ПЛАН НАКОВАЛЬНИ</span><strong>Добавь книги для расчёта</strong><p>Выбери зачарования — здесь появится самый дешёвый порядок операций.</p>';$("anvilTree").replaceChildren();$("anvilSteps").replaceChildren();return;}
     const invalid=conflicts.some(g=>g.filter(id=>existing.has(id)||books.has(id)).length>1);
     if(invalid){$("enchantResult").innerHTML='<span class="mc-result-label">НЕСОВМЕСТИМЫЕ ЧАРЫ</span><strong>Нельзя применить выбранный набор</strong><p>Убери конфликтующие зачарования или отметь только те, что уже есть на предмете.</p>';$("anvilTree").replaceChildren();$("anvilSteps").replaceChildren();return;}
-    if(books.size>9){$("enchantResult").innerHTML='<span class="mc-result-label">СЛИШКОМ МНОГО КНИГ</span><strong>Выбери не более 9 книг за раз</strong><p>Это ограничение нужно для быстрого точного перебора вариантов.</p>';$("anvilTree").replaceChildren();$("anvilSteps").replaceChildren();return;}
+    if(books.size>8){$("enchantResult").innerHTML='<span class="mc-result-label">СЛИШКОМ МНОГО КНИГ</span><strong>Выбери не более 8 книг за раз</strong><p>Это ограничение нужно для полного перебора порядка операций без долгого ожидания.</p>';$("anvilTree").replaceChildren();$("anvilSteps").replaceChildren();return;}
     const {result,states}=optimize();
     if(!result){$("enchantResult").innerHTML='<span class="mc-result-label">РАСЧЁТ НЕ ЗАВЕРШЁН</span><strong>Слишком много вариантов</strong><p>Попробуй убрать одну книгу или разделить сборку на части.</p>';return;}
     const maxStep=Math.max(...result.steps.map(s=>s.cost)),over=result.steps.some(s=>s.cost>=40),normal=result.steps.reduce((s,x)=>s+x.cost,0);
