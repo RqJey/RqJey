@@ -243,7 +243,7 @@
           <div class="card-top-actions">${getProjectBadge(p)}<span class="card-index">${String(projects.indexOf(p) + 1).padStart(2,"0")}</span></div>
         </div>
         <div class="card-main">
-          <div class="project-icon">\${p.image ? "<img src=\\"" + escapeHtml(p.image) + "\\" alt=\\"\\" loading=\\"lazy\\">" : escapeHtml(p.icon)}</div>
+          <div class="project-icon">${p.image ? '<img src="' + escapeHtml(p.image) + '" alt="" loading="lazy">' : escapeHtml(p.icon)}</div>
           <div class="project-heading">
             <h3>${escapeHtml(p.name)}</h3>
             <span class="mc-version">Minecraft ${escapeHtml(p.minecraft)}</span>
@@ -399,7 +399,7 @@
     activeReleases = project.releases
       .filter(r => !r.draft)
       .sort(compareReleasesByPublishedFile);
-    document.getElementById("modalIcon").innerHTML = project.image ? "<img src=\\"" + escapeHtml(project.image) + "\\" alt=\\"\\">" : escapeHtml(project.icon);
+    document.getElementById("modalIcon").innerHTML = project.image ? '<img src="' + escapeHtml(project.image) + '" alt="">' : escapeHtml(project.icon);
     document.getElementById("modalTitle").textContent = project.name;
     document.getElementById("modalSubtitle").textContent = `${projectField(project, "category")} · Minecraft ${project.minecraft}`;
     document.getElementById("modalDescription").innerHTML = renderMarkdown(projectField(project, "description"));
@@ -601,7 +601,29 @@
     if (!section || !list) return;
     const items = Array.isArray(cmsContent.news) ? cmsContent.news.slice(0, 6) : [];
     section.classList.toggle("hidden", items.length === 0);
-    list.innerHTML = items.map(item => "<article class=\\"news-card\\">" + (item.image ? "<img class=\\"news-image\\" src=\\"" + escapeHtml(item.image) + "\\" alt=\\"\\" loading=\\"lazy\\">" : "") + "<div class=\\"news-meta\\">" + escapeHtml(item.date || "") + " <span>·</span> RQJEY STUDIO</div><h3>" + escapeHtml(item.title) + "</h3><div class=\\"news-copy markdown-content\\">" + renderMarkdown(item.body || "") + "</div></article>").join("");
+    list.replaceChildren();
+    items.forEach(item => {
+      const card = document.createElement("article");
+      card.className = "news-card";
+      if (item.image) {
+        const image = document.createElement("img");
+        image.className = "news-image";
+        image.src = item.image;
+        image.alt = "";
+        image.loading = "lazy";
+        card.appendChild(image);
+      }
+      const meta = document.createElement("div");
+      meta.className = "news-meta";
+      meta.textContent = (item.date || "") + " · RQJEY STUDIO";
+      const title = document.createElement("h3");
+      title.textContent = item.title || "";
+      const body = document.createElement("div");
+      body.className = "news-copy markdown-content";
+      body.innerHTML = renderMarkdown(item.body || "");
+      card.append(meta, title, body);
+      list.appendChild(card);
+    });
   }
 
   async function init() {
