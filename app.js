@@ -90,7 +90,26 @@
     html = html.replace(/\[([^\]]+)\]\((https?:\/\/[^\s)]+)\)/g, '<a href="$2" target="_blank" rel="noopener noreferrer">$1</a>');
     html = html.replace(/\*\*(.+?)\*\*/g, "<strong>$1</strong>");
     html = html.replace(/(^|[^*])\*([^*\n]+)\*/g, "$1<em>$2</em>");
-    html = html.replace(/`([^`]+)`/g, "<code>$1</code>");
+    html = html.replace(/\x60([^\x60]+)\x60/g, "<code>$1</code>");
+    // Автоматически превращаем обычные URL в ссылки, не затрагивая Markdown-ссылки и inline-код.
+    const parts = html.split(/(<[^>]+>)/g);
+    let insideLink = false;
+    let insideCode = false;
+    html = parts.map(part => {
+      if (part.startsWith("<")) {
+        if (/^<a\b/i.test(part)) insideLink = true;
+        if (/^<\/a/i.test(part)) insideLink = false;
+        if (/^<code\b/i.test(part)) insideCode = true;
+        if (/^<\/code/i.test(part)) insideCode = false;
+        return part;
+      }
+      if (insideLink || insideCode) return part;
+      return part.replace(/https?:\/\/[^\s<]+/g, url => {
+        const trailing = url.match(/[.,!?;:]+$/)?.[0] || "";
+        const href = trailing ? url.slice(0, -trailing.length) : url;
+        return '<a href="' + href + '" target="_blank" rel="noopener noreferrer">' + href + '</a>' + trailing;
+      });
+    }).join("");
     return html;
   }
 
