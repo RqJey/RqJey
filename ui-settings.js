@@ -185,14 +185,5 @@
     const observer=new IntersectionObserver(entries=>entries.forEach(entry=>{if(entry.isIntersecting&&settings.headingReveal){entry.target.classList.add('ui-heading-visible');observer.unobserve(entry.target);}}),{threshold:.12});
     document.querySelectorAll('h1,h2,.section-kicker').forEach(node=>{node.classList.add('ui-heading-reveal');observer.observe(node);});
   }
-  if(!reduceMotion){
-    document.addEventListener('click',event=>{
-      if(!settings.pageTransitions)return;
-      const link=event.target.closest('a[href]');if(!link||link.target==='_blank'||event.metaKey||event.ctrlKey||event.shiftKey||event.altKey)return;
-      const url=new URL(link.href,location.href);if(url.origin!==location.origin||url.pathname===location.pathname||url.hash&&!url.pathname.endsWith('.html'))return;
-      if(url.pathname.endsWith('.html')&&document.startViewTransition){event.preventDefault();document.startViewTransition(()=>location.assign(url.href));}
-    });
-    document.addEventListener('pointerover',event=>{if(!settings.iconMotion)return;const icon=event.target.closest('button svg,button .ui-settings-trigger-icon,.project-icon,.tools-choice-icon,.social-choice-icon');if(icon)icon.classList.add('ui-icon-active');});
-    document.addEventListener('pointerout',event=>{const icon=event.target.closest('button svg,button .ui-settings-trigger-icon,.project-icon,.tools-choice-icon,.social-choice-icon');if(icon&&!icon.contains(event.relatedTarget))icon.classList.remove('ui-icon-active');});
-  }
+  // Cross-document transitions are handled by the shared CSS View Transition rule.
 })();
