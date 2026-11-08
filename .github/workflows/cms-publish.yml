@@ -10,7 +10,6 @@ on:
 
 permissions:
   contents: write
-  pull-requests: write
 
 concurrency:
   group: rqjey-cms-publish
@@ -25,33 +24,45 @@ jobs:
         uses: actions/checkout@v4
         with:
           ref: main
+          fetch-depth: 0
 
       - name: Apply CMS operation
         env:
           CMS_PAYLOAD: ${{ inputs.payload }}
         run: python3 scripts/cms_apply.py
 
-      - name: Create CMS update branch
-        id: branch
-        run: echo "name=cms/update-${GITHUB_RUN_ID}" >> "$GITHUB_OUTPUT"
+      - name: Validate published content
+        run: |
+          python3 - <<'PY'
+          import json
+          from pathlib import Path
+          data = json.loads(Path("content/site-content.json").read_text(encoding="utf-8"))
+          assert isinstance(data.get("news", []), list), "News must be a list"
+          assert isinstance(data.get("projects", []), list), "Projects must be a list"
+          print(f"Validated: {len(data.get('news', []))} news item(s), {len(data.get('projects', []))} project(s)")
+          PY
 
-      - name: Create pull request
-        env:
-          GH_TOKEN: ${{ github.token }}
-          BRANCH_NAME: ${{ steps.branch.outputs.name }}
+      - name: Commit and publish directly to main
+        id: publish
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git checkout -b "$BRANCH_NAME"
           git add content/site-content.json assets/cms
           if git diff --cached --quiet; then
-            echo "No content changes to publish."
-            exit 0
+            echo "No content changes were produced. Nothing was published."
+            exit 1
           fi
           git commit -m "cms: publish content update"
-          git push origin "$BRANCH_NAME"
-          gh pr create \
-            --base main \
-            --head "$BRANCH_NAME" \
-            --title "CMS: publish content update" \
-            --body "Automated content update submitted through RQJEY CMS. Please review the generated content changes before merging."
+          git push origin HEAD:main
+          git fetch origin main
+          local_sha="$(git rev-parse HEAD)"
+          remote_sha="$(git rev-parse origin/main)"
+          if [ "$local_sha" != "$remote_sha" ]; then
+            echo "Published commit could not be confirmed on origin/main."
+            exit 1
+          fi
+          echo "commit=$local_sha" >> "$GITHUB_OUTPUT"
+          echo "## CMS publication successful" >> "$GITHUB_STEP_SUMMARY"
+          echo "Content was committed directly to `main` and verified on GitHub." >> "$GITHUB_STEP_SUMMARY"
+          echo "Commit: `$local_sha`" >> "$GITHUB_STEP_SUMMARY"
+          echo "GitHub Pages deployment is triggered by the update to the publishing branch." >> "$GITHUB_STEP_SUMMARY"

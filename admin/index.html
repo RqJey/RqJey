@@ -39,13 +39,13 @@
     </aside>
     <main class="main">
       <header class="topbar"><div><div class="eyebrow">RQJEY STUDIO / AURORA</div><h1 id="pageTitle">Обзор</h1></div><div class="topbar-actions"><button class="logout-button" id="logoutButton" type="button">Выйти</button><a class="site-link" href="../" target="_blank" rel="noopener">Открыть сайт ↗</a></div></header>
-      <div class="notice"><b>Публикация через GitHub.</b> Изменения отправляются в GitHub Actions, а затем создаётся Pull Request для проверки.</div>
+      <div class="notice"><b>Публикация напрямую на сайт.</b> После успешного запуска GitHub Actions изменения записываются прямо в <code>main</code>. Pull Request больше не нужен. Если проверка или запись не удались, запуск завершится ошибкой — публикация не будет отмечена как успешная.</div>
 
       <section class="view active" id="view-overview">
         <div class="welcome"><div><span class="eyebrow">CONTROL CENTER</span><h2>Всё под контролем<span>.</span></h2><p>Управляй содержимым RQJEY STUDIO в одном месте.</p></div><div class="orb">RQ</div></div>
         <div class="stats"><article><small>ПРОЕКТЫ</small><strong id="statProjects">—</strong></article><article><small>НОВОСТИ</small><strong id="statNews">—</strong></article><article><small>КАТЕГОРИИ</small><strong id="statCategories">—</strong></article></div>
         <div class="panel"><div class="panel-head"><div><h3>Быстрые действия</h3><p>Выбери, что хочешь изменить.</p></div></div><div class="quick-actions"><button data-go="projects">＋ Добавить проект</button><button data-go="news">＋ Опубликовать новость</button><button data-go="homepage">✎ Изменить главную</button></div></div>
-        <div class="panel"><div class="panel-head"><div><h3>Как публиковать изменения</h3><p>Три простых шага — никакого отдельного сервера.</p></div></div><ol class="steps"><li>Внеси изменения в нужном разделе и нажми «Подготовить публикацию».</li><li>Скопируй JSON, открой GitHub Actions и вставь его в поле payload.</li><li>Запусти workflow. GitHub создаст Pull Request — проверь его и объедини.</li></ol></div>
+        <div class="panel"><div class="panel-head"><div><h3>Как публиковать изменения</h3><p>Три простых шага — никакого отдельного сервера.</p></div></div><ol class="steps"><li>Внеси изменения в нужном разделе и нажми кнопку подготовки.</li><li>Скопируй готовый JSON, открой GitHub Actions и вставь его в поле <code>payload</code> при запуске RQJEY CMS publish.</li><li>После успешного запуска GitHub проверит данные и запишет их прямо в <code>main</code>. Это и есть публикация; отдельный PR и ручное объединение не нужны.</li><li>Обновление GitHub Pages начнётся автоматически после записи в <code>main</code>.</li></ol></div>
       </section>
 
       <section class="view" id="view-projects">
@@ -100,7 +100,7 @@
         <div class="panel"><div class="panel-head"><div><h3>Подготовка публикации</h3><p>JSON-команда для защищённого GitHub Actions workflow.</p></div><span class="tag" id="payloadState">ОЖИДАЕТ ДЕЙСТВИЯ</span></div>
           <textarea id="payload" class="payload" spellcheck="false" placeholder="Сначала подготовь изменение в одном из разделов..."></textarea>
           <div class="publish-actions"><button class="primary" id="copyPayload" type="button">Скопировать JSON</button><a class="secondary" id="workflowLink" href="https://github.com/RqJey/RqJey/actions/workflows/cms-publish.yml" target="_blank" rel="noopener">Открыть GitHub Actions ↗</a></div>
-          <p class="hint">После открытия workflow нажми <b>Run workflow</b>, вставь JSON в поле <code>payload</code> и запусти. Затем открой созданный Pull Request, проверь изменения и объедини его в main.</p>
+          <p class="hint">Нажми <b>Run workflow</b>, вставь JSON в поле <code>payload</code> и запусти. При успешном результате изменения сразу попадут в <code>main</code>. В журнале запуска появится подтверждение с SHA опубликованного коммита. Если запуск красный — данные не опубликованы; открой лог ошибки.</p>
         </div>
       </section>
       <footer>RQJEY CMS <span>·</span> CONTENT MANAGEMENT WITHOUT AN EXTERNAL SERVER</footer>

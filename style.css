@@ -944,3 +944,9 @@ body:not(.rq-loading) > .page-shell {
 .news-copy p{margin:0 0 7px}
 .news-copy ul{padding-left:18px;margin:5px 0}
 @media(max-width:760px){.news-grid{grid-template-columns:1fr}}
+
+
+/* News navigation and empty state */
+.news-empty{grid-column:1/-1;margin:0;padding:22px;border:1px dashed var(--line);border-radius:12px;color:var(--muted);font-size:12px;text-align:center}
+.nav-link[href="#newsSection"]{white-space:nowrap}
+@media(max-width:760px){.nav-link[href="#newsSection"]{padding:7px 9px;border:1px solid var(--line);border-radius:8px;background:var(--surface)}}
