@@ -27,7 +27,7 @@
   let settings = {...defaults};
   try { settings = {...defaults, ...JSON.parse(localStorage.getItem(STORAGE_KEY) || '{}')}; } catch (_) {}
   let activeTheme = 'dark';
-  try { activeTheme = localStorage.getItem(THEME_KEY) || 'dark'; } catch (_) {}
+  try { activeTheme = localStorage.getItem(THEME_KEY) || (localStorage.getItem('rqjey-site-theme') === 'cosmic' ? 'cosmic' : (localStorage.getItem('rqjey-theme') === 'light' ? 'light' : 'dark')); } catch (_) {}
   const reduceMotion = window.matchMedia?.('(prefers-reduced-motion: reduce)').matches;
   const finePointer = window.matchMedia?.('(hover:hover) and (pointer:fine)').matches;
   const create = (tag, className, text) => {
@@ -96,8 +96,8 @@
   dialog.append(header,content); backdrop.appendChild(dialog); document.body.appendChild(backdrop);
   backdrop.addEventListener('click',event=>{if(event.target===backdrop)closePanel();});
   document.addEventListener('keydown',event=>{if(event.key==='Escape'&&!backdrop.hidden)closePanel();});
-  function openPanel(){backdrop.hidden=false;trigger.setAttribute('aria-expanded','true');document.body.classList.add('ui-settings-open');close.focus();}
-  function closePanel(){backdrop.hidden=true;trigger.setAttribute('aria-expanded','false');document.body.classList.remove('ui-settings-open');trigger.focus();}
+  function openPanel(){backdrop.hidden=false;trigger.setAttribute('aria-expanded','true');document.body.classList.add('ui-settings-open');document.documentElement.classList.add('ui-settings-open');close.focus();}
+  function closePanel(){backdrop.hidden=true;trigger.setAttribute('aria-expanded','false');document.body.classList.remove('ui-settings-open');document.documentElement.classList.remove('ui-settings-open');trigger.focus();}
   function persist(){try{localStorage.setItem(STORAGE_KEY,JSON.stringify(settings));}catch(_){} applySettings();}
   function syncControls(){
     document.querySelectorAll('[data-setting]').forEach(toggle=>{
@@ -131,8 +131,8 @@
     const root=document.documentElement;
     Object.keys(defaults).forEach(key=>root.classList.toggle('ui-'+key,!!settings[key] && !(reduceMotion&&['magnetic','iconMotion','pageTransitions'].includes(key))));
     root.style.setProperty('--ui-pointer-x','-1000px'); root.style.setProperty('--ui-pointer-y','-1000px');
-    if(progressBar) progressBar.setAttribute('data-enabled',String(!!settings.scrollProgress));
-    if(cursorGlow) cursorGlow.setAttribute('data-enabled',String(!!settings.cursorLight));
+    document.querySelector('.ui-scroll-progress')?.setAttribute('data-enabled',String(!!settings.scrollProgress));
+    document.querySelector('.ui-cursor-glow')?.setAttribute('data-enabled',String(!!settings.cursorLight));
   }
   applySettings(); syncControls();
   setTheme(activeTheme,false);
@@ -177,11 +177,11 @@
       if(target&&!target.contains(event.relatedTarget)){target.style.removeProperty('--ui-magnet-x');target.style.removeProperty('--ui-magnet-y');}
     },{passive:true});
   }
-  const progressBar=create('div','ui-scroll-progress'); progressBar.setAttribute('aria-hidden','true'); document.body.appendChild(progressBar);
+  const progressBar=create('div','ui-scroll-progress'); progressBar.setAttribute('aria-hidden','true'); progressBar.setAttribute('data-enabled',String(!!settings.scrollProgress)); document.body.appendChild(progressBar);
   const updateProgress=()=>{const max=document.documentElement.scrollHeight-innerHeight;progressBar.style.transform='scaleX('+(max>0?scrollY/max:0)+')';};
   addEventListener('scroll',updateProgress,{passive:true});addEventListener('resize',updateProgress,{passive:true});updateProgress();
-  const cursorGlow=create('div','ui-cursor-glow');cursorGlow.setAttribute('aria-hidden','true');document.body.appendChild(cursorGlow);
-  if(settings.headingReveal&&!reduceMotion&&'IntersectionObserver'in window){
+  const cursorGlow=create('div','ui-cursor-glow');cursorGlow.setAttribute('aria-hidden','true');cursorGlow.setAttribute('data-enabled',String(!!settings.cursorLight));document.body.appendChild(cursorGlow);
+  if(!reduceMotion&&'IntersectionObserver'in window){
     const observer=new IntersectionObserver(entries=>entries.forEach(entry=>{if(entry.isIntersecting&&settings.headingReveal){entry.target.classList.add('ui-heading-visible');observer.unobserve(entry.target);}}),{threshold:.12});
     document.querySelectorAll('h1,h2,.section-kicker').forEach(node=>{node.classList.add('ui-heading-reveal');observer.observe(node);});
   }
