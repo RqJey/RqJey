@@ -62,7 +62,7 @@
   function applyTheme(theme) {
     const selected = ["light", "dark", "system"].includes(theme) ? theme : "system";
     // Cosmic mode temporarily forces dark colors without overwriting the user's preference.
-    const effective = document.documentElement.classList.contains("cosmic-mode") ? "dark" : selected;
+    const effective = (document.documentElement.classList.contains("cosmic-mode") || document.documentElement.classList.contains("aurora-mode")) ? "dark" : selected;
     document.documentElement.dataset.theme = effective;
     document.getElementById("themeSelect").value = selected;
     localStorage.setItem("rqjey-theme", selected);

@@ -243,6 +243,56 @@ html[data-theme="light"] .boot-screen{background:radial-gradient(ellipse at 50% 
 @media(hover:none){.project-card,.project-card:hover{transform:none}.project-card .card-topline,.project-card .card-main,.project-card .project-description,.project-card .card-bottom,.project-card .project-icon{transform:none}}
 @media(prefers-reduced-motion:reduce){.boot-screen,.boot-mark,.boot-line i,.boot-screen:before,.boot-screen:after{animation:none!important;transition:none!important}.project-card,.project-card:hover,.release-modal,.modal-backdrop,.download-feedback{transition:none!important;transform:none!important}.particle-canvas{display:none}::view-transition-old(root),::view-transition-new(root){animation:none!important}}
 
+/* Three-way theme picker */
+.theme-picker-wrap{position:fixed;right:22px;bottom:22px;z-index:70}
+.theme-picker-wrap .cosmic-toggle{position:relative;right:auto;bottom:auto}
+.theme-picker{position:absolute;right:0;bottom:48px;width:min(292px,calc(100vw - 28px));padding:12px;border:1px solid var(--line);border-radius:16px;background:color-mix(in srgb,var(--surface) 92%,transparent);backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px);box-shadow:0 18px 55px #0003;transform-origin:bottom right;animation:theme-picker-in .18s ease-out}
+.theme-picker.hidden{display:none}
+.theme-picker-title{padding:3px 7px 10px;color:var(--subtle);font:700 9px/1.2 'DM Sans',sans-serif;letter-spacing:.18em}
+.theme-option{width:100%;display:flex;align-items:center;gap:11px;padding:10px 8px;border:1px solid transparent;border-radius:11px;background:transparent;color:var(--text);text-align:left;cursor:pointer;transition:background .2s,border-color .2s}
+.theme-option:hover,.theme-option:focus-visible{background:color-mix(in srgb,var(--accent) 10%,transparent);outline:none}
+.theme-option[aria-pressed="true"]{border-color:color-mix(in srgb,var(--accent) 48%,transparent);background:color-mix(in srgb,var(--accent) 9%,transparent)}
+.theme-option>span:nth-child(2){display:grid;gap:3px;flex:1}
+.theme-option strong{font:650 12px/1.3 'Manrope',sans-serif}
+.theme-option small{color:var(--muted);font:10px/1.3 'DM Sans',sans-serif}
+.theme-check{opacity:0;color:var(--accent);font-weight:800}
+.theme-option[aria-pressed="true"] .theme-check{opacity:1}
+.theme-swatch{width:28px;height:28px;flex:0 0 28px;border-radius:9px;border:1px solid #ffffff22}
+.swatch-standard{background:linear-gradient(135deg,#aeb7c4,#343b49)}
+.swatch-cosmic{background:radial-gradient(circle at 65% 30%,#f4c27c 0 8%,transparent 10%),linear-gradient(135deg,#111a35,#8a573a)}
+.swatch-aurora{background:linear-gradient(145deg,#071e2a,#087e78 48%,#8c63b5)}
+@keyframes theme-picker-in{from{opacity:0;transform:translateY(7px) scale(.97)}to{opacity:1;transform:translateY(0) scale(1)}}
+@media(max-width:600px){.theme-picker-wrap{right:14px;bottom:14px}.theme-picker-wrap .cosmic-toggle{width:38px;height:38px;opacity:.82}}
+@media(prefers-reduced-motion:reduce){.theme-picker{animation:none}}
+
+html.aurora-mode{
+  --bg:#07171d;--surface:#0d242b;--surface2:#12313a;--line:#28545a;
+  --text:#e5fbf5;--muted:#a2c9c3;--subtle:#739b97;--accent:#63e6cf;--mint:#9b8cff;
+  color-scheme:dark
+}
+html.aurora-mode body{
+  background:#07171d;
+  background-image:radial-gradient(ellipse at 12% 18%,#13b8a633,transparent 38%),radial-gradient(ellipse at 86% 22%,#7c5bd52b,transparent 42%),radial-gradient(ellipse at 52% 100%,#087b9a24,transparent 48%),linear-gradient(160deg,#07171d,#091722 58%,#07131d);
+}
+html.aurora-mode body:before{
+  background-image:radial-gradient(ellipse at 18% 12%,#5dffcf18,transparent 35%),radial-gradient(ellipse at 76% 24%,#a18aff18,transparent 38%);
+  opacity:.9
+}
+html.aurora-mode .ambient-orb{opacity:.2;filter:blur(95px)}
+html.aurora-mode .orb-a{background:#24e5bc}html.aurora-mode .orb-b{background:#7b70ed}html.aurora-mode .orb-c{background:#27a9d1}
+html.aurora-mode .brand-mark,html.aurora-mode .project-icon,html.aurora-mode .modal-icon,html.aurora-mode .about-symbol{border-color:#63e6cf55;background:linear-gradient(145deg,#124e50,#172b43);color:#c8fff2;box-shadow:0 0 25px #37d9c21c,inset 0 1px #ffffff18}
+html.aurora-mode .eyebrow,html.aurora-mode .section-kicker,html.aurora-mode .modal-kicker{color:#8cebdc}
+html.aurora-mode .primary-cta{background:linear-gradient(110deg,#43d9bd,#8d8aff);color:#06191d}
+html.aurora-mode .cosmic-toggle:hover,html.aurora-mode .cosmic-toggle:focus-visible{color:#8fffe8;border-color:#63e6cf88;filter:drop-shadow(0 0 8px #63e6cf)}
+html.aurora-mode .theme-picker{border-color:#3d8d87;background:#0b242beF}
+html.aurora-mode .theme-option[aria-pressed="true"]{border-color:#63e6cf88;background:#39d7bf16}
+html.aurora-mode .cosmic-backdrop{opacity:0}
+html.aurora-mode .solar-system-scene{opacity:0}
+html.aurora-mode .aurora-ribbon{opacity:1}
+.aurora-ribbon{position:fixed;z-index:-1;pointer-events:none;inset:-15% -10% auto;height:70vh;opacity:0;filter:blur(34px);transition:opacity 1s ease;background:radial-gradient(ellipse at 18% 45%,#20e6b52a 0 9%,transparent 48%),radial-gradient(ellipse at 52% 15%,#7866ff25 0 12%,transparent 52%),radial-gradient(ellipse at 82% 52%,#27c7d32a 0 10%,transparent 46%);transform:rotate(-8deg);animation:aurora-drift 18s ease-in-out infinite alternate}
+@keyframes aurora-drift{from{transform:translate3d(-2%,0,0) rotate(-8deg) scale(1)}to{transform:translate3d(2%,3%,0) rotate(-4deg) scale(1.08)}}
+@media(prefers-reduced-motion:reduce){.aurora-ribbon{animation:none}}
+
 /* Hidden Cosmic universe — a complete alternate visual skin, not a fourth theme setting. */
 .cosmic-toggle{position:fixed;right:22px;bottom:22px;z-index:50;width:36px;height:36px;display:grid;place-items:center;padding:0;border:1px solid color-mix(in srgb,var(--line) 72%,transparent);border-radius:50%;background:color-mix(in srgb,var(--surface) 78%,transparent);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);color:var(--muted);opacity:.58;font-size:19px;line-height:1;cursor:pointer;box-shadow:0 5px 20px #00000012;transition:opacity .3s,color .3s,transform .45s,border-color .3s,box-shadow .3s}
 .cosmic-toggle:hover,.cosmic-toggle:focus-visible{opacity:1;color:#9fc5ff;border-color:#8bbcff88;transform:rotate(55deg) scale(1.1);filter:drop-shadow(0 0 8px #8bbcff);box-shadow:0 6px 24px #6b9ff026;outline:none}

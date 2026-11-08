@@ -26,30 +26,50 @@
   window.addEventListener('load', () => setTimeout(hideBoot, 650), {once:true});
   setTimeout(hideBoot, 6500);
 
-  // Discreet alternate universe theme; choice persists independently of the 3 standard themes.
+  // Three selectable visual themes; the selected theme survives page reloads.
   const cosmicButton = document.getElementById('cosmicToggle');
-  const cosmicKey = 'rqjey-cosmic-mode';
-  function setCosmic(enabled) {
-    document.body.classList.toggle('cosmic-mode', enabled);
-    document.documentElement.classList.toggle('cosmic-mode', enabled);
-    // Keep the user's selected theme untouched; dark mode is only a temporary override.
-    window.setCosmicThemeOverride?.(enabled);
-    if (cosmicButton) {
-      cosmicButton.setAttribute('aria-pressed', String(enabled));
-      cosmicButton.setAttribute('aria-label', enabled ? 'Выключить космическую тему' : 'Включить космическую тему');
-      cosmicButton.title = enabled ? 'Вернуться к Aurora' : 'Секретная тема';
-    }
-    try { localStorage.setItem(cosmicKey, enabled ? '1' : '0'); } catch (_) {}
+  const themePicker = document.getElementById('themePicker');
+  const themeOptions = [...document.querySelectorAll('[data-site-theme]')];
+  const themeKey = 'rqjey-site-theme';
+  function setSiteTheme(theme) {
+    const selected = ['standard', 'cosmic', 'aurora'].includes(theme) ? theme : 'standard';
+    document.documentElement.classList.toggle('cosmic-mode', selected === 'cosmic');
+    document.body.classList.toggle('cosmic-mode', selected === 'cosmic');
+    document.documentElement.classList.toggle('aurora-mode', selected === 'aurora');
+    document.body.classList.toggle('aurora-mode', selected === 'aurora');
+    window.setCosmicThemeOverride?.(selected !== 'standard');
+    themeOptions.forEach(option => option.setAttribute('aria-pressed', String(option.dataset.siteTheme === selected)));
+    cosmicButton?.setAttribute('aria-label', 'Выбрать тему оформления');
+    cosmicButton?.setAttribute('aria-pressed', String(selected !== 'standard'));
+    cosmicButton?.setAttribute('title', selected === 'cosmic' ? 'Тема: Космос' : selected === 'aurora' ? 'Тема: Полярное сияние' : 'Тема: Стандартная');
+    try { localStorage.setItem(themeKey, selected); } catch (_) {}
+    document.querySelector('.aurora-ribbon')?.classList.toggle('is-active', selected === 'aurora');
   }
-  let cosmicSaved = false;
-  try { cosmicSaved = localStorage.getItem(cosmicKey) === '1'; } catch (_) {}
-  setCosmic(cosmicSaved);
-  cosmicButton?.addEventListener('click', () => {
-    const enabled = !document.body.classList.contains('cosmic-mode');
-    if (!reduce && document.startViewTransition) document.startViewTransition(() => setCosmic(enabled));
-    else setCosmic(enabled);
+  function closeThemePicker() {
+    themePicker?.classList.add('hidden');
+    cosmicButton?.setAttribute('aria-expanded', 'false');
+  }
+  function toggleThemePicker() {
+    if (!themePicker) return;
+    const opening = themePicker.classList.contains('hidden');
+    themePicker.classList.toggle('hidden', !opening);
+    cosmicButton?.setAttribute('aria-expanded', String(opening));
+  }
+  let savedTheme = 'standard';
+  try { savedTheme = localStorage.getItem(themeKey) || 'standard'; } catch (_) {}
+  setSiteTheme(savedTheme);
+  cosmicButton?.addEventListener('click', toggleThemePicker);
+  themeOptions.forEach(option => option.addEventListener('click', () => {
+    const apply = () => setSiteTheme(option.dataset.siteTheme);
+    if (!reduce && document.startViewTransition) document.startViewTransition(apply); else apply();
+    closeThemePicker();
+  }));
+  document.addEventListener('click', event => {
+    if (!event.target.closest('.theme-picker-wrap')) closeThemePicker();
   });
-
+  document.addEventListener('keydown', event => {
+    if (event.key === 'Escape') closeThemePicker();
+  });
 
   // Solar-system backdrop: softly crossfade a different planet every 3.6 seconds.
   const cosmicPlanet = document.getElementById('cosmicPlanet');
