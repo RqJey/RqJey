@@ -83,28 +83,31 @@
     return String(value ?? "").replace(/[&<>"']/g, c => ({ "&":"&amp;", "<":"&lt;", ">":"&gt;", '"':"&quot;", "'":"&#39;" }[c]));
   }
 
+  // Inline Markdown для коротких полей и карточек. Сначала экранируем HTML,
+  // поэтому пользовательский текст не может внедрить произвольную разметку.
+  function renderInlineMarkdown(value) {
+    let html = escapeHtml(value);
+    html = html.replace(/\[([^\]]+)\]\((https?:\/\/[^\s)]+)\)/g, '<a href="$2" target="_blank" rel="noopener noreferrer">$1</a>');
+    html = html.replace(/\*\*(.+?)\*\*/g, "<strong>$1</strong>");
+    html = html.replace(/(^|[^*])\*([^*\n]+)\*/g, "$1<em>$2</em>");
+    html = html.replace(/`([^`]+)`/g, "<code>$1</code>");
+    return html;
+  }
+
   // Безопасный небольшой Markdown-рендерер: поддерживает **жирный**, *курсив*, `код`,
   // списки, переносы строк и ссылки. HTML из описаний никогда не вставляется напрямую.
   function renderMarkdown(value) {
     const lines = String(value ?? "").replace(/\r/g, "").split("\n");
-    const inline = text => {
-      let html = escapeHtml(text);
-      html = html.replace(/\[([^\]]+)\]\((https?:\/\/[^\s)]+)\)/g, '<a href="$2" target="_blank" rel="noopener noreferrer">$1</a>');
-      html = html.replace(/\*\*(.+?)\*\*/g, "<strong>$1</strong>");
-      html = html.replace(/(^|[^*])\*([^*\n]+)\*/g, "$1<em>$2</em>");
-      html = html.replace(/`([^`]+)`/g, "<code>$1</code>");
-      return html;
-    };
     const out = []; let list = false;
     for (const raw of lines) {
       const line = raw.trim();
       const item = line.match(/^(?:[-*•])\s+(.+)/);
-      if (item) { if (!list) { out.push("<ul>"); list = true; } out.push(`<li>${inline(item[1])}</li>`); continue; }
+      if (item) { if (!list) { out.push("<ul>"); list = true; } out.push(`<li>${renderInlineMarkdown(item[1])}</li>`); continue; }
       if (list) { out.push("</ul>"); list = false; }
       if (!line) continue;
       const heading = line.match(/^(#{1,3})\s+(.+)/);
-      if (heading) { const level = heading[1].length + 2; out.push(`<h${level}>${inline(heading[2])}</h${level}>`); }
-      else out.push(`<p>${inline(line)}</p>`);
+      if (heading) { const level = heading[1].length + 2; out.push(`<h${level}>${renderInlineMarkdown(heading[2])}</h${level}>`); }
+      else out.push(`<p>${renderInlineMarkdown(line)}</p>`);
     }
     if (list) out.push("</ul>");
     return out.join("");
@@ -267,7 +270,7 @@
             <span class="mc-version">Minecraft ${escapeHtml(p.minecraft)}</span>
           </div>
         </div>
-        <p class="project-description">${escapeHtml(projectField(p, "description"))}</p>
+        <p class="project-description markdown-content">${renderInlineMarkdown(projectField(p, "description"))}</p>
         <div class="card-bottom">
           <span class="release-preview"><span class="tiny-dot"></span> ${builds.length} ${tr("files")} · ${p.releases.length} ${tr("releases")}</span>
           <div class="card-actions"><button class="icon-action" data-copy="${escapeHtml(p.id)}" title="${escapeHtml(tr("copyLink"))}" aria-label="${escapeHtml(tr("copyLink"))}">⧉</button><button class="icon-action" data-share="${escapeHtml(p.id)}" title="${escapeHtml(tr("share"))}" aria-label="${escapeHtml(tr("share"))}">↗</button><button class="details-button" data-project="${escapeHtml(p.id)}">${escapeHtml(tr("details"))} ${iconSvg.arrow}</button></div>
@@ -608,9 +611,9 @@
     const hero = document.querySelector(".intro-copy");
     const aboutTitle = document.querySelector(".about-text h2");
     const aboutCopy = document.querySelector(".about-text p");
-    if (cmsContent.homepage?.heroCopy && hero) hero.textContent = cmsContent.homepage.heroCopy;
-    if (cmsContent.homepage?.aboutTitle && aboutTitle) aboutTitle.textContent = cmsContent.homepage.aboutTitle;
-    if (cmsContent.homepage?.aboutCopy && aboutCopy) aboutCopy.textContent = cmsContent.homepage.aboutCopy;
+    if (cmsContent.homepage?.heroCopy && hero) hero.innerHTML = renderInlineMarkdown(cmsContent.homepage.heroCopy);
+    if (cmsContent.homepage?.aboutTitle && aboutTitle) aboutTitle.innerHTML = renderInlineMarkdown(cmsContent.homepage.aboutTitle);
+    if (cmsContent.homepage?.aboutCopy && aboutCopy) aboutCopy.innerHTML = renderInlineMarkdown(cmsContent.homepage.aboutCopy);
   }
 
   function renderNews() {
