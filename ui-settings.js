@@ -115,8 +115,9 @@
     const themeSelect=document.getElementById('themeSelect');
     if(themeSelect&&activeTheme!=='cosmic'){
       const standardOption=document.querySelector('[data-site-theme="standard"]');
+      changingThemeFromPanel=true;
       if(document.body.classList.contains('cosmic-mode')||document.body.classList.contains('aurora-mode')||document.body.classList.contains('sakura-mode')) standardOption?.click();
-      changingThemeFromPanel=true; themeSelect.value=activeTheme; themeSelect.dispatchEvent(new Event('change',{bubbles:true})); changingThemeFromPanel=false;
+      themeSelect.value=activeTheme; themeSelect.dispatchEvent(new Event('change',{bubbles:true})); changingThemeFromPanel=false;
     }
     if(activeTheme==='cosmic'){
       const cosmicOption=document.querySelector('[data-site-theme="cosmic"]');
