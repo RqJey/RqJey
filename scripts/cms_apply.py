@@ -68,7 +68,46 @@ def main():
     data.setdefault("hiddenProjects", [])
 
     action = payload.get("action")
-    if action == "save_project":
+    if action == "restore_content":
+        restored = payload.get("content")
+        if not isinstance(restored, dict) or not isinstance(restored.get("homepage", {}), dict):
+            fail("Backup content must contain a homepage object")
+        for key in ("categories", "projects", "news"):
+            if not isinstance(restored.get(key, []), list):
+                fail(f"Backup {key} must be a list")
+        if len(restored.get("categories", [])) > 50 or len(restored.get("projects", [])) > 100 or len(restored.get("news", [])) > 30:
+            fail("Backup contains too many records")
+        project_ids = []
+        for project in restored.get("projects", []):
+            if not isinstance(project, dict):
+                fail("Invalid project in backup")
+            project_ids.append(safe_id(project.get("id", "")))
+        if len(project_ids) != len(set(project_ids)):
+            fail("Backup contains duplicate project IDs")
+        news_ids = []
+        for item in restored.get("news", []):
+            if not isinstance(item, dict):
+                fail("Invalid news item in backup")
+            news_ids.append(safe_id(item.get("id", "")))
+        if len(news_ids) != len(set(news_ids)):
+            fail("Backup contains duplicate news IDs")
+        hidden = restored.get("hiddenProjects", [])
+        if not isinstance(hidden, list) or any(not isinstance(item, str) for item in hidden):
+            fail("Backup hiddenProjects must be a list of IDs")
+        history = restored.get("adminLog", [])
+        if not isinstance(history, list):
+            fail("Backup adminLog must be a list")
+        data = {"homepage": restored.get("homepage", {}), "categories": restored.get("categories", []),
+                "projects": restored.get("projects", []), "news": restored.get("news", []),
+                "hiddenProjects": restored.get("hiddenProjects", []), "adminLog": restored.get("adminLog", [])}
+    elif action == "reorder_projects":
+        order = payload.get("order")
+        current_ids = [project.get("id") for project in data["projects"]]
+        if not isinstance(order, list) or len(order) != len(current_ids) or set(order) != set(current_ids) or len(set(order)) != len(order):
+            fail("Project order must contain every existing project exactly once")
+        by_id = {project["id"]: project for project in data["projects"]}
+        data["projects"] = [by_id[item_id] for item_id in order]
+    elif action == "save_project":
         project = payload.get("project", {})
         if not isinstance(project, dict):
             fail("Project must be an object")
@@ -154,6 +193,12 @@ def main():
 
     else:
         fail("Unsupported CMS action")
+
+    log = data.setdefault("adminLog", [])
+    if not isinstance(log, list):
+        log = []
+    log.append({"at": datetime.now(timezone.utc).isoformat(), "action": action})
+    data["adminLog"] = log[-100:]
 
     DATA_FILE.parent.mkdir(parents=True, exist_ok=True)
     DATA_FILE.write_text(json.dumps(data, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")

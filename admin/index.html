@@ -34,6 +34,8 @@
         <button class="nav-item" data-view="categories"><span>▦</span> Категории</button>
         <button class="nav-item" data-view="homepage"><span>⌂</span> Главная страница</button>
         <button class="nav-item" data-view="publish"><span>↗</span> Публикация</button>
+        <button class="nav-item" data-view="maintenance"><span>▣</span> Резервные копии</button>
+        <button class="nav-item" data-view="history"><span>◷</span> Журнал действий</button>
       </nav>
       <div class="sidebar-bottom"><span class="status-dot"></span> GitHub-powered CMS <small>STATIC · NO EXTERNAL SERVER</small></div>
     </aside>
@@ -116,11 +118,17 @@
         <div class="panel"><div class="panel-head"><div><h3>Подготовка публикации</h3><p>JSON-команда для защищённого GitHub Actions workflow.</p></div><span class="tag" id="payloadState">ОЖИДАЕТ ДЕЙСТВИЯ</span></div>
           <textarea id="payload" class="payload" spellcheck="false" placeholder="Сначала подготовь изменение в одном из разделов..."></textarea>
           <div class="token-setup"><label for="githubToken">GitHub token <span>нужен для безопасного запуска публикации</span></label><input id="githubToken" type="password" autocomplete="off" spellcheck="false" placeholder="github_pat_…" aria-describedby="tokenHelp"><p id="tokenHelp">Создай <a href="https://github.com/settings/personal-access-tokens/new" target="_blank" rel="noopener">Fine-grained token</a> только для <code>RqJey/RqJey</code> и включи <code>Actions: Read and write</code>. Токен сохраняется только в sessionStorage этой вкладки, не записывается в файлы и очищается при выходе из CMS или закрытии вкладки.</p></div>
-          <div class="publish-actions"><button class="primary" id="publishNow" type="button">Опубликовать на сайт ↗</button><button class="ghost" id="copyPayload" type="button">Скопировать JSON</button><a class="secondary" id="workflowLink" href="https://github.com/RqJey/RqJey/actions/workflows/cms-publish.yml" target="_blank" rel="noopener">Журнал публикаций ↗</a></div>
+          <div class="publish-actions"><button class="secondary" id="previewPayload" type="button">Предпросмотр изменений</button><button class="primary" id="publishNow" type="button">Опубликовать на сайт ↗</button><button class="ghost" id="copyPayload" type="button">Скопировать JSON</button><a class="secondary" id="workflowLink" href="https://github.com/RqJey/RqJey/actions/workflows/cms-publish.yml" target="_blank" rel="noopener">Журнал публикаций ↗</a></div>
+          <div class="preview-panel" id="payloadPreview" hidden><div class="panel-head"><div><h3>Предпросмотр</h3><p>Это изменение будет отправлено на сайт после публикации.</p></div></div><p id="previewSummary"></p><pre id="previewDetails"></pre></div>
           <p class="publish-status" id="publishStatus" role="status" aria-live="polite">Подготовь изменение, введи GitHub token и нажми «Опубликовать на сайт».</p>
           <p class="hint">Кнопка сама отправляет данные в GitHub Actions, ждёт успешной записи в <code>main</code> и затем проверяет обновлённый файл сайта. Пока проверка не завершена, новость не будет отмечена как опубликованная.</p>
         </div>
       </section>
+      <section class="view" id="view-maintenance"><div class="panel"><div class="panel-head"><div><h3>Резервные копии</h3><p>Скачай текущие данные сайта или восстанови их из ранее созданной копии.</p></div></div>
+          <div class="backup-actions"><button class="primary" id="exportBackup" type="button">Скачать резервную копию ↓</button><label class="backup-file-label">Выбрать файл копии<input id="backupFile" type="file" accept="application/json,.json"></label><button class="secondary" id="prepareRestore" type="button" disabled>Подготовить восстановление</button></div>
+          <p class="hint">Копия содержит тексты главной страницы, категории, проекты, новости и журнал действий. Восстановление заменит текущее содержимое сайта после подтверждения и публикации через GitHub Actions.</p><p class="backup-file-name" id="backupFileName">Файл не выбран.</p>
+        </div></section>
+      <section class="view" id="view-history"><div class="panel"><div class="panel-head"><div><h3>Журнал действий</h3><p>Последние 100 изменений, опубликованных через CMS.</p></div><span class="tag">ПОСЛЕДНИЕ 100</span></div><div id="activityLog" class="activity-log"></div></div></section>
       <footer>RQJEY CMS <span>·</span> CONTENT MANAGEMENT WITHOUT AN EXTERNAL SERVER</footer>
     </main>
   </div>
