@@ -200,7 +200,7 @@
       groups.get(key).releases.push(release);
     });
 
-    return Array.from(groups.values()).map((group, index) => {
+    const built = Array.from(groups.values()).map((group, index) => {
       const metadata = projectMetadata.find(p => p.name.toLowerCase() === group.name.toLowerCase());
       return {
         ...(metadata || {}),
@@ -214,8 +214,26 @@
         features: metadata?.features || [],
         releases: group.releases
       };
-    }).sort((a,b) => {
-      // FriendHub всегда закреплён первым; остальные моды — по алфавиту.
+    });
+    // CMS entries without a matching GitHub release remain visible with an empty download list.
+    projectMetadata.forEach((metadata, index) => {
+      if (!built.some(project => project.name.toLowerCase() === String(metadata.name || "").toLowerCase())) {
+        built.push({
+          ...metadata,
+          id: metadata.id || makeId(metadata.name),
+          icon: metadata.icon || fallbackIcons[index % fallbackIcons.length],
+          category: metadata.category || "Проект",
+          description: metadata.description || "",
+          minecraft: metadata.minecraft || "—",
+          accent: metadata.accent || accents[index % accents.length],
+          features: metadata.features || [],
+          releases: []
+        });
+      }
+    });
+    const hidden = new Set(cmsContent.hiddenProjects || []);
+    return built.filter(project => !hidden.has(project.id)).sort((a,b) => {
+      // FriendHub всегда закреплён первым; остальные проекты — по алфавиту.
       const aPinned = a.name.toLowerCase() === "friendhub";
       const bPinned = b.name.toLowerCase() === "friendhub";
       if (aPinned !== bPinned) return aPinned ? -1 : 1;
