@@ -1123,4 +1123,4 @@ html.sakura-mode .page-shell{position:relative;z-index:1}
 .news-page-button[aria-current="page"]{border-color:var(--accent);background:color-mix(in srgb,var(--accent) 16%,var(--surface));color:var(--text)}
 .news-page-button:disabled{opacity:.35;cursor:not-allowed}
 .news-page-arrow{font-size:15px}
-@media(max-width:760px){.news-grid{grid-template-columns:1fr}}
+/* News cards stay in one three-column row on mobile too. */
