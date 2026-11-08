@@ -2,7 +2,8 @@
   const config = window.SITE_CONFIG || {};
   const owner = (config.owner || "").trim();
   const releasesRepo = (config.releasesRepo || "Minecraft-Mods").trim();
-  const projectMetadata = config.projects || [];
+  let projectMetadata = config.projects || [];
+  let cmsContent = { homepage: {}, categories: [], projects: [], news: [] };
   const grid = document.getElementById("projectGrid");
   const search = document.getElementById("searchInput");
   const categoryFilter = document.getElementById("categoryFilter");
@@ -56,6 +57,7 @@
     categoryFilter.innerHTML = `<option value="all">${escapeHtml(tr("allCategories"))}</option>` + categoryOptions.map(category => { const translated = language === "en" ? ({"Персонализация":"Personalization","Навигация":"Navigation","Защита":"Protection","Общение":"Communication","Инструменты":"Tools"}[category] || category) : category; return `<option value="${escapeHtml(category)}">${escapeHtml(translated)}</option>`; }).join("");
     categoryFilter.value = selectedCategory;
     renderProjects(search.value);
+    applyHomepageContent();
   }
   function applyTheme(theme) {
     const selected = ["light", "dark", "system"].includes(theme) ? theme : "system";
@@ -241,7 +243,7 @@
           <div class="card-top-actions">${getProjectBadge(p)}<span class="card-index">${String(projects.indexOf(p) + 1).padStart(2,"0")}</span></div>
         </div>
         <div class="card-main">
-          <div class="project-icon">${escapeHtml(p.icon)}</div>
+          <div class="project-icon">\${p.image ? "<img src=\\"" + escapeHtml(p.image) + "\\" alt=\\"\\" loading=\\"lazy\\">" : escapeHtml(p.icon)}</div>
           <div class="project-heading">
             <h3>${escapeHtml(p.name)}</h3>
             <span class="mc-version">Minecraft ${escapeHtml(p.minecraft)}</span>
@@ -397,7 +399,7 @@
     activeReleases = project.releases
       .filter(r => !r.draft)
       .sort(compareReleasesByPublishedFile);
-    document.getElementById("modalIcon").textContent = project.icon;
+    document.getElementById("modalIcon").innerHTML = project.image ? "<img src=\\"" + escapeHtml(project.image) + "\\" alt=\\"\\">" : escapeHtml(project.icon);
     document.getElementById("modalTitle").textContent = project.name;
     document.getElementById("modalSubtitle").textContent = `${projectField(project, "category")} · Minecraft ${project.minecraft}`;
     document.getElementById("modalDescription").innerHTML = renderMarkdown(projectField(project, "description"));
@@ -584,14 +586,39 @@
     document.getElementById("mobileMenu").setAttribute("aria-expanded", "false");
   }));
 
+  function applyHomepageContent() {
+    const hero = document.querySelector(".intro-copy");
+    const aboutTitle = document.querySelector(".about-text h2");
+    const aboutCopy = document.querySelector(".about-text p");
+    if (cmsContent.homepage?.heroCopy && hero) hero.textContent = cmsContent.homepage.heroCopy;
+    if (cmsContent.homepage?.aboutTitle && aboutTitle) aboutTitle.textContent = cmsContent.homepage.aboutTitle;
+    if (cmsContent.homepage?.aboutCopy && aboutCopy) aboutCopy.textContent = cmsContent.homepage.aboutCopy;
+  }
+
+  function renderNews() {
+    const section = document.getElementById("newsSection");
+    const list = document.getElementById("newsGrid");
+    if (!section || !list) return;
+    const items = Array.isArray(cmsContent.news) ? cmsContent.news.slice(0, 6) : [];
+    section.classList.toggle("hidden", items.length === 0);
+    list.innerHTML = items.map(item => "<article class=\\"news-card\\">" + (item.image ? "<img class=\\"news-image\\" src=\\"" + escapeHtml(item.image) + "\\" alt=\\"\\" loading=\\"lazy\\">" : "") + "<div class=\\"news-meta\\">" + escapeHtml(item.date || "") + " <span>·</span> RQJEY STUDIO</div><h3>" + escapeHtml(item.title) + "</h3><div class=\\"news-copy markdown-content\\">" + renderMarkdown(item.body || "") + "</div></article>").join("");
+  }
+
   async function init() {
     document.getElementById("year").textContent = new Date().getFullYear();
     grid.innerHTML = '<div class="empty-state">Загрузка списка модов из GitHub Releases...</div>';
     initUtilities();
     try {
+      const cmsResponse = await fetch("content/site-content.json", { cache: "no-store" });
+      if (cmsResponse.ok) {
+        cmsContent = await cmsResponse.json();
+        if (Array.isArray(cmsContent.projects)) projectMetadata = cmsContent.projects;
+        applyHomepageContent();
+        renderNews();
+      }
       allReleases = await getAllReleases();
       projects = buildProjects(allReleases);
-      const categories = [...new Set(projects.map(p => p.category).filter(Boolean))].sort((a, b) => a.localeCompare(b, "ru"));
+      const categories = [...new Set([...(cmsContent.categories || []), ...projects.map(p => p.category).filter(Boolean)])].sort((a, b) => a.localeCompare(b, "ru"));
       categoryFilter.innerHTML = `<option value="all">${escapeHtml(tr("allCategories"))}</option>` + categories.map(category => { const translated = language === "en" ? ({"Персонализация":"Personalization","Навигация":"Navigation","Защита":"Protection","Общение":"Communication","Инструменты":"Tools"}[category] || category) : category; return `<option value="${escapeHtml(category)}">${escapeHtml(translated)}</option>`; }).join("");
       renderProjects();
       checkNewReleases();
