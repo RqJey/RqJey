@@ -696,15 +696,29 @@
     }
   }
 
+  let newsPage = 1;
+  const NEWS_PER_PAGE = 3;
+
   function renderNews() {
     const section = document.getElementById("newsSection");
     const list = document.getElementById("newsGrid");
+    const pagination = document.getElementById("newsPagination");
     if (!section || !list) return;
-    const items = Array.isArray(cmsContent.news) ? cmsContent.news.slice(0, 6) : [];
+    const items = Array.isArray(cmsContent.news) ? cmsContent.news : [];
+    const pageCount = Math.ceil(items.length / NEWS_PER_PAGE);
+    newsPage = Math.min(Math.max(newsPage, 1), Math.max(pageCount, 1));
     section.classList.remove("hidden");
     list.replaceChildren();
-    if (!items.length) { list.innerHTML = `<p class="news-empty">${escapeHtml(tr("newsEmpty"))}</p>`; return; }
-    items.forEach(item => {
+    if (pagination) {
+      pagination.replaceChildren();
+      pagination.classList.toggle("hidden", pageCount <= 1);
+    }
+    if (!items.length) {
+      list.innerHTML = `<p class="news-empty">${escapeHtml(tr("newsEmpty"))}</p>`;
+      return;
+    }
+    const start = (newsPage - 1) * NEWS_PER_PAGE;
+    items.slice(start, start + NEWS_PER_PAGE).forEach(item => {
       const card = document.createElement("article");
       card.className = "news-card";
       if (item.image) {
@@ -726,6 +740,29 @@
       card.append(meta, title, body);
       list.appendChild(card);
     });
+
+    if (pagination && pageCount > 1) {
+      const addButton = (label, page, className = "", disabled = false, current = false) => {
+        const button = document.createElement("button");
+        button.type = "button";
+        button.className = "news-page-button" + (className ? " " + className : "");
+        button.textContent = label;
+        button.disabled = disabled;
+        if (current) button.setAttribute("aria-current", "page");
+        button.addEventListener("click", () => {
+          if (page === newsPage || page < 1 || page > pageCount) return;
+          newsPage = page;
+          renderNews();
+          document.getElementById("newsSection")?.scrollIntoView({ behavior: "smooth", block: "start" });
+        });
+        pagination.appendChild(button);
+      };
+      addButton("←", newsPage - 1, "news-page-arrow", newsPage === 1);
+      for (let page = 1; page <= pageCount; page++) {
+        addButton(String(page), page, "", false, page === newsPage);
+      }
+      addButton("→", newsPage + 1, "news-page-arrow", newsPage === pageCount);
+    }
   }
 
   function renderProjectCategories() {
