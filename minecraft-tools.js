@@ -6,18 +6,18 @@
   const E=[
     ["Защита","protection",4,1,["helmet","turtle_helmet","chestplate","leggings","boots"]],["Огнеупорность","fire_protection",4,2,["helmet","turtle_helmet","chestplate","leggings","boots"]],["Взрывоустойчивость","blast_protection",4,2,["helmet","turtle_helmet","chestplate","leggings","boots"]],["Защита от снарядов","projectile_protection",4,2,["helmet","turtle_helmet","chestplate","leggings","boots"]],
     ["Шипы","thorns",3,4,["helmet","turtle_helmet","chestplate","leggings","boots"]],["Подводное дыхание","respiration",3,2,["helmet","turtle_helmet"]],["Подводник","aqua_affinity",1,2,["helmet","turtle_helmet"]],["Подводная ходьба","depth_strider",3,4,["boots"]],["Ледоход","frost_walker",2,4,["boots"]],["Скорость души","soul_speed",3,4,["boots"]],["Бесшумное передвижение","swift_sneak",3,4,["leggings"]],
-    ["Острота","sharpness",5,1,["sword","axe"]],["Небесная кара","smite",5,2,["sword","axe"]],["Бич членистоногих","bane_of_arthropods",5,2,["sword","axe"]],["Отбрасывание","knockback",2,2,["sword"]],["Заговор огня","fire_aspect",2,4,["sword"]],["Мародёрство","looting",3,2,["sword"]],["Разящий клинок","sweeping_edge",3,2,["sword"]],
+    ["Острота","sharpness",5,1,["sword","axe"]],["Небесная кара","smite",5,2,["sword","axe","mace"]],["Бич членистоногих","bane_of_arthropods",5,2,["sword","axe","mace"]],["Отбрасывание","knockback",2,2,["sword"]],["Заговор огня","fire_aspect",2,4,["sword","mace"]],["Мародёрство","looting",3,4,["sword"]],["Разящий клинок","sweeping_edge",3,2,["sword"]],
     ["Эффективность","efficiency",5,1,["pickaxe","axe","shovel","hoe","shears"]],["Шёлковое касание","silk_touch",1,4,["pickaxe","axe","shovel","hoe"]],["Удача","fortune",3,2,["pickaxe","shovel","axe","hoe"]],
     ["Сила","power",5,1,["bow"]],["Откидывание","punch",2,2,["bow"]],["Воспламенение","flame",1,2,["bow"]],["Бесконечность","infinity",1,4,["bow"]],
     ["Морская удача","luck_of_the_sea",3,2,["fishing_rod"]],["Приманка","lure",3,2,["fishing_rod"]],["Верность","loyalty",3,1,["trident"]],["Пронзатель","impaling",5,2,["trident"]],["Тягун","riptide",3,2,["trident"]],["Громовержец","channeling",1,4,["trident"]],
     ["Мультивыстрел","multishot",1,2,["crossbow"]],["Пронзающая стрела","piercing",4,1,["crossbow"]],["Быстрая перезарядка","quick_charge",3,1,["crossbow"]],
     ["Плотность","density",5,2,["mace"]],["Пробитие","breach",4,4,["mace"]],["Порыв ветра","wind_burst",3,4,["mace"]],
     ["Прочность","unbreaking",3,1,["helmet","turtle_helmet","chestplate","leggings","boots","elytra","sword","axe","pickaxe","shovel","hoe","bow","crossbow","trident","fishing_rod","mace","shield","shears","flint_and_steel"]],
-    ["Починка","mending",1,2,["helmet","turtle_helmet","chestplate","leggings","boots","elytra","sword","axe","pickaxe","shovel","hoe","bow","crossbow","trident","fishing_rod","mace","shield","shears","flint_and_steel"]],
-    ["Проклятие утраты","vanishing_curse",1,4,["helmet","turtle_helmet","chestplate","leggings","boots","elytra","sword","axe","pickaxe","shovel","hoe","bow","crossbow","trident","fishing_rod","mace","shield","shears","flint_and_steel"]],
-    ["Проклятие несъёмности","binding_curse",1,4,["helmet","turtle_helmet","chestplate","leggings","boots","elytra"]],
+    ["Починка","mending",1,4,["helmet","turtle_helmet","chestplate","leggings","boots","elytra","sword","axe","pickaxe","shovel","hoe","bow","crossbow","trident","fishing_rod","mace","shield","shears","flint_and_steel"]],
+    ["Проклятие утраты","vanishing_curse",1,8,["helmet","turtle_helmet","chestplate","leggings","boots","elytra","sword","axe","pickaxe","shovel","hoe","bow","crossbow","trident","fishing_rod","mace","shield","shears","flint_and_steel"]],
+    ["Проклятие несъёмности","binding_curse",1,8,["helmet","turtle_helmet","chestplate","leggings","boots","elytra"]],
   ];
-  const conflicts=[["protection","fire_protection","blast_protection","projectile_protection"],["sharpness","smite","bane_of_arthropods"],["depth_strider","frost_walker"],["silk_touch","fortune"],["infinity","mending"],["multishot","piercing"],["loyalty","riptide"]];
+  const conflicts=[["protection","fire_protection","blast_protection","projectile_protection"],["sharpness","smite","bane_of_arthropods","density","breach"],["depth_strider","frost_walker"],["silk_touch","fortune"],["infinity","mending"],["multishot","piercing"],["loyalty","riptide"],["channeling","riptide"]];
   const item=$("enchantItem"), choices=$("enchantChoices"), existingBox=$("existingEnchantChoices"), booksBox=$("selectedBooks");
   let books=new Map(),existing=new Set();
   const label=id=>E.find(e=>e[1]===id)?.[0]||id, data=id=>E.find(e=>e[1]===id);
@@ -35,7 +35,7 @@
   }
   function renderBooks(){
     booksBox.replaceChildren();if(!books.size){const p=document.createElement("p");p.className="mc-empty";p.textContent="Пока нет книг. Выбери зачарования выше.";booksBox.append(p);return;}
-    books.forEach((level,id)=>{const e=data(id),row=document.createElement("div");row.className="mc-selected-book";const name=document.createElement("strong");name.textContent=e[0];const select=document.createElement("select");select.setAttribute("aria-label","Уровень "+e[0]);for(let n=1;n<=e[2];n++){const o=document.createElement("option");o.value=n;o.textContent="Уровень "+n+" · "+(n*e[3])+" ур.";o.selected=n===level;select.append(o);}select.addEventListener("change",()=>{books.set(id,Number(select.value));calculate();});const remove=document.createElement("button");remove.type="button";remove.className="mc-remove-book";remove.textContent="×";remove.setAttribute("aria-label","Удалить "+e[0]);remove.addEventListener("click",()=>{books.delete(id);renderAll();});row.append(name,select,remove);booksBox.append(row);});
+    books.forEach((level,id)=>{const e=data(id),row=document.createElement("div");row.className="mc-selected-book";const name=document.createElement("strong");name.textContent=e[0];const select=document.createElement("select");select.setAttribute("aria-label","Уровень "+e[0]);for(let n=1;n<=e[2];n++){const o=document.createElement("option");o.value=n;o.textContent="Уровень "+n+" · "+(n*Math.max(1,Math.floor(e[3]/2)))+" ур.";o.selected=n===level;select.append(o);}select.addEventListener("change",()=>{books.set(id,Number(select.value));calculate();});const remove=document.createElement("button");remove.type="button";remove.className="mc-remove-book";remove.textContent="×";remove.setAttribute("aria-label","Удалить "+e[0]);remove.addEventListener("click",()=>{books.delete(id);renderAll();});row.append(name,select,remove);booksBox.append(row);});
   }
   function renderAll(){renderChoices();renderBooks();calculate();}
   function node(ids,penalty=0){return {ids:[...ids].sort(),penalty};}
@@ -45,7 +45,7 @@
   function optimize(){
     const selected=[...books.entries()].map(([id,level])=>({id,level}));
     const byId=new Map(selected.map(x=>[x.id,x.level]));
-    const costOf=ids=>ids.reduce((s,id)=>{const e=data(id);return s+e[3]*byId.get(id);},0);
+    const costOf=ids=>ids.reduce((s,id)=>{const e=data(id);return s+Math.max(1,Math.floor(e[3]/2))*byId.get(id);},0);
     const initialPenalty=maxPenalty(Number($("targetWork").value));
     const memo=new Map();let states=0;
     function solve(targetIds,targetPenalty,rawBooks){
