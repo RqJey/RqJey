@@ -158,7 +158,15 @@
   <div class="toast" id="toast" role="status"></div>
   <a class="admin-float-button" href="admin/" aria-label="Открыть админ-кабинет" title="Админ-кабинет"><span class="admin-float-icon" aria-hidden="true">⌘</span><span>Админ-кабинет</span></a>
   <a class="faq-float-button" href="faq.html" aria-label="Открыть FAQ" title="FAQ">FAQ</a>
-  <button class="cosmic-toggle" id="cosmicToggle" type="button" aria-label="Включить космическую тему" title="Секретная тема" aria-pressed="false"><span aria-hidden="true">✧</span><span class="cosmic-toggle-hint" aria-hidden="true">Cosmic mode</span></button>
+  <div class="theme-picker-wrap">
+    <button class="cosmic-toggle" id="cosmicToggle" type="button" aria-label="Выбрать тему оформления" title="Выбрать тему" aria-haspopup="true" aria-expanded="false" aria-controls="themePicker"><span aria-hidden="true">✧</span><span class="cosmic-toggle-hint" aria-hidden="true">Темы оформления</span></button>
+    <div class="theme-picker hidden" id="themePicker" role="group" aria-label="Выбор темы">
+      <div class="theme-picker-title">ТЕМА ОФОРМЛЕНИЯ</div>
+      <button class="theme-option" type="button" data-site-theme="standard"><span class="theme-swatch swatch-standard"></span><span><strong>Стандартная</strong><small>Обычный стиль сайта</small></span><span class="theme-check">✓</span></button>
+      <button class="theme-option" type="button" data-site-theme="cosmic"><span class="theme-swatch swatch-cosmic"></span><span><strong>Космос</strong><small>Планеты и звёздное небо</small></span><span class="theme-check">✓</span></button>
+      <button class="theme-option" type="button" data-site-theme="aurora"><span class="theme-swatch swatch-aurora"></span><span><strong>Полярное сияние</strong><small>Северное сияние и неоновые переливы</small></span><span class="theme-check">✓</span></button>
+    </div>
+  </div>
   <script src="config.js"></script>
   <script src="app.js"></script>
   <script src="aurora.js"></script>
