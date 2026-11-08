@@ -950,3 +950,25 @@ body:not(.rq-loading) > .page-shell {
 .news-empty{grid-column:1/-1;margin:0;padding:22px;border:1px dashed var(--line);border-radius:12px;color:var(--muted);font-size:12px;text-align:center}
 .nav-link[href="#newsSection"]{white-space:nowrap}
 @media(max-width:760px){.nav-link[href="#newsSection"]{padding:7px 9px;border:1px solid var(--line);border-radius:8px;background:var(--surface)}}
+
+
+/* Floating entry to the CMS login screen */
+.admin-float-button{
+  position:fixed;left:22px;bottom:22px;z-index:50;min-height:36px;
+  display:inline-flex;align-items:center;justify-content:center;gap:8px;padding:0 13px;
+  border:1px solid var(--line);border-radius:999px;
+  background:color-mix(in srgb,var(--surface) 84%,transparent);
+  color:var(--muted);font:800 10px Manrope,sans-serif;letter-spacing:.04em;
+  backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);
+  box-shadow:0 5px 20px #00000012;opacity:.76;
+  transition:opacity .2s,transform .2s,border-color .2s,color .2s,box-shadow .2s;
+}
+.admin-float-button:hover,.admin-float-button:focus-visible{
+  opacity:1;transform:translateY(-2px);color:var(--text);border-color:var(--accent);
+  outline:2px solid transparent;box-shadow:0 7px 24px color-mix(in srgb,var(--accent) 18%,transparent);
+}
+.admin-float-icon{font-size:13px;line-height:1;color:var(--accent)}
+@media(max-width:600px){
+  .admin-float-button{left:14px;bottom:14px;min-height:38px;padding:0 11px;font-size:9px}
+}
+@media(prefers-reduced-motion:reduce){.admin-float-button{transition:none}}
