@@ -656,7 +656,7 @@
       }
       const meta = document.createElement("div");
       meta.className = "news-meta";
-      meta.textContent = (item.date || "") + " · RQJEY STUDIO";
+      meta.textContent = (item.date || "") + " · RQJEY STUDIO · ID: " + (item.id || "—");
       const title = document.createElement("h3");
       title.textContent = item.title || "";
       const body = document.createElement("div");
