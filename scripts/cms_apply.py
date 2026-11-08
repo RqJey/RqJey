@@ -126,24 +126,32 @@ def main():
         news_id = safe_id(item.get("id", ""))
         title = safe_text(item.get("title", ""), "news title", 120)
         body = safe_text(item.get("body", ""), "news body", 4000)
-        original_id = safe_id(payload.get("original_id", news_id)) if payload.get("original_id") else news_id
-        existing = next((news for news in data["news"] if news.get("id") == original_id), {})
-        if original_id != news_id and any(news.get("id") == news_id for news in data["news"]):
-            fail("A news item with the new ID already exists")
+        original_index = payload.get("original_index")
+        existing = {}
+        if original_index is not None:
+            if not isinstance(original_index, int) or original_index < 0 or original_index >= len(data["news"]):
+                fail("The news item being edited no longer exists")
+            existing = data["news"][original_index]
         image = download_image(item.get("image_url", ""), "news-" + news_id) if item.get("image_url") else existing.get("image", "")
         date = existing.get("date") or datetime.now(timezone.utc).strftime("%Y-%m-%d")
         record = {"id": news_id, "title": title, "body": body, "date": date}
         if image:
             record["image"] = image
-        data["news"] = [n for n in data["news"] if n.get("id") not in (original_id, news_id)]
-        data["news"].insert(0, record)
+        if original_index is not None:
+            data["news"][original_index] = record
+        else:
+            data["news"].insert(0, record)
         data["news"] = data["news"][:30]
 
     elif action == "delete_news":
-        news_id = safe_id(payload.get("id", ""))
-        data["news"] = [n for n in data["news"] if n.get("id") != news_id]
-        for path in (ROOT / "assets" / "cms").glob("news-" + news_id + ".*"):
-            path.unlink()
+        index = payload.get("index")
+        if not isinstance(index, int) or index < 0 or index >= len(data["news"]):
+            fail("The news item to delete no longer exists")
+        removed = data["news"].pop(index)
+        news_id = safe_id(removed.get("id", ""))
+        if not any(news.get("id") == news_id for news in data["news"]):
+            for path in (ROOT / "assets" / "cms").glob("news-" + news_id + ".*"):
+                path.unlink()
 
     elif action == "update_homepage":
         homepage = payload.get("homepage", {})
