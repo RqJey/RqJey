@@ -20,6 +20,7 @@
   let activeReleases = [];
   let activeCollection = projects;
   let utilities = [];
+  let utilitiesLoadError = null;
 
   const iconSvg = {
     arrow: '<svg viewBox="0 0 24 24"><path d="M7 17 17 7M7 7h10v10"/></svg>'
@@ -344,6 +345,10 @@
   function renderUtilities(filter = "") {
     const utilityGrid = document.getElementById("utilitiesGrid");
     if (!utilityGrid) return;
+    if (utilitiesLoadError) {
+      renderReleaseLoadError(utilityGrid, utilitiesLoadError, "Utilities");
+      return;
+    }
     const term = filter.trim().toLowerCase();
     let ordered = utilities.slice();
     if (document.getElementById("utilitiesSort")?.value === "latest") {
@@ -365,6 +370,32 @@
     utilityGrid.querySelectorAll("[data-utility-project]").forEach(button => button.addEventListener("click", () => openProject(button.dataset.utilityProject, utilities)));
   }
 
+
+  function renderReleaseLoadError(container, error, repo) {
+    const wrapper = document.createElement("div");
+    wrapper.className = "empty-state release-load-error";
+
+    const message = document.createElement("p");
+    message.className = "release-load-message";
+    message.textContent = `${tr("loadError")}: ${error.message}. ${language === "ru" ? "Проверь настройки config.js и публичный доступ к репозиторию." : "Check config.js and make sure the repository is public."}`;
+
+    const hint = document.createElement("p");
+    hint.className = "release-load-hint";
+    hint.textContent = language === "ru"
+      ? "Нажми «Открыть GitHub», чтобы скачать интересующий тебя материал."
+      : "Click “Open GitHub” to download the file you need.";
+
+    const link = document.createElement("a");
+    link.className = "release-fallback-link";
+    link.href = `https://github.com/${encodeURIComponent(owner)}/${encodeURIComponent(repo)}/releases`;
+    link.target = "_blank";
+    link.rel = "noopener noreferrer";
+    link.textContent = tr("openGithub");
+
+    wrapper.append(message, hint, link);
+    container.replaceChildren(wrapper);
+  }
+
   async function initUtilities() {
     const utilityGrid = document.getElementById("utilitiesGrid");
     if (!utilityGrid) return;
@@ -379,8 +410,10 @@
         document.getElementById("utilitiesVisibleCount").textContent = "00 / 00";
       }
     } catch (error) {
-      // Не показываем библиотеку, пока GitHub не вернул ни одного доступного релиза.
-      document.getElementById("utilities").classList.add("hidden");
+      // Оставляем раздел видимым и предлагаем открыть релизы напрямую на GitHub.
+      utilitiesLoadError = error;
+      document.getElementById("utilities").classList.remove("hidden");
+      renderReleaseLoadError(utilityGrid, error, "Utilities");
       document.getElementById("utilitiesVisibleCount").textContent = "00 / 00";
     }
   }
@@ -736,7 +769,7 @@
       renderProjects(search.value);
       checkNewReleases();
     } catch (err) {
-      grid.innerHTML = `<div class="empty-state">${tr("loadError")}: ${escapeHtml(err.message)}. ${language === "ru" ? "Проверь настройки config.js и публичный доступ к репозиторию." : "Check config.js and public repository access."}</div>`;
+      renderReleaseLoadError(grid, err, releasesRepo);
       document.getElementById("projectCount").textContent = "0";
       document.getElementById("visibleCount").textContent = "00 / 00";
       showToast(err.message);

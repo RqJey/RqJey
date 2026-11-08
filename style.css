@@ -1111,3 +1111,5 @@ html.sakura-mode .page-shell{position:relative;z-index:1}
   html.sakura-mode .sakura-branch-scene{opacity:.55}
 }
 @media(prefers-reduced-motion:reduce){.sakura-branch-scene{transition:none;transform:none!important}}
+
+.release-load-error{max-width:680px;margin:0 auto;padding:34px 22px;border:1px solid #ffffff16;border-radius:13px;background:#ffffff04}.release-load-message{margin:0 auto 9px;color:#c7c5d0;line-height:1.8}.release-load-hint{margin:0 auto 18px;color:#9294a0;line-height:1.7}.release-fallback-link{display:inline-flex;align-items:center;justify-content:center;gap:9px;padding:10px 16px;border:1px solid #a58ce566;border-radius:9px;color:#d8cafa;background:#a58ce512;font-weight:700;transition:background .2s,border-color .2s,transform .2s}.release-fallback-link:hover{transform:translateY(-2px);border-color:#b7a2f5;background:#a58ce526;color:#fff}
