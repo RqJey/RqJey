@@ -85,3 +85,22 @@ html[data-theme="light"] .ui-settings-footer{border-color:#e5e0ec}
 @media(max-width:760px){.ui-cursor-glow{display:none}}
 @media(hover:none){html.ui-rainbow .project-card{animation:none}}
 @media(prefers-reduced-motion:reduce){.ui-cursor-glow,.ui-scroll-progress{transition:none}.ui-heading-reveal{opacity:1!important;transform:none!important}.ui-settings-dialog,.ui-setting-row{transition:none!important}}
+
+
+/* CALM UI PASS — preserve the settings, reduce motion and visual intensity */
+.ui-settings-trigger{transition:background-color .18s,border-color .18s,box-shadow .18s}
+.ui-settings-trigger:hover{transform:translateY(-1px);box-shadow:0 8px 22px #0003}
+.ui-cursor-glow{background:radial-gradient(190px circle at var(--ui-pointer-x,-1000px) var(--ui-pointer-y,-1000px),#b9a5f60a,transparent 76%);mix-blend-mode:normal;transition:opacity .2s}
+html.ui-glass .topbar,html.ui-glass .project-card,html.ui-glass .filter-bar,html.ui-glass .about-strip,html.ui-glass .release-modal,html.ui-glass .analyzer-panel,html.ui-glass .mc-tool-panel,html.ui-glass .faq-warning-card{backdrop-filter:blur(12px) saturate(1.12);-webkit-backdrop-filter:blur(12px) saturate(1.12)}
+html.ui-rainbow .project-card:hover{animation:ui-rainbow-spin 8s linear infinite;box-shadow:0 14px 38px #0003,0 0 12px #a58ce50c}
+html.ui-animatedBorders .filter-bar,html.ui-animatedBorders .about-strip,html.ui-animatedBorders .release-modal,html.ui-animatedBorders .analyzer-panel,html.ui-animatedBorders .mc-tool-panel{animation:ui-border-breathe 12s ease-in-out infinite}
+@keyframes ui-border-breathe{0%,100%{box-shadow:0 10px 30px #0002,0 0 0 1px #b9a5f608}50%{box-shadow:0 12px 32px #0002,0 0 0 1px #91e6c812}}
+html.ui-magnetic .ui-magnetic-item{translate:var(--ui-magnet-x,0) var(--ui-magnet-y,0);transition:translate .14s ease-out}
+html.ui-modalDepth body:has(.modal-backdrop:not(.hidden)) .page-shell,html.ui-modalDepth body:has(.tools-choice-backdrop:not(.hidden)) .page-shell,html.ui-modalDepth body:has(.social-choice-backdrop:not(.hidden)) .page-shell,html.ui-modalDepth body:has(.github-choice-backdrop:not(.hidden)) .page-shell,html.ui-modalDepth body.ui-settings-open .page-shell{filter:blur(1px);transform:none;transition:filter .18s ease}
+.ui-heading-reveal{transition:opacity .35s ease,transform .35s ease}
+html.ui-headingReveal .ui-heading-reveal:not(.ui-heading-visible){opacity:.35;transform:translateY(6px)}
+::view-transition-old(root){animation:ui-page-out .12s ease both}
+::view-transition-new(root){animation:ui-page-in .2s ease both}
+@keyframes ui-page-out{to{opacity:0}}
+@keyframes ui-page-in{from{opacity:0}to{opacity:1}}
+@media(prefers-reduced-motion:reduce){html.ui-rainbow .project-card:hover,html.ui-animatedBorders .filter-bar,html.ui-animatedBorders .about-strip,html.ui-animatedBorders .release-modal,html.ui-animatedBorders .analyzer-panel,html.ui-animatedBorders .mc-tool-panel{animation:none!important}}
