@@ -2,7 +2,8 @@
   const config = window.SITE_CONFIG || {};
   const owner = (config.owner || "").trim();
   const releasesRepo = (config.releasesRepo || "Minecraft-Mods").trim();
-  const projectMetadata = config.projects || [];
+  let projectMetadata = config.projects || [];
+  let cmsContent = { homepage: {}, categories: [], projects: [], news: [] };
   const grid = document.getElementById("projectGrid");
   const search = document.getElementById("searchInput");
   const categoryFilter = document.getElementById("categoryFilter");
@@ -56,6 +57,7 @@
     categoryFilter.innerHTML = `<option value="all">${escapeHtml(tr("allCategories"))}</option>` + categoryOptions.map(category => { const translated = language === "en" ? ({"Персонализация":"Personalization","Навигация":"Navigation","Защита":"Protection","Общение":"Communication","Инструменты":"Tools"}[category] || category) : category; return `<option value="${escapeHtml(category)}">${escapeHtml(translated)}</option>`; }).join("");
     categoryFilter.value = selectedCategory;
     renderProjects(search.value);
+    applyHomepageContent();
   }
   function applyTheme(theme) {
     const selected = ["light", "dark", "system"].includes(theme) ? theme : "system";
@@ -198,7 +200,7 @@
       groups.get(key).releases.push(release);
     });
 
-    return Array.from(groups.values()).map((group, index) => {
+    const built = Array.from(groups.values()).map((group, index) => {
       const metadata = projectMetadata.find(p => p.name.toLowerCase() === group.name.toLowerCase());
       return {
         ...(metadata || {}),
@@ -212,8 +214,26 @@
         features: metadata?.features || [],
         releases: group.releases
       };
-    }).sort((a,b) => {
-      // FriendHub всегда закреплён первым; остальные моды — по алфавиту.
+    });
+    // CMS entries without a matching GitHub release remain visible with an empty download list.
+    projectMetadata.forEach((metadata, index) => {
+      if (!built.some(project => project.name.toLowerCase() === String(metadata.name || "").toLowerCase())) {
+        built.push({
+          ...metadata,
+          id: metadata.id || makeId(metadata.name),
+          icon: metadata.icon || fallbackIcons[index % fallbackIcons.length],
+          category: metadata.category || "Проект",
+          description: metadata.description || "",
+          minecraft: metadata.minecraft || "—",
+          accent: metadata.accent || accents[index % accents.length],
+          features: metadata.features || [],
+          releases: []
+        });
+      }
+    });
+    const hidden = new Set(cmsContent.hiddenProjects || []);
+    return built.filter(project => !hidden.has(project.id)).sort((a,b) => {
+      // FriendHub всегда закреплён первым; остальные проекты — по алфавиту.
       const aPinned = a.name.toLowerCase() === "friendhub";
       const bPinned = b.name.toLowerCase() === "friendhub";
       if (aPinned !== bPinned) return aPinned ? -1 : 1;
@@ -241,7 +261,7 @@
           <div class="card-top-actions">${getProjectBadge(p)}<span class="card-index">${String(projects.indexOf(p) + 1).padStart(2,"0")}</span></div>
         </div>
         <div class="card-main">
-          <div class="project-icon">${escapeHtml(p.icon)}</div>
+          <div class="project-icon">${p.image ? '<img src="' + escapeHtml(p.image) + '" alt="" loading="lazy">' : escapeHtml(p.icon)}</div>
           <div class="project-heading">
             <h3>${escapeHtml(p.name)}</h3>
             <span class="mc-version">Minecraft ${escapeHtml(p.minecraft)}</span>
@@ -397,7 +417,7 @@
     activeReleases = project.releases
       .filter(r => !r.draft)
       .sort(compareReleasesByPublishedFile);
-    document.getElementById("modalIcon").textContent = project.icon;
+    document.getElementById("modalIcon").innerHTML = project.image ? '<img src="' + escapeHtml(project.image) + '" alt="">' : escapeHtml(project.icon);
     document.getElementById("modalTitle").textContent = project.name;
     document.getElementById("modalSubtitle").textContent = `${projectField(project, "category")} · Minecraft ${project.minecraft}`;
     document.getElementById("modalDescription").innerHTML = renderMarkdown(projectField(project, "description"));
@@ -584,14 +604,61 @@
     document.getElementById("mobileMenu").setAttribute("aria-expanded", "false");
   }));
 
+  function applyHomepageContent() {
+    const hero = document.querySelector(".intro-copy");
+    const aboutTitle = document.querySelector(".about-text h2");
+    const aboutCopy = document.querySelector(".about-text p");
+    if (cmsContent.homepage?.heroCopy && hero) hero.textContent = cmsContent.homepage.heroCopy;
+    if (cmsContent.homepage?.aboutTitle && aboutTitle) aboutTitle.textContent = cmsContent.homepage.aboutTitle;
+    if (cmsContent.homepage?.aboutCopy && aboutCopy) aboutCopy.textContent = cmsContent.homepage.aboutCopy;
+  }
+
+  function renderNews() {
+    const section = document.getElementById("newsSection");
+    const list = document.getElementById("newsGrid");
+    if (!section || !list) return;
+    const items = Array.isArray(cmsContent.news) ? cmsContent.news.slice(0, 6) : [];
+    section.classList.toggle("hidden", items.length === 0);
+    list.replaceChildren();
+    items.forEach(item => {
+      const card = document.createElement("article");
+      card.className = "news-card";
+      if (item.image) {
+        const image = document.createElement("img");
+        image.className = "news-image";
+        image.src = item.image;
+        image.alt = "";
+        image.loading = "lazy";
+        card.appendChild(image);
+      }
+      const meta = document.createElement("div");
+      meta.className = "news-meta";
+      meta.textContent = (item.date || "") + " · RQJEY STUDIO";
+      const title = document.createElement("h3");
+      title.textContent = item.title || "";
+      const body = document.createElement("div");
+      body.className = "news-copy markdown-content";
+      body.innerHTML = renderMarkdown(item.body || "");
+      card.append(meta, title, body);
+      list.appendChild(card);
+    });
+  }
+
   async function init() {
     document.getElementById("year").textContent = new Date().getFullYear();
     grid.innerHTML = '<div class="empty-state">Загрузка списка модов из GitHub Releases...</div>';
     initUtilities();
     try {
+      const cmsResponse = await fetch("content/site-content.json", { cache: "no-store" });
+      if (cmsResponse.ok) {
+        cmsContent = await cmsResponse.json();
+        if (Array.isArray(cmsContent.projects)) projectMetadata = cmsContent.projects;
+        applyHomepageContent();
+        renderNews();
+      }
       allReleases = await getAllReleases();
       projects = buildProjects(allReleases);
-      const categories = [...new Set(projects.map(p => p.category).filter(Boolean))].sort((a, b) => a.localeCompare(b, "ru"));
+      const categories = [...new Set([...(cmsContent.categories || []), ...projects.map(p => p.category).filter(Boolean)])].sort((a, b) => a.localeCompare(b, "ru"));
       categoryFilter.innerHTML = `<option value="all">${escapeHtml(tr("allCategories"))}</option>` + categories.map(category => { const translated = language === "en" ? ({"Персонализация":"Personalization","Навигация":"Navigation","Защита":"Protection","Общение":"Communication","Инструменты":"Tools"}[category] || category) : category; return `<option value="${escapeHtml(category)}">${escapeHtml(translated)}</option>`; }).join("");
       renderProjects();
       checkNewReleases();
