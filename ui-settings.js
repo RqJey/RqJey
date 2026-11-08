@@ -27,7 +27,8 @@
   let settings = {...defaults};
   try { settings = {...defaults, ...JSON.parse(localStorage.getItem(STORAGE_KEY) || '{}')}; } catch (_) {}
   let activeTheme = 'dark';
-  try { activeTheme = localStorage.getItem(THEME_KEY) || (localStorage.getItem('rqjey-site-theme') === 'cosmic' ? 'cosmic' : (localStorage.getItem('rqjey-theme') === 'light' ? 'light' : 'dark')); } catch (_) {}
+  let changingThemeFromPanel = false;
+  try { activeTheme = localStorage.getItem('rqjey-site-theme') === 'cosmic' ? 'cosmic' : (localStorage.getItem('rqjey-theme') === 'light' ? 'light' : 'dark'); } catch (_) {}
   const reduceMotion = window.matchMedia?.('(prefers-reduced-motion: reduce)').matches;
   const finePointer = window.matchMedia?.('(hover:hover) and (pointer:fine)').matches;
   const create = (tag, className, text) => {
@@ -113,16 +114,16 @@
     document.body.classList.toggle('ui-cosmic-theme',activeTheme==='cosmic');
     const themeSelect=document.getElementById('themeSelect');
     if(themeSelect&&activeTheme!=='cosmic'){
-      themeSelect.value=activeTheme; themeSelect.dispatchEvent(new Event('change',{bubbles:true}));
+      const standardOption=document.querySelector('[data-site-theme="standard"]');
+      if(document.body.classList.contains('cosmic-mode')||document.body.classList.contains('aurora-mode')||document.body.classList.contains('sakura-mode')) standardOption?.click();
+      changingThemeFromPanel=true; themeSelect.value=activeTheme; themeSelect.dispatchEvent(new Event('change',{bubbles:true})); changingThemeFromPanel=false;
     }
     if(activeTheme==='cosmic'){
       const cosmicOption=document.querySelector('[data-site-theme="cosmic"]');
       if(cosmicOption) cosmicOption.click();
       else document.body.classList.add('cosmic-mode');
     } else {
-      const standardOption=document.querySelector('[data-site-theme="standard"]');
-      if(document.body.classList.contains('cosmic-mode')&&standardOption) standardOption.click();
-      document.body.classList.remove('cosmic-mode');
+      document.body.classList.remove('cosmic-mode','aurora-mode','sakura-mode');
     }
     if(save){try{localStorage.setItem(THEME_KEY,activeTheme);}catch(_){}}
     syncControls();
@@ -136,6 +137,19 @@
   }
   applySettings(); syncControls();
   setTheme(activeTheme,false);
+  document.getElementById('themeSelect')?.addEventListener('change',event=>{
+    if(changingThemeFromPanel)return;
+    activeTheme=event.target.value==='light'?'light':'dark';
+    try{localStorage.setItem(THEME_KEY,activeTheme);}catch(_){}
+    syncControls();
+  });
+  document.addEventListener('click',event=>{
+    const option=event.target.closest('[data-site-theme]');
+    if(!option||changingThemeFromPanel)return;
+    activeTheme=option.dataset.siteTheme==='cosmic'?'cosmic':(localStorage.getItem('rqjey-theme')==='light'?'light':'dark');
+    try{localStorage.setItem(THEME_KEY,activeTheme);}catch(_){}
+    syncControls();
+  });
 
   // Reuse the site's toast style and expose a notification helper on every page.
   let toast=create('div','ui-settings-toast'); toast.setAttribute('role','status'); toast.setAttribute('aria-live','polite'); document.body.appendChild(toast);
