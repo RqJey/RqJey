@@ -39,16 +39,8 @@
 .mc-result-card strong{color:var(--text);font:750 15px Manrope}
 .mc-result-card p{margin:0;color:var(--muted);font-size:10px;line-height:1.7}
 .mc-note{margin:13px 0 0;color:var(--subtle);font-size:9px;line-height:1.75}
-.mc-banner-layout{display:grid;grid-template-columns:minmax(0,1.2fr) minmax(220px,.8fr);gap:24px;align-items:start}
-.mc-banner-controls>.mc-field{margin-bottom:13px}
-.mc-banner-actions{display:flex;flex-wrap:wrap;gap:8px;margin-top:16px}
-.mc-banner-preview{display:grid;justify-items:center;gap:12px;padding:18px;border:1px solid var(--line);border-radius:13px;background:color-mix(in srgb,var(--surface2) 50%,transparent)}
-.mc-preview-label,.mc-preview-caption{color:var(--subtle);font:800 8px Manrope;letter-spacing:1.5px}
-#bannerCanvas{display:block;width:min(100%,200px);height:auto;image-rendering:pixelated;filter:drop-shadow(0 12px 18px #0005)}
-.mc-banner-layer-row{gap:7px}.mc-layer-actions{display:flex;align-items:center;gap:3px;flex:0 0 auto}.mc-layer-move{width:24px;height:24px;border:1px solid var(--line);border-radius:6px;background:var(--surface2);color:var(--text);cursor:pointer}.mc-layer-move:disabled{opacity:.25;cursor:default}.mc-banner-layer-row>span:first-child{min-width:0;overflow-wrap:anywhere}
 .mc-tools-footer{display:flex;justify-content:space-between;gap:12px;margin-top:35px;padding:18px 0;border-top:1px solid var(--line);color:var(--subtle);font-size:8px;letter-spacing:.7px}
 .mc-tools-footer a{color:var(--muted);font-size:10px;letter-spacing:0}
 .mc-tools-footer a:hover{color:var(--text)}
-@media(max-width:680px){.mc-tools-main{padding:43px 0 24px}.mc-banner-layout{grid-template-columns:1fr}.mc-banner-preview{grid-row:1}.mc-add-enchant{grid-template-columns:1fr 100px}.mc-add-enchant .mc-primary-button{grid-column:1/-1}.mc-tools-footer{flex-direction:column}}
 @media(max-width:460px){.mc-form-grid{grid-template-columns:1fr}.mc-tool-tabs{display:grid;grid-template-columns:1fr}.mc-tool-tabs button{width:100%}.mc-tool-panel{padding:16px}.mc-tool-symbol{width:38px;height:38px;flex-basis:38px}}
 @media(prefers-reduced-motion:reduce){.mc-tool-tabs button,.mc-primary-button,.mc-secondary-button{transition:none}}
