@@ -3,6 +3,7 @@
   const DEMO_USERNAME = "admin";
   const DEMO_PASSWORD = "admin";
   const SESSION_KEY = "rqjey_cms_demo_session";
+  const TOKEN_SESSION_KEY = "rqjey_cms_github_token";
   const loginScreen = document.getElementById("loginScreen");
   const adminShell = document.getElementById("adminShell");
   const loginForm = document.getElementById("loginForm");
@@ -18,6 +19,7 @@
     document.getElementById("loginPassword").value = "";
     const tokenField = document.getElementById("githubToken");
     if (tokenField) tokenField.value = "";
+    sessionStorage.removeItem(TOKEN_SESSION_KEY);
   }
   if (sessionStorage.getItem(SESSION_KEY) === "ok") showAdmin();
   loginForm.addEventListener("submit", event => {
@@ -41,6 +43,16 @@
   let pending = null;
   let editingProjectOriginalIcon = null;
   const $ = id => document.getElementById(id);
+  const githubTokenField = $("githubToken");
+  if (githubTokenField) {
+    try { githubTokenField.value = sessionStorage.getItem(TOKEN_SESSION_KEY) || ""; } catch (_) {}
+    githubTokenField.addEventListener("input", () => {
+      try {
+        if (githubTokenField.value) sessionStorage.setItem(TOKEN_SESSION_KEY, githubTokenField.value);
+        else sessionStorage.removeItem(TOKEN_SESSION_KEY);
+      } catch (_) {}
+    });
+  }
   const toast = message => { const el=$("toast"); el.textContent=message; el.classList.add("show"); clearTimeout(toast.timer); toast.timer=setTimeout(()=>el.classList.remove("show"),2600); };
   const esc = value => String(value ?? "").replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
   const setPayload = value => { pending=value; $("payload").value=JSON.stringify(value,null,2); $("payloadState").textContent="ГОТОВО К ПУБЛИКАЦИИ"; $("copyPayload").textContent="Скопировать JSON"; showView("publish"); };
