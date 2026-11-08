@@ -42,7 +42,7 @@
   let content = {homepage:{},categories:[],projects:[],news:[]};
   let pending = null;
   let editingProjectOriginalIcon = null;
-  let editingNewsOriginalId = null;
+  let editingNewsOriginalIndex = null;
   const $ = id => document.getElementById(id);
   const githubTokenField = $("githubToken");
   if (githubTokenField) {
@@ -73,7 +73,7 @@
     $("projectList").innerHTML=content.projects.map(p=>'<article class="content-record">' + (p.image?'<img class="content-record-image" src="../'+esc(p.image)+'" alt="">':"") + '<div class="content-record-main"><div class="content-record-title"><span class="content-record-icon">'+esc(p.icon||"✳")+'</span><strong>'+esc(p.name)+'</strong><span class="content-record-accent">'+esc(p.accent||"") + '</span></div><small>'+esc(p.category)+' · Minecraft '+esc(p.minecraft||"")+' · ID: '+esc(p.id)+'</small><p>'+esc(p.description||"")+'</p>'+(p.features?.length?'<ul>'+p.features.map(x=>'<li>'+esc(x)+'</li>').join("")+'</ul>':"")+'</div><div class="record-actions"><button data-edit-project="'+esc(p.id)+'">Изменить</button><button class="danger" data-delete-project="'+esc(p.id)+'">Удалить</button></div></article>').join("")||'<p class="hint">Пока нет проектов.</p>';
   }
   function renderNews() {
-    $("newsList").innerHTML=content.news.map(n=>'<article class="content-record news-record">'+(n.image?'<img class="content-record-image" src="../'+esc(n.image)+'" alt="">':"")+'<div class="content-record-main"><div class="content-record-title"><strong>'+esc(n.title)+'</strong><span class="content-record-date">'+esc(n.date||"") + '</span></div><small>ID: '+esc(n.id)+'</small><p class="news-record-body">'+esc(n.body||"")+'</p></div><div class="record-actions"><button data-edit-news="'+esc(n.id)+'">Изменить</button><button class="danger" data-delete-news="'+esc(n.id)+'">Удалить</button></div></article>').join("")||'<p class="hint">Новостей пока нет.</p>';
+    $("newsList").innerHTML=content.news.map((n,index)=>'<article class="content-record news-record">'+(n.image?'<img class="content-record-image" src="../'+esc(n.image)+'" alt="">':"")+'<div class="content-record-main"><div class="content-record-title"><strong>'+esc(n.title)+'</strong><span class="content-record-date">'+esc(n.date||"") + '</span></div><small>ID: '+esc(n.id)+'</small><p class="news-record-body">'+esc(n.body||"")+'</p></div><div class="record-actions"><button data-edit-news="'+index+'">Изменить</button><button class="danger" data-delete-news="'+index+'">Удалить</button></div></article>').join("")||'<p class="hint">Новостей пока нет.</p>';
   }
   function resetProject() {
     $("projectForm").reset(); editingProjectOriginalIcon = null; $("pIcon").value="✳"; $("pMinecraft").value="26.3"; $("pAccent").value="violet"; $("projectFormTitle").textContent="Новый проект"; $("pId").disabled=false;
@@ -93,8 +93,8 @@
   });
   $("newsList").addEventListener("click",e=>{
     const edit=e.target.closest("[data-edit-news]"), del=e.target.closest("[data-delete-news]");
-    if(edit){const n=content.news.find(item=>item.id===edit.dataset.editNews);if(!n)return;editingNewsOriginalId=n.id;$("nId").value=n.id;$("nTitle").value=n.title||"";$("nBody").value=n.body||"";$("nImage").value="";$("newsForm").scrollIntoView({behavior:"smooth",block:"start"});$("newsForm").querySelector('button[type="submit"]').textContent="Подготовить обновление новости";}
-    if(del&&confirm("Подготовить удаление новости?"))setPayload({action:"delete_news",id:del.dataset.deleteNews});
+    if(edit){const index=Number(edit.dataset.editNews);const n=content.news[index];if(!n)return;editingNewsOriginalIndex=index;$("nId").value=n.id;$("nTitle").value=n.title||"";$("nBody").value=n.body||"";$("nImage").value="";$("newsForm").scrollIntoView({behavior:"smooth",block:"start"});$("newsForm").querySelector('button[type="submit"]').textContent="Подготовить обновление новости";}
+    if(del&&confirm("Подготовить удаление новости?"))setPayload({action:"delete_news",index:Number(del.dataset.deleteNews)});
   });
   $("resetProject").addEventListener("click",resetProject);
   $("projectForm").addEventListener("submit",e=>{
@@ -109,12 +109,11 @@
   });
   $("newsForm").addEventListener("submit",e=>{
     e.preventDefault();const id=$("nId").value.trim().toLowerCase();if(!/^[a-z0-9][a-z0-9-]*$/.test(id)){toast("Проверь ID новости");return;}
-    const originalId=editingNewsOriginalId;
-    const old=content.news.find(item=>item.id===(originalId||id));
-    if(originalId && id!==originalId && content.news.some(item=>item.id===id)){toast("Такой ID новости уже занят");return;}
+    const originalIndex=editingNewsOriginalIndex;
+    const old=Number.isInteger(originalIndex)?content.news[originalIndex]:null;
     const imageUrl=$("nImage").value.trim();
-    setPayload({action:"publish_news",...(originalId?{original_id:originalId}:{}),news:{id,title:$("nTitle").value.trim(),body:$("nBody").value.trim(),image_url:imageUrl,...(old?.image&&!imageUrl?{image:old.image}:{})}});
-    editingNewsOriginalId=null;
+    setPayload({action:"publish_news",...(Number.isInteger(originalIndex)?{original_index:originalIndex}:{}),news:{id,title:$("nTitle").value.trim(),body:$("nBody").value.trim(),image_url:imageUrl,...(old?.image&&!imageUrl?{image:old.image}:{})}});
+    editingNewsOriginalIndex=null;
     $("newsForm").querySelector('button[type="submit"]').textContent="Подготовить новость";
   });
   $("categoriesForm").addEventListener("submit",e=>{e.preventDefault();setPayload({action:"save_categories",categories:$("categoriesText").value.split("\n").map(x=>x.trim()).filter(Boolean)});});
@@ -147,12 +146,12 @@
   function payloadIsPresent(data, payload) {
     switch (payload.action) {
       case "publish_news": {
-        const item = (data.news || []).find(entry => entry.id === payload.news.id);
+        const item = Number.isInteger(payload.original_index) ? (data.news || [])[payload.original_index] : (data.news || []).find(entry => entry.id === payload.news.id && entry.title === payload.news.title && entry.body === payload.news.body);
         return !!item && item.title === payload.news.title && item.body === payload.news.body &&
           (!payload.news.image_url || (typeof item.image === "string" && item.image.startsWith("assets/cms/")));
       }
       case "delete_news":
-        return !(data.news || []).some(item => item.id === payload.id);
+        return Number.isInteger(payload.index) ? !(data.news || [])[payload.index] : !(data.news || []).some(item => item.id === payload.id);
       case "save_project": {
         const expected = payload.project;
         const item = (data.projects || []).find(project => project.id === expected.id);
