@@ -10,7 +10,20 @@
   <link rel="stylesheet" href="admin.css">
 </head>
 <body>
-  <div class="admin-shell">
+  <section class="login-screen" id="loginScreen" aria-labelledby="loginTitle">
+    <form class="login-card" id="loginForm">
+      <img class="login-logo" src="../assets/logo.png" alt="">
+      <div class="eyebrow">RQJEY STUDIO / RESTRICTED AREA</div>
+      <h1 id="loginTitle">С возвращением<span>.</span></h1>
+      <p>Войди, чтобы открыть панель управления.</p>
+      <label>Логин<input id="loginUsername" name="username" autocomplete="username" required placeholder="admin"></label>
+      <label>Пароль<input id="loginPassword" name="password" type="password" autocomplete="current-password" required placeholder="••••••••"></label>
+      <p class="login-error" id="loginError" role="alert" aria-live="polite"></p>
+      <button class="primary login-submit" type="submit">Войти в CMS <span>↗</span></button>
+      <small class="login-foot">PRIVATE WORKSPACE · RQJEY</small>
+    </form>
+  </section>
+  <div class="admin-shell" id="adminShell" hidden>
     <aside class="sidebar">
       <a class="brand" href="../"><img src="../assets/logo.png" alt=""><span>RQJEY <small>CMS / CONTROL</small></span></a>
       <div class="side-label">WORKSPACE</div>
@@ -25,8 +38,8 @@
       <div class="sidebar-bottom"><span class="status-dot"></span> GitHub-powered CMS <small>STATIC · NO EXTERNAL SERVER</small></div>
     </aside>
     <main class="main">
-      <header class="topbar"><div><div class="eyebrow">RQJEY STUDIO / AURORA</div><h1 id="pageTitle">Обзор</h1></div><a class="site-link" href="../" target="_blank" rel="noopener">Открыть сайт ↗</a></header>
-      <div class="notice"><b>Безопасная публикация через GitHub.</b> Панель не хранит пароли или токены. Изменения отправляются в GitHub Actions, а затем создаётся Pull Request для проверки.</div>
+      <header class="topbar"><div><div class="eyebrow">RQJEY STUDIO / AURORA</div><h1 id="pageTitle">Обзор</h1></div><div class="topbar-actions"><button class="logout-button" id="logoutButton" type="button">Выйти</button><a class="site-link" href="../" target="_blank" rel="noopener">Открыть сайт ↗</a></div></header>
+      <div class="notice"><b>Публикация через GitHub.</b> Изменения отправляются в GitHub Actions, а затем создаётся Pull Request для проверки.</div>
 
       <section class="view active" id="view-overview">
         <div class="welcome"><div><span class="eyebrow">CONTROL CENTER</span><h2>Всё под контролем<span>.</span></h2><p>Управляй содержимым RQJEY STUDIO в одном месте.</p></div><div class="orb">RQ</div></div>
