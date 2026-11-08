@@ -65,6 +65,7 @@ def main():
     data.setdefault("categories", [])
     data.setdefault("projects", [])
     data.setdefault("news", [])
+    data.setdefault("hiddenProjects", [])
 
     action = payload.get("action")
     if action == "save_project":
@@ -97,12 +98,15 @@ def main():
             data["projects"].append(record)
         else:
             data["projects"][found] = record
+        data["hiddenProjects"] = [hidden for hidden in data["hiddenProjects"] if hidden != item_id]
         if category not in data["categories"]:
             data["categories"].append(category)
 
     elif action == "delete_project":
         item_id = safe_id(payload.get("id", ""))
         data["projects"] = [p for p in data["projects"] if p.get("id") != item_id]
+        if item_id not in data["hiddenProjects"]:
+            data["hiddenProjects"].append(item_id)
         for path in (ROOT / "assets" / "cms").glob(item_id + ".*"):
             path.unlink()
 
