@@ -51,8 +51,8 @@
 .ui-cursor-glow[data-enabled="true"]{opacity:1}
 .ui-scroll-progress{position:fixed;z-index:130;left:0;top:0;width:100%;height:3px;transform:scaleX(0);transform-origin:left center;background:linear-gradient(90deg,#a58ce5,#91e6c8,#8dbbff);box-shadow:0 0 12px #a58ce56b;pointer-events:none;opacity:0;transition:opacity .2s}
 .ui-scroll-progress[data-enabled="true"]{opacity:1}
-html.ui-glass .topbar,html.ui-glass .project-card,html.ui-glass .filter-bar,html.ui-glass .about-strip,html.ui-glass .release-modal,html.ui-glass .analyzer-panel,html.ui-glass .mc-tool-panel,html.ui-glass .faq-warning-card{backdrop-filter:blur(22px) saturate(1.35);-webkit-backdrop-filter:blur(22px) saturate(1.35)}
-html.ui-glass .project-card,html.ui-glass .filter-bar,html.ui-glass .about-strip{background-color:color-mix(in srgb,var(--surface,#171922) 68%,transparent)}
+html.ui-glass .topbar,html.ui-glass .filter-bar,html.ui-glass .about-strip,html.ui-glass .release-modal,html.ui-glass .analyzer-panel,html.ui-glass .faq-warning-card{backdrop-filter:blur(22px) saturate(1.35);-webkit-backdrop-filter:blur(22px) saturate(1.35)}
+html.ui-glass .filter-bar,html.ui-glass .about-strip{background-color:color-mix(in srgb,var(--surface,#171922) 68%,transparent)}
 html.ui-glass .release-modal,html.ui-glass .ui-settings-dialog{background:color-mix(in srgb,var(--surface,#171922) 78%,transparent)}
 html.ui-animatedBorders .filter-bar,html.ui-animatedBorders .about-strip,html.ui-animatedBorders .release-modal,html.ui-animatedBorders .analyzer-panel,html.ui-animatedBorders .mc-tool-panel{animation:ui-border-breathe 7s ease-in-out infinite}
 @keyframes ui-border-breathe{0%,100%{box-shadow:0 14px 42px #0002,0 0 0 1px #b9a5f610}50%{box-shadow:0 18px 48px #0003,0 0 0 1px #91e6c82a,0 0 26px #b9a5f610}}
@@ -87,7 +87,7 @@ html[data-theme="light"] .ui-settings-footer{border-color:#e5e0ec}
 .ui-settings-trigger{transition:background-color .18s,border-color .18s,box-shadow .18s}
 .ui-settings-trigger:hover{transform:translateY(-1px);box-shadow:0 8px 22px #0003}
 .ui-cursor-glow{background:radial-gradient(190px circle at var(--ui-pointer-x,-1000px) var(--ui-pointer-y,-1000px),#b9a5f60a,transparent 76%);mix-blend-mode:normal;transition:opacity .2s}
-html.ui-glass .topbar,html.ui-glass .project-card,html.ui-glass .filter-bar,html.ui-glass .about-strip,html.ui-glass .release-modal,html.ui-glass .analyzer-panel,html.ui-glass .mc-tool-panel,html.ui-glass .faq-warning-card{backdrop-filter:blur(12px) saturate(1.12);-webkit-backdrop-filter:blur(12px) saturate(1.12)}
+html.ui-glass .topbar,html.ui-glass .filter-bar,html.ui-glass .about-strip,html.ui-glass .release-modal,html.ui-glass .analyzer-panel,html.ui-glass .faq-warning-card{backdrop-filter:blur(12px) saturate(1.12);-webkit-backdrop-filter:blur(12px) saturate(1.12)}
 html.ui-animatedBorders .filter-bar,html.ui-animatedBorders .about-strip,html.ui-animatedBorders .release-modal,html.ui-animatedBorders .analyzer-panel,html.ui-animatedBorders .mc-tool-panel{animation:ui-border-breathe 12s ease-in-out infinite}
 @keyframes ui-border-breathe{0%,100%{box-shadow:0 10px 30px #0002,0 0 0 1px #b9a5f608}50%{box-shadow:0 12px 32px #0002,0 0 0 1px #91e6c812}}
 html.ui-magnetic .ui-magnetic-item{translate:var(--ui-magnet-x,0) var(--ui-magnet-y,0);transition:translate .14s ease-out}
