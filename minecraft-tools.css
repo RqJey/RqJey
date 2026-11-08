@@ -44,3 +44,22 @@
 .mc-tools-footer a:hover{color:var(--text)}
 @media(max-width:460px){.mc-form-grid{grid-template-columns:1fr}.mc-tool-tabs{display:grid;grid-template-columns:1fr}.mc-tool-tabs button{width:100%}.mc-tool-panel{padding:16px}.mc-tool-symbol{width:38px;height:38px;flex-basis:38px}}
 @media(prefers-reduced-motion:reduce){.mc-tool-tabs button,.mc-primary-button,.mc-secondary-button{transition:none}}
+
+.mc-item-picker{display:grid;grid-template-columns:minmax(0,1.2fr) minmax(0,1fr);gap:13px;margin-bottom:24px}
+.mc-enchant-toolbar{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:10px;color:var(--text);font-size:11px}
+.mc-enchant-toolbar span{color:var(--muted);font-size:9px}
+.mc-enchant-choices{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:7px}
+.mc-enchant-option{display:grid;grid-template-columns:18px minmax(0,1fr) auto auto;align-items:center;gap:8px;min-height:43px;padding:8px 10px;border:1px solid var(--line);border-radius:9px;background:color-mix(in srgb,var(--surface2) 55%,transparent);color:var(--text);cursor:pointer}
+.mc-enchant-option:has(input:checked){border-color:color-mix(in srgb,var(--accent) 65%,var(--line));background:color-mix(in srgb,var(--accent) 10%,var(--surface))}
+.mc-enchant-option input{width:16px;height:16px;margin:0;accent-color:var(--accent);cursor:pointer}
+.mc-enchant-name{min-width:0;font-size:10px;font-weight:700}
+.mc-enchant-level,.mc-enchant-price{color:var(--muted);font-size:9px;white-space:nowrap}
+.mc-enchant-price{min-width:35px;text-align:right;color:var(--accent);font-weight:700}
+.mc-enchant-option.is-conflict{border-color:color-mix(in srgb,#e58d98 55%,var(--line))}
+.mc-enchant-option.is-conflict .mc-enchant-price{color:#e58d98}
+.mc-enchant-bottom{display:flex;justify-content:space-between;align-items:center;gap:15px;margin-top:18px}
+.mc-cost-total{display:grid;gap:3px;text-align:right}
+.mc-cost-total span{color:var(--accent);font:800 8px Manrope;letter-spacing:1.5px}
+.mc-cost-total strong{color:var(--text);font:800 19px Manrope}
+@media(max-width:680px){.mc-enchant-choices{grid-template-columns:1fr}}
+@media(max-width:460px){.mc-item-picker{grid-template-columns:1fr}.mc-enchant-option{grid-template-columns:18px minmax(0,1fr) auto auto}.mc-enchant-name{font-size:9px}}
