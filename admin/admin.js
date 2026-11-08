@@ -42,6 +42,7 @@
   let content = {homepage:{},categories:[],projects:[],news:[]};
   let pending = null;
   let editingProjectOriginalIcon = null;
+  let editingNewsOriginalId = null;
   const $ = id => document.getElementById(id);
   const githubTokenField = $("githubToken");
   if (githubTokenField) {
@@ -92,7 +93,7 @@
   });
   $("newsList").addEventListener("click",e=>{
     const edit=e.target.closest("[data-edit-news]"), del=e.target.closest("[data-delete-news]");
-    if(edit){const n=content.news.find(item=>item.id===edit.dataset.editNews);if(!n)return;$("nId").value=n.id;$("nTitle").value=n.title||"";$("nBody").value=n.body||"";$("nImage").value="";$("newsForm").scrollIntoView({behavior:"smooth",block:"start"});$("newsForm").querySelector('button[type="submit"]').textContent="Подготовить обновление новости";}
+    if(edit){const n=content.news.find(item=>item.id===edit.dataset.editNews);if(!n)return;editingNewsOriginalId=n.id;$("nId").value=n.id;$("nTitle").value=n.title||"";$("nBody").value=n.body||"";$("nImage").value="";$("newsForm").scrollIntoView({behavior:"smooth",block:"start"});$("newsForm").querySelector('button[type="submit"]').textContent="Подготовить обновление новости";}
     if(del&&confirm("Подготовить удаление новости?"))setPayload({action:"delete_news",id:del.dataset.deleteNews});
   });
   $("resetProject").addEventListener("click",resetProject);
@@ -108,9 +109,12 @@
   });
   $("newsForm").addEventListener("submit",e=>{
     e.preventDefault();const id=$("nId").value.trim().toLowerCase();if(!/^[a-z0-9][a-z0-9-]*$/.test(id)){toast("Проверь ID новости");return;}
-    const old=content.news.find(item=>item.id===id);
+    const originalId=editingNewsOriginalId;
+    const old=content.news.find(item=>item.id===(originalId||id));
+    if(originalId && id!==originalId && content.news.some(item=>item.id===id)){toast("Такой ID новости уже занят");return;}
     const imageUrl=$("nImage").value.trim();
-    setPayload({action:"publish_news",news:{id,title:$("nTitle").value.trim(),body:$("nBody").value.trim(),image_url:imageUrl,...(old?.image&&!imageUrl?{image:old.image}:{})}});
+    setPayload({action:"publish_news",...(originalId?{original_id:originalId}:{}),news:{id,title:$("nTitle").value.trim(),body:$("nBody").value.trim(),image_url:imageUrl,...(old?.image&&!imageUrl?{image:old.image}:{})}});
+    editingNewsOriginalId=null;
     $("newsForm").querySelector('button[type="submit"]').textContent="Подготовить новость";
   });
   $("categoriesForm").addEventListener("submit",e=>{e.preventDefault();setPayload({action:"save_categories",categories:$("categoriesText").value.split("\n").map(x=>x.trim()).filter(Boolean)});});

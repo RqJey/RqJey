@@ -126,12 +126,16 @@ def main():
         news_id = safe_id(item.get("id", ""))
         title = safe_text(item.get("title", ""), "news title", 120)
         body = safe_text(item.get("body", ""), "news body", 4000)
-        existing = next((news for news in data["news"] if news.get("id") == news_id), {})
+        original_id = safe_id(payload.get("original_id", news_id)) if payload.get("original_id") else news_id
+        existing = next((news for news in data["news"] if news.get("id") == original_id), {})
+        if original_id != news_id and any(news.get("id") == news_id for news in data["news"]):
+            fail("A news item with the new ID already exists")
         image = download_image(item.get("image_url", ""), "news-" + news_id) if item.get("image_url") else existing.get("image", "")
-        record = {"id": news_id, "title": title, "body": body, "date": datetime.now(timezone.utc).strftime("%Y-%m-%d")}
+        date = existing.get("date") or datetime.now(timezone.utc).strftime("%Y-%m-%d")
+        record = {"id": news_id, "title": title, "body": body, "date": date}
         if image:
             record["image"] = image
-        data["news"] = [n for n in data["news"] if n.get("id") != news_id]
+        data["news"] = [n for n in data["news"] if n.get("id") not in (original_id, news_id)]
         data["news"].insert(0, record)
         data["news"] = data["news"][:30]
 
