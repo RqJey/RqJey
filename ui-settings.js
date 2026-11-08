@@ -5,15 +5,14 @@
   const STORAGE_KEY = 'rqjey-ui-settings-v1';
   const THEME_KEY = 'rqjey-ui-theme';
   const defaults = {
-    glass:true, cursorLight:true, magnetic:false, rainbow:true, modalDepth:true, animatedBorders:true,
-    customCursor:false, pageTransitions:true, scrollProgress:true, headingReveal:true,
+    glass:true, cursorLight:true, magnetic:false, modalDepth:true, animatedBorders:true,
+    customCursor:true, pageTransitions:true, scrollProgress:true, headingReveal:true,
     customNotifications:true, smoothThemes:true, iconMotion:true
   };
   const definitions = [
     {id:'glass',group:'effects',title:'Жидкое стекло',description:'Полупрозрачные панели, размытие и мягкие блики.'},
     {id:'cursorLight',group:'effects',title:'Свет от курсора',description:'Мягкое свечение следует за движением мыши.'},
     {id:'magnetic',group:'effects',title:'Магнитные кнопки',description:'Интерактивные элементы слегка тянутся к курсору.'},
-    {id:'rainbow',group:'effects',title:'Радужный контур',description:'Переливающаяся граница карточек при наведении.'},
     {id:'modalDepth',group:'effects',title:'Искажение пространства',description:'Фон за открытым окном размывается и отдаляется.'},
     {id:'animatedBorders',group:'effects',title:'Анимированные границы',description:'Тонкие контуры медленно переливаются.'},
     {id:'customCursor',group:'quality',title:'Кастомный курсор',description:'Особый курсор для ссылок и кнопок.'},
