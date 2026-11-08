@@ -28,32 +28,35 @@
         <button type="button" data-tool-tab="portals">◇ Порталы</button>
       </nav>
 
-      <section class="mc-tool-panel" id="tool-enchantments" data-tool-panel="enchantments">
-        <div class="mc-tool-heading"><div><div class="mc-tool-kicker">ANVIL CALCULATOR</div><h2>Калькулятор зачарований</h2><p>Выбери предмет — покажу только совместимые зачарования. Галочки сразу выбирают максимальный ванильный уровень.</p></div><span class="mc-tool-symbol">✦</span></div>
-        <div class="mc-item-picker">
-          <label class="mc-field"><span>Предмет</span><select id="enchantItem">
-            <optgroup label="Броня">
-              <option value="helmet">Шлем</option><option value="turtle_helmet">Черепаший панцирь</option><option value="chestplate">Нагрудник</option><option value="leggings">Поножи</option><option value="boots">Ботинки</option><option value="elytra">Элитры</option>
-            </optgroup>
-            <optgroup label="Оружие">
-              <option value="sword">Меч</option><option value="axe">Топор</option><option value="bow">Лук</option><option value="crossbow">Арбалет</option><option value="trident">Трезубец</option><option value="mace">Булава</option>
-            </optgroup>
-            <optgroup label="Инструменты">
-              <option value="pickaxe">Кирка</option><option value="shovel">Лопата</option><option value="hoe">Мотыга</option><option value="shears">Ножницы</option><option value="fishing_rod">Удочка</option><option value="flint_and_steel">Огниво</option><option value="shield">Щит</option>
-            </optgroup>
-          </select></label>
-          <label class="mc-field"><span>Предыдущие работы на наковальне</span><select id="targetWork"><option value="0">Не использовался</option><option value="1">1 раз</option><option value="2">2 раза</option><option value="3">3 раза</option><option value="4">4 раза</option><option value="5">5 раз</option></select></label>
+      <section class="mc-tool-panel mc-anvil-panel" id="tool-enchantments" data-tool-panel="enchantments">
+        <div class="mc-tool-heading"><div><div class="mc-tool-kicker">ANVIL PLANNER · JAVA EDITION</div><h2>Калькулятор наковальни</h2><p>Подбери книги, а калькулятор найдёт наиболее выгодную последовательность объединений и переноса на предмет.</p></div><span class="mc-tool-symbol">✦</span></div>
+        <div class="mc-anvil-topline"><span class="mc-live-dot"></span> Оптимизация в реальном времени <button type="button" id="resetAnvil" class="mc-text-button">Сбросить всё ↺</button></div>
+        <div class="mc-anvil-section">
+          <div class="mc-step-title"><span>1</span><div><strong>Ваш предмет</strong><small>Выберите экипировку и укажите её состояние.</small></div></div>
+          <div class="mc-item-picker">
+            <label class="mc-field"><span>Предмет</span><select id="enchantItem">
+              <optgroup label="Броня"><option value="helmet">Шлем</option><option value="turtle_helmet">Черепаший панцирь</option><option value="chestplate">Нагрудник</option><option value="leggings">Поножи</option><option value="boots">Ботинки</option><option value="elytra">Элитры</option></optgroup>
+              <optgroup label="Оружие"><option value="sword" selected>Алмазный меч</option><option value="axe">Топор</option><option value="bow">Лук</option><option value="crossbow">Арбалет</option><option value="trident">Трезубец</option><option value="mace">Булава</option></optgroup>
+              <optgroup label="Инструменты"><option value="pickaxe">Кирка</option><option value="shovel">Лопата</option><option value="hoe">Мотыга</option><option value="shears">Ножницы</option><option value="fishing_rod">Удочка</option><option value="flint_and_steel">Огниво</option><option value="shield">Щит</option></optgroup>
+            </select></label>
+            <label class="mc-field"><span>Предыдущие работы на предмете</span><select id="targetWork"><option value="0">0 · Новый предмет</option><option value="1">1 работа</option><option value="2">2 работы</option><option value="3">3 работы</option><option value="4">4 работы</option><option value="5">5 работ</option><option value="6">6 работ</option></select></label>
+          </div>
+          <details class="mc-existing-details"><summary>Предмет уже зачарован? Указать имеющиеся чары</summary><p>Уже имеющиеся зачарования не нужно покупать повторно. Конфликтующие с ними книги будут исключены из расчёта.</p><div id="existingEnchantChoices" class="mc-existing-grid"></div></details>
         </div>
-        <div class="mc-enchant-toolbar"><strong>Доступные зачарования</strong><span id="enchantCount">Выбрано: 0</span></div>
-        <div id="enchantChoices" class="mc-enchant-choices" aria-live="polite"></div>
-        <div class="mc-enchant-bottom">
-          <button class="mc-secondary-button" id="clearEnchants" type="button">Снять все галочки</button>
-          <div class="mc-cost-total"><span>ИТОГО</span><strong id="enchantCost">0 уровней</strong></div>
+        <div class="mc-anvil-section">
+          <div class="mc-step-title"><span>2</span><div><strong>Книги с чарами</strong><small>Добавляй зачарования в список книг. Уровень каждой книги можно изменить.</small></div></div>
+          <div class="mc-enchant-toolbar"><strong>Доступные зачарования</strong><span id="enchantCount">Выбрано: 0</span></div>
+          <div id="enchantChoices" class="mc-enchant-choices" aria-live="polite"></div>
+          <div class="mc-book-list-wrap"><div class="mc-book-list-heading"><strong>Твои книги</strong><button type="button" id="clearEnchants" class="mc-text-button">Очистить список</button></div><div id="selectedBooks" class="mc-selected-books"><p class="mc-empty">Пока нет книг. Выбери зачарования выше.</p></div></div>
         </div>
-        <div class="mc-result-card" id="enchantResult" aria-live="polite"><span class="mc-result-label">СТОИМОСТЬ НА НАКОВАЛЬНЕ</span><strong>Выбери предмет и зачарования</strong><p>Стоимость обновляется автоматически.</p></div>
-        <p class="mc-note">Расчёт ориентировочный для Java Edition: применение зачарований книгой к предмету, с учётом предыдущих работ на наковальне. Несовместимые чары отмечены отдельно. При стоимости 40 уровней и выше наковальня в обычном выживании выдаёт «Слишком дорого!».</p>
+        <div class="mc-anvil-section">
+          <div class="mc-step-title"><span>3</span><div><strong>Оптимальный порядок</strong><small>План пересчитывается автоматически после каждого изменения.</small></div></div>
+          <div id="enchantResult" class="mc-result-card mc-anvil-summary" aria-live="polite"><span class="mc-result-label">ПЛАН НАКОВАЛЬНИ</span><strong>Добавь книги для расчёта</strong><p>Здесь появится самый дешёвый порядок операций.</p></div>
+          <div id="anvilTree" class="mc-anvil-tree"></div>
+          <div id="anvilSteps" class="mc-anvil-steps"></div>
+        </div>
+        <p class="mc-note">Расчёт для Java Edition: стоимость переноса книги учитывает уровень зачарования и базовую стоимость чар, штраф предыдущих работ учитывается отдельно. Лимит 39 уровней проверяется для каждой операции, а не для суммы всего плана. Ремонт предмета материалами и готовые книги с несколькими чарами не моделируются.</p>
       </section>
-
       <section class="mc-tool-panel" id="tool-portals" data-tool-panel="portals" hidden>
         <div class="mc-tool-heading"><div><div class="mc-tool-kicker">PORTAL COORDINATES</div><h2>Калькулятор порталов</h2><p>Переводи координаты между Верхним миром и Незером с масштабом 8:1.</p></div><span class="mc-tool-symbol">◇</span></div>
         <div class="mc-form-grid">
