@@ -26,22 +26,26 @@
   window.addEventListener('load', () => setTimeout(hideBoot, 650), {once:true});
   setTimeout(hideBoot, 6500);
 
-  // Three selectable visual themes; the selected theme survives page reloads.
+  // Five selectable visual themes; the selected theme survives page reloads.
   const cosmicButton = document.getElementById('cosmicToggle');
   const themePicker = document.getElementById('themePicker');
   const themeOptions = [...document.querySelectorAll('[data-site-theme]')];
   const themeKey = 'rqjey-site-theme';
   function setSiteTheme(theme) {
-    const selected = ['standard', 'cosmic', 'aurora'].includes(theme) ? theme : 'standard';
+    const selected = ['standard', 'cosmic', 'aurora', 'sakura', 'arctic'].includes(theme) ? theme : 'standard';
     document.documentElement.classList.toggle('cosmic-mode', selected === 'cosmic');
     document.body.classList.toggle('cosmic-mode', selected === 'cosmic');
     document.documentElement.classList.toggle('aurora-mode', selected === 'aurora');
     document.body.classList.toggle('aurora-mode', selected === 'aurora');
+    document.documentElement.classList.toggle('sakura-mode', selected === 'sakura');
+    document.body.classList.toggle('sakura-mode', selected === 'sakura');
+    document.documentElement.classList.toggle('arctic-mode', selected === 'arctic');
+    document.body.classList.toggle('arctic-mode', selected === 'arctic');
     window.setCosmicThemeOverride?.(selected !== 'standard');
     themeOptions.forEach(option => option.setAttribute('aria-pressed', String(option.dataset.siteTheme === selected)));
     cosmicButton?.setAttribute('aria-label', 'Выбрать тему оформления');
     cosmicButton?.setAttribute('aria-pressed', String(selected !== 'standard'));
-    cosmicButton?.setAttribute('title', selected === 'cosmic' ? 'Тема: Космос' : selected === 'aurora' ? 'Тема: Полярное сияние' : 'Тема: Стандартная');
+    cosmicButton?.setAttribute('title', ({cosmic:'Тема: Космос',aurora:'Тема: Полярное сияние',sakura:'Тема: Сакура',arctic:'Тема: Арктика',standard:'Тема: Стандартная'})[selected]);
     try { localStorage.setItem(themeKey, selected); } catch (_) {}
     document.querySelector('.aurora-ribbon')?.classList.toggle('is-active', selected === 'aurora');
   }
