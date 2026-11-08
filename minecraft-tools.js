@@ -16,7 +16,6 @@
     ["Починка","mending",1,2,["helmet","turtle_helmet","chestplate","leggings","boots","elytra","sword","axe","pickaxe","shovel","hoe","bow","crossbow","trident","fishing_rod","mace","shield","shears","flint_and_steel"]],
     ["Проклятие утраты","vanishing_curse",1,4,["helmet","turtle_helmet","chestplate","leggings","boots","elytra","sword","axe","pickaxe","shovel","hoe","bow","crossbow","trident","fishing_rod","mace","shield","shears","flint_and_steel"]],
     ["Проклятие несъёмности","binding_curse",1,4,["helmet","turtle_helmet","chestplate","leggings","boots","elytra"]],
-    ["Удача моря","luck_of_the_sea",3,2,["fishing_rod"]]
   ];
   const conflicts=[["protection","fire_protection","blast_protection","projectile_protection"],["sharpness","smite","bane_of_arthropods"],["depth_strider","frost_walker"],["silk_touch","fortune"],["infinity","mending"],["multishot","piercing"],["loyalty","riptide"]];
   const item=$("enchantItem"), choices=$("enchantChoices"), existingBox=$("existingEnchantChoices"), booksBox=$("selectedBooks");
