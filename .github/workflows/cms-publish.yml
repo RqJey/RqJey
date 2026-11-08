@@ -47,7 +47,7 @@ jobs:
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add content/site-content.json assets/cms
+          git add -A
           if git diff --cached --quiet; then
             echo "No content changes were produced. Nothing was published."
             exit 1

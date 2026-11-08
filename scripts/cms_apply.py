@@ -126,7 +126,8 @@ def main():
         news_id = safe_id(item.get("id", ""))
         title = safe_text(item.get("title", ""), "news title", 120)
         body = safe_text(item.get("body", ""), "news body", 4000)
-        image = download_image(item.get("image_url", ""), "news-" + news_id) if item.get("image_url") else ""
+        existing = next((news for news in data["news"] if news.get("id") == news_id), {})
+        image = download_image(item.get("image_url", ""), "news-" + news_id) if item.get("image_url") else existing.get("image", "")
         record = {"id": news_id, "title": title, "body": body, "date": datetime.now(timezone.utc).strftime("%Y-%m-%d")}
         if image:
             record["image"] = image

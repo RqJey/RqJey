@@ -56,10 +56,10 @@
     $("categoryOptions").innerHTML=content.categories.map(x=>'<option value="'+esc(x)+'">').join("");
   }
   function renderProjects() {
-    $("projectList").innerHTML=content.projects.map(p=>'<div class="record"><div><strong>'+esc(p.name)+'</strong><small>'+esc(p.category)+' · '+esc(p.id)+'</small></div><div class="record-actions"><button data-edit-project="'+esc(p.id)+'">Изменить</button><button class="danger" data-delete-project="'+esc(p.id)+'">Удалить</button></div></div>').join("")||'<p class="hint">Пока нет проектов.</p>';
+    $("projectList").innerHTML=content.projects.map(p=>'<article class="content-record">' + (p.image?'<img class="content-record-image" src="../'+esc(p.image)+'" alt="">':"") + '<div class="content-record-main"><div class="content-record-title"><span class="content-record-icon">'+esc(p.icon||"✳")+'</span><strong>'+esc(p.name)+'</strong><span class="content-record-accent">'+esc(p.accent||"") + '</span></div><small>'+esc(p.category)+' · Minecraft '+esc(p.minecraft||"")+' · ID: '+esc(p.id)+'</small><p>'+esc(p.description||"")+'</p>'+(p.features?.length?'<ul>'+p.features.map(x=>'<li>'+esc(x)+'</li>').join("")+'</ul>':"")+'</div><div class="record-actions"><button data-edit-project="'+esc(p.id)+'">Изменить</button><button class="danger" data-delete-project="'+esc(p.id)+'">Удалить</button></div></article>').join("")||'<p class="hint">Пока нет проектов.</p>';
   }
   function renderNews() {
-    $("newsList").innerHTML=content.news.map(n=>'<div class="record"><div><strong>'+esc(n.title)+'</strong><small>'+esc(n.date||"")+' · '+esc(n.id)+'</small></div><div class="record-actions"><button class="danger" data-delete-news="'+esc(n.id)+'">Удалить</button></div></div>').join("")||'<p class="hint">Новостей пока нет.</p>';
+    $("newsList").innerHTML=content.news.map(n=>'<article class="content-record news-record">'+(n.image?'<img class="content-record-image" src="../'+esc(n.image)+'" alt="">':"")+'<div class="content-record-main"><div class="content-record-title"><strong>'+esc(n.title)+'</strong><span class="content-record-date">'+esc(n.date||"") + '</span></div><small>ID: '+esc(n.id)+'</small><p class="news-record-body">'+esc(n.body||"")+'</p></div><div class="record-actions"><button data-edit-news="'+esc(n.id)+'">Изменить</button><button class="danger" data-delete-news="'+esc(n.id)+'">Удалить</button></div></article>').join("")||'<p class="hint">Новостей пока нет.</p>';
   }
   function resetProject() {
     $("projectForm").reset(); $("pIcon").value="✳"; $("pMinecraft").value="26.3"; $("pAccent").value="violet"; $("projectFormTitle").textContent="Новый проект"; $("pId").disabled=false;
@@ -76,7 +76,11 @@
     if(edit)editProject(edit.dataset.editProject);
     if(del){const id=del.dataset.deleteProject;if(confirm("Подготовить удаление проекта "+id+"?"))setPayload({action:"delete_project",id});}
   });
-  $("newsList").addEventListener("click",e=>{const del=e.target.closest("[data-delete-news]");if(del&&confirm("Подготовить удаление новости?"))setPayload({action:"delete_news",id:del.dataset.deleteNews});});
+  $("newsList").addEventListener("click",e=>{
+    const edit=e.target.closest("[data-edit-news]"), del=e.target.closest("[data-delete-news]");
+    if(edit){const n=content.news.find(item=>item.id===edit.dataset.editNews);if(!n)return;$("nId").value=n.id;$("nTitle").value=n.title||"";$("nBody").value=n.body||"";$("nImage").value="";$("newsForm").scrollIntoView({behavior:"smooth",block:"start"});$("newsForm").querySelector('button[type="submit"]').textContent="Подготовить обновление новости";}
+    if(del&&confirm("Подготовить удаление новости?"))setPayload({action:"delete_news",id:del.dataset.deleteNews});
+  });
   $("resetProject").addEventListener("click",resetProject);
   $("projectForm").addEventListener("submit",e=>{
     e.preventDefault();
@@ -87,7 +91,10 @@
   });
   $("newsForm").addEventListener("submit",e=>{
     e.preventDefault();const id=$("nId").value.trim().toLowerCase();if(!/^[a-z0-9][a-z0-9-]*$/.test(id)){toast("Проверь ID новости");return;}
-    setPayload({action:"publish_news",news:{id,title:$("nTitle").value.trim(),body:$("nBody").value.trim(),image_url:$("nImage").value.trim()}});
+    const old=content.news.find(item=>item.id===id);
+    const imageUrl=$("nImage").value.trim();
+    setPayload({action:"publish_news",news:{id,title:$("nTitle").value.trim(),body:$("nBody").value.trim(),image_url:imageUrl,...(old?.image&&!imageUrl?{image:old.image}:{})}});
+    $("newsForm").querySelector('button[type="submit"]').textContent="Подготовить новость";
   });
   $("categoriesForm").addEventListener("submit",e=>{e.preventDefault();setPayload({action:"save_categories",categories:$("categoriesText").value.split("\n").map(x=>x.trim()).filter(Boolean)});});
   $("homepageForm").addEventListener("submit",e=>{e.preventDefault();setPayload({action:"update_homepage",homepage:{heroCopy:$("hHero").value.trim(),aboutTitle:$("hAboutTitle").value.trim(),aboutCopy:$("hAboutCopy").value.trim()}});});
@@ -117,15 +124,22 @@
     return response.json();
   }
   function payloadIsPresent(data, payload) {
-    const id = payload.id || payload.news?.id || payload.project?.id;
     switch (payload.action) {
-      case "publish_news":
-        return (data.news || []).some(item => item.id === payload.news.id && item.title === payload.news.title);
+      case "publish_news": {
+        const item = (data.news || []).find(entry => entry.id === payload.news.id);
+        return !!item && item.title === payload.news.title && item.body === payload.news.body &&
+          (!payload.news.image_url || (typeof item.image === "string" && item.image.startsWith("assets/cms/")));
+      }
       case "delete_news":
         return !(data.news || []).some(item => item.id === payload.id);
       case "save_project": {
-        const item = (data.projects || []).find(project => project.id === payload.project.id);
-        return !!item && item.name === payload.project.name && item.description === payload.project.description;
+        const expected = payload.project;
+        const item = (data.projects || []).find(project => project.id === expected.id);
+        return !!item && item.name === expected.name && item.category === expected.category &&
+          item.minecraft === expected.minecraft && item.icon === expected.icon &&
+          item.accent === expected.accent && item.description === expected.description &&
+          JSON.stringify(item.features || []) === JSON.stringify(expected.features || []) &&
+          (expected.image_url ? (typeof item.image === "string" && item.image.startsWith("assets/cms/")) : (!expected.image || item.image === expected.image));
       }
       case "delete_project":
         return (data.hiddenProjects || []).includes(payload.id) || !(data.projects || []).some(item => item.id === payload.id);

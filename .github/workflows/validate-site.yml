@@ -1,0 +1,26 @@
+name: Site validation
+
+on:
+  pull_request:
+    branches: [main]
+  push:
+    branches: [main]
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Validate JavaScript syntax
+        run: |
+          node --check app.js
+          node --check admin/admin.js
+          node --check aurora.js
+      - name: Validate Python syntax
+        run: python3 -m py_compile scripts/cms_apply.py
+      - name: Validate CMS content JSON
+        run: python3 -m json.tool content/site-content.json > /dev/null
