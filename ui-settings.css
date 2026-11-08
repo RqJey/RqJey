@@ -71,6 +71,7 @@ html.ui-iconMotion .ui-icon-active{transform:translateY(-2px) rotate(-7deg) scal
 html.ui-headingReveal .ui-heading-reveal:not(.ui-heading-visible){opacity:0;transform:translateY(15px)}
 html.ui-pageTransitions{view-transition-name:root}
 @view-transition{navigation:auto}
+html:not(.ui-pageTransitions)::view-transition-old(root),html:not(.ui-pageTransitions)::view-transition-new(root){animation:none}
 ::view-transition-old(root){animation:ui-page-out .22s ease both}
 ::view-transition-new(root){animation:ui-page-in .38s cubic-bezier(.2,.8,.2,1) both}
 @keyframes ui-page-out{to{opacity:0;filter:blur(3px);transform:translateY(-5px)}}
