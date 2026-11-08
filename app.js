@@ -159,13 +159,26 @@
     return name.toLowerCase().replace(/[^a-z0-9а-яё]+/gi, "-").replace(/^-|-$/g, "") || "mod";
   }
 
+  async function fetchWithTimeout(url, options = {}, timeoutMs = 8000) {
+    const controller = new AbortController();
+    const timeout = window.setTimeout(() => controller.abort(), timeoutMs);
+    try {
+      return await fetch(url, { ...options, signal: controller.signal });
+    } catch (error) {
+      if (error.name === "AbortError") throw new Error("Превышено время ожидания ответа сервера");
+      throw error;
+    } finally {
+      window.clearTimeout(timeout);
+    }
+  }
+
   async function getAllReleases(repo = releasesRepo) {
     if (!owner || owner === "YOUR_GITHUB_USERNAME") throw new Error("Не указан GitHub username в config.js");
     const url = `https://api.github.com/repos/${encodeURIComponent(owner)}/${encodeURIComponent(repo)}/releases?per_page=100`;
-    const response = await fetch(url, {
+    const response = await fetchWithTimeout(url, {
       cache: "no-store",
       headers: { "Accept": "application/vnd.github+json" }
-    });
+    }, 8000);
     if (!response.ok) {
       if (response.status === 404) throw new Error(`Репозиторий ${repo} не найден или он приватный`);
       if (response.status === 403) throw new Error("GitHub API временно ограничил запросы");
@@ -682,23 +695,45 @@
     });
   }
 
+  function renderProjectCategories() {
+    const categories = [...new Set([...(cmsContent.categories || []), ...projects.map(p => p.category).filter(Boolean)])].sort((a, b) => a.localeCompare(b, "ru"));
+    categoryFilter.innerHTML = `<option value="all">${escapeHtml(tr("allCategories"))}</option>` + categories.map(category => {
+      const translated = language === "en" ? ({"Персонализация":"Personalization","Навигация":"Navigation","Защита":"Protection","Общение":"Communication","Инструменты":"Tools"}[category] || category) : category;
+      return `<option value="${escapeHtml(category)}">${escapeHtml(translated)}</option>`;
+    }).join("");
+  }
+
   async function init() {
     document.getElementById("year").textContent = new Date().getFullYear();
     grid.innerHTML = '<div class="empty-state">Загрузка списка модов из GitHub Releases...</div>';
     initUtilities();
-    try {
-      const cmsResponse = await fetch("content/site-content.json", { cache: "no-store" });
-      if (cmsResponse.ok) {
+
+    // CMS content and GitHub releases are independent: neither request blocks the other.
+    let releasesReady = false;
+    const cmsTask = (async () => {
+      try {
+        const cmsResponse = await fetchWithTimeout("content/site-content.json", { cache: "no-store" }, 5000);
+        if (!cmsResponse.ok) return;
         cmsContent = await cmsResponse.json();
         if (Array.isArray(cmsContent.projects)) projectMetadata = cmsContent.projects;
         applyHomepageContent();
         renderNews();
+        if (releasesReady) {
+          projects = buildProjects(allReleases);
+          renderProjectCategories();
+          renderProjects(search.value);
+        }
+      } catch (_) {
+        // The homepage remains usable with built-in metadata if the optional CMS file is unavailable.
       }
+    })();
+
+    try {
       allReleases = await getAllReleases();
       projects = buildProjects(allReleases);
-      const categories = [...new Set([...(cmsContent.categories || []), ...projects.map(p => p.category).filter(Boolean)])].sort((a, b) => a.localeCompare(b, "ru"));
-      categoryFilter.innerHTML = `<option value="all">${escapeHtml(tr("allCategories"))}</option>` + categories.map(category => { const translated = language === "en" ? ({"Персонализация":"Personalization","Навигация":"Navigation","Защита":"Protection","Общение":"Communication","Инструменты":"Tools"}[category] || category) : category; return `<option value="${escapeHtml(category)}">${escapeHtml(translated)}</option>`; }).join("");
-      renderProjects();
+      releasesReady = true;
+      renderProjectCategories();
+      renderProjects(search.value);
       checkNewReleases();
     } catch (err) {
       grid.innerHTML = `<div class="empty-state">${tr("loadError")}: ${escapeHtml(err.message)}. ${language === "ru" ? "Проверь настройки config.js и публичный доступ к репозиторию." : "Check config.js and public repository access."}</div>`;
@@ -706,6 +741,8 @@
       document.getElementById("visibleCount").textContent = "00 / 00";
       showToast(err.message);
     }
+    // Do not hold up the catalogue while optional homepage text is loading.
+    void cmsTask;
   }
 
   // Premium motion layer: reveal sections on scroll and add a subtle pointer glow to cards.
