@@ -20,3 +20,13 @@
 .topbar-actions{display:flex;align-items:center;gap:9px}
 .logout-button{padding:9px 12px;border:1px solid #ffffff1a;border-radius:8px;background:#ffffff06;color:#c8bce4;cursor:pointer;font-size:11px}
 @media(max-width:520px){.login-card{padding:27px 22px}.topbar-actions{gap:6px}.logout-button,.site-link{padding:8px 9px;font-size:10px}}
+
+.token-setup{margin-top:18px;padding:15px;border:1px solid #a58ce533;border-radius:10px;background:#a58ce509}
+.token-setup label{display:flex;flex-direction:column;gap:7px;color:#d9d2eb;font-size:11px;font-weight:700}
+.token-setup label span{color:var(--muted);font-size:10px;font-weight:400}
+.token-setup input{width:100%;padding:11px 12px;border:1px solid #ffffff20;border-radius:8px;outline:0;background:#0c0e13;color:#eee;font:12px ui-monospace,monospace}
+.token-setup input:focus{border-color:#a58ce5a0;box-shadow:0 0 0 3px #a58ce512}
+.token-setup p{margin:9px 0 0;color:var(--muted);font-size:10px;line-height:1.7}
+.token-setup a,.publish-status a{color:#cbbcf2;text-decoration:underline;text-underline-offset:3px}
+.publish-status{min-height:24px;margin:13px 0 0;color:#c5d9cf;font-size:11px;line-height:1.8}
+#publishNow:disabled{opacity:.55;cursor:wait}
