@@ -717,10 +717,12 @@
     list.style.overflow = "hidden";
 
     try {
-      await list.animate(
+      const fadeOut = list.animate(
         [{ opacity: 1, transform: "translateY(0)" }, { opacity: 0, transform: "translateY(7px)" }],
         { duration: 130, easing: "ease-in", fill: "forwards" }
-      ).finished;
+      );
+      await fadeOut.finished;
+      fadeOut.cancel();
 
       newsPage = page;
       renderNews();
