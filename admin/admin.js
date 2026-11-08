@@ -40,6 +40,7 @@
   const CONTENT_URL = "../content/site-content.json";
   const WORKFLOW_URL = "https://github.com/RqJey/RqJey/actions/workflows/cms-publish.yml";
   let content = {homepage:{},categories:[],projects:[],news:[]};
+  let publishedContent = null;
   let pending = null;
   let editingProjectOriginalIcon = null;
   let editingNewsOriginalId = null;
@@ -56,7 +57,7 @@
   }
   const toast = message => { const el=$("toast"); el.textContent=message; el.classList.add("show"); clearTimeout(toast.timer); toast.timer=setTimeout(()=>el.classList.remove("show"),2600); };
   const esc = value => String(value ?? "").replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
-  const setPayload = value => { pending=value; $("payload").value=JSON.stringify(value,null,2); $("payloadState").textContent="ГОТОВО К ПУБЛИКАЦИИ"; $("copyPayload").textContent="Скопировать JSON"; showView("publish"); };
+  const setPayload = value => { pending=value; $("payload").value=JSON.stringify(value,null,2); $("payloadState").textContent="ГОТОВО К ПУБЛИКАЦИИ"; $("copyPayload").textContent="Скопировать JSON"; $("payloadPreview").hidden=true; showView("publish"); };
   function showView(name) {
     document.querySelectorAll(".view").forEach(el=>el.classList.toggle("active",el.id==="view-"+name));
     document.querySelectorAll(".nav-item").forEach(el=>el.classList.toggle("active",el.dataset.view===name));
@@ -161,7 +162,7 @@
 
   let selectedBackup=null;
   $("exportBackup").addEventListener("click",()=>{
-    const snapshot={...content,exportedAt:new Date().toISOString(),format:"rqjey-cms-backup-v1"};
+    const snapshot={...(publishedContent||content),exportedAt:new Date().toISOString(),format:"rqjey-cms-backup-v1"};
     const blob=new Blob([JSON.stringify(snapshot,null,2)+"\n"],{type:"application/json"});
     const url=URL.createObjectURL(blob),link=document.createElement("a");
     link.href=url;link.download="rqjey-cms-backup-"+new Date().toISOString().slice(0,10)+".json";
@@ -335,7 +336,7 @@
   });
   async function init(){
     try{
-      const response=await fetch(CONTENT_URL,{cache:"no-store"});if(!response.ok)throw new Error("HTTP "+response.status);content=await response.json();
+      const response=await fetch(CONTENT_URL,{cache:"no-store"});if(!response.ok)throw new Error("HTTP "+response.status);content=await response.json();publishedContent=JSON.parse(JSON.stringify(content));
       content.projects ||= [];content.news ||= [];content.categories ||= [];content.homepage ||= {};
       refreshOverview();renderProjects();renderNews();renderHistory();
       $("categoriesText").value=content.categories.join("\n");
