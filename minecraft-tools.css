@@ -1,0 +1,53 @@
+
+.mc-tools-shell{min-height:100vh}
+.mc-tools-main{width:min(930px,100%);margin:0 auto;padding:68px 0 30px}
+.mc-tools-eyebrow{display:flex;align-items:center;gap:9px;color:var(--accent);font-size:9px;font-weight:800;letter-spacing:2px}
+.mc-tools-eyebrow>span{width:7px;height:7px;border-radius:50%;background:var(--mint);box-shadow:0 0 12px color-mix(in srgb,var(--mint) 55%,transparent)}
+.mc-tools-main>h1{margin:17px 0 10px;font:800 clamp(38px,6vw,58px)/1.08 Manrope,sans-serif;letter-spacing:-2.7px;color:var(--text)}
+.mc-tools-main>h1 em{font-style:normal;color:var(--accent)}
+.mc-tools-main>h1>span{color:var(--mint)}
+.mc-tools-lead{max-width:620px;margin:0 0 28px;color:var(--muted);font-size:13px;line-height:1.8}
+.mc-tool-tabs{display:flex;flex-wrap:wrap;gap:8px;margin:0 0 15px;padding:7px;border:1px solid var(--line);border-radius:13px;background:color-mix(in srgb,var(--surface) 78%,transparent)}
+.mc-tool-tabs button{flex:1;min-width:130px;min-height:39px;padding:0 13px;border:1px solid transparent;border-radius:9px;background:transparent;color:var(--muted);font:700 10px Manrope,sans-serif;cursor:pointer;transition:background .2s,border-color .2s,color .2s}
+.mc-tool-tabs button[aria-selected="true"]{border-color:color-mix(in srgb,var(--accent) 45%,var(--line));background:color-mix(in srgb,var(--accent) 13%,var(--surface));color:var(--text)}
+.mc-tool-panel{padding:clamp(18px,3vw,28px);border:1px solid var(--line);border-radius:18px;background:linear-gradient(145deg,color-mix(in srgb,var(--accent) 6%,var(--surface)),var(--surface) 52%);box-shadow:0 18px 50px #0002}
+.mc-tool-panel[hidden]{display:none}
+.mc-tool-heading{display:flex;align-items:flex-start;justify-content:space-between;gap:16px;margin-bottom:25px}
+.mc-tool-kicker{color:var(--accent);font:800 8px Manrope,sans-serif;letter-spacing:1.8px}
+.mc-tool-heading h2{margin:7px 0 7px;color:var(--text);font:800 clamp(20px,3vw,27px) Manrope,sans-serif;letter-spacing:-.8px}
+.mc-tool-heading p{margin:0;color:var(--muted);font-size:11px;line-height:1.7}
+.mc-tool-symbol{width:46px;height:46px;flex:0 0 46px;display:grid;place-items:center;border:1px solid color-mix(in srgb,var(--accent) 38%,var(--line));border-radius:13px;background:color-mix(in srgb,var(--accent) 10%,transparent);color:var(--accent);font-size:22px}
+.mc-form-grid,.mc-add-enchant{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:13px;margin-bottom:13px}
+.mc-add-enchant{grid-template-columns:minmax(0,2fr) minmax(100px,1fr) auto;align-items:end;margin-top:17px}
+.mc-field{display:grid;gap:7px;min-width:0;color:var(--muted);font-size:10px;font-weight:700}
+.mc-field input,.mc-field select{width:100%;min-height:42px;padding:0 12px;border:1px solid var(--line);border-radius:10px;outline:0;background:var(--bg);color:var(--text);font:500 11px "DM Sans",sans-serif}
+.mc-field input:focus,.mc-field select:focus{border-color:var(--accent);box-shadow:0 0 0 3px color-mix(in srgb,var(--accent) 12%,transparent)}
+.mc-primary-button,.mc-secondary-button{min-height:42px;padding:0 15px;border:1px solid color-mix(in srgb,var(--accent) 42%,var(--line));border-radius:10px;background:color-mix(in srgb,var(--accent) 17%,var(--surface2));color:var(--text);font:800 10px Manrope,sans-serif;cursor:pointer;transition:transform .18s,border-color .18s,filter .18s}
+.mc-primary-button:hover,.mc-secondary-button:hover{transform:translateY(-1px);border-color:var(--accent);filter:brightness(1.08)}
+.mc-secondary-button{background:var(--surface2);border-color:var(--line)}
+.mc-enchant-list-wrap{margin-top:23px}
+.mc-subheading{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:10px;color:var(--text);font-size:11px}
+.mc-text-button{border:0;background:transparent;color:var(--accent);font:700 9px Manrope;cursor:pointer}
+.mc-enchant-list,.mc-pattern-list{display:grid;gap:7px}
+.mc-list-row{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:10px 12px;border:1px solid var(--line);border-radius:9px;background:color-mix(in srgb,var(--surface2) 55%,transparent);color:var(--text);font-size:10px}
+.mc-list-row small{color:var(--muted)}
+.mc-remove{border:0;background:transparent;color:#e58d98;font-size:17px;cursor:pointer}
+.mc-empty{margin:0;padding:15px;border:1px dashed var(--line);border-radius:9px;color:var(--subtle);font-size:10px;text-align:center}
+.mc-calculate-button{margin-top:18px}
+.mc-result-card{display:grid;gap:7px;margin-top:14px;padding:17px;border:1px solid color-mix(in srgb,var(--accent) 35%,var(--line));border-radius:12px;background:color-mix(in srgb,var(--accent) 7%,var(--surface))}
+.mc-result-label{color:var(--accent);font:800 8px Manrope;letter-spacing:1.5px}
+.mc-result-card strong{color:var(--text);font:750 15px Manrope}
+.mc-result-card p{margin:0;color:var(--muted);font-size:10px;line-height:1.7}
+.mc-note{margin:13px 0 0;color:var(--subtle);font-size:9px;line-height:1.75}
+.mc-banner-layout{display:grid;grid-template-columns:minmax(0,1.2fr) minmax(220px,.8fr);gap:24px;align-items:start}
+.mc-banner-controls>.mc-field{margin-bottom:13px}
+.mc-banner-actions{display:flex;flex-wrap:wrap;gap:8px;margin-top:16px}
+.mc-banner-preview{display:grid;justify-items:center;gap:12px;padding:18px;border:1px solid var(--line);border-radius:13px;background:color-mix(in srgb,var(--surface2) 50%,transparent)}
+.mc-preview-label,.mc-preview-caption{color:var(--subtle);font:800 8px Manrope;letter-spacing:1.5px}
+#bannerCanvas{display:block;width:min(100%,240px);height:auto;filter:drop-shadow(0 12px 18px #0005)}
+.mc-tools-footer{display:flex;justify-content:space-between;gap:12px;margin-top:35px;padding:18px 0;border-top:1px solid var(--line);color:var(--subtle);font-size:8px;letter-spacing:.7px}
+.mc-tools-footer a{color:var(--muted);font-size:10px;letter-spacing:0}
+.mc-tools-footer a:hover{color:var(--text)}
+@media(max-width:680px){.mc-tools-main{padding:43px 0 24px}.mc-banner-layout{grid-template-columns:1fr}.mc-banner-preview{grid-row:1}.mc-add-enchant{grid-template-columns:1fr 100px}.mc-add-enchant .mc-primary-button{grid-column:1/-1}.mc-tools-footer{flex-direction:column}}
+@media(max-width:460px){.mc-form-grid{grid-template-columns:1fr}.mc-tool-tabs{display:grid;grid-template-columns:1fr}.mc-tool-tabs button{width:100%}.mc-tool-panel{padding:16px}.mc-tool-symbol{width:38px;height:38px;flex-basis:38px}}
+@media(prefers-reduced-motion:reduce){.mc-tool-tabs button,.mc-primary-button,.mc-secondary-button{transition:none}}
