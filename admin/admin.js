@@ -91,7 +91,9 @@
   });
   $("newsForm").addEventListener("submit",e=>{
     e.preventDefault();const id=$("nId").value.trim().toLowerCase();if(!/^[a-z0-9][a-z0-9-]*$/.test(id)){toast("Проверь ID новости");return;}
-    setPayload({action:"publish_news",news:{id,title:$("nTitle").value.trim(),body:$("nBody").value.trim(),image_url:$("nImage").value.trim()}});
+    const old=content.news.find(item=>item.id===id);
+    const imageUrl=$("nImage").value.trim();
+    setPayload({action:"publish_news",news:{id,title:$("nTitle").value.trim(),body:$("nBody").value.trim(),image_url:imageUrl,...(old?.image&&!imageUrl?{image:old.image}:{})}});
     $("newsForm").querySelector('button[type="submit"]').textContent="Подготовить новость";
   });
   $("categoriesForm").addEventListener("submit",e=>{e.preventDefault();setPayload({action:"save_categories",categories:$("categoriesText").value.split("\n").map(x=>x.trim()).filter(Boolean)});});
@@ -122,15 +124,22 @@
     return response.json();
   }
   function payloadIsPresent(data, payload) {
-    const id = payload.id || payload.news?.id || payload.project?.id;
     switch (payload.action) {
-      case "publish_news":
-        return (data.news || []).some(item => item.id === payload.news.id && item.title === payload.news.title);
+      case "publish_news": {
+        const item = (data.news || []).find(entry => entry.id === payload.news.id);
+        return !!item && item.title === payload.news.title && item.body === payload.news.body &&
+          (!payload.news.image_url || (typeof item.image === "string" && item.image.startsWith("assets/cms/")));
+      }
       case "delete_news":
         return !(data.news || []).some(item => item.id === payload.id);
       case "save_project": {
-        const item = (data.projects || []).find(project => project.id === payload.project.id);
-        return !!item && item.name === payload.project.name && item.description === payload.project.description;
+        const expected = payload.project;
+        const item = (data.projects || []).find(project => project.id === expected.id);
+        return !!item && item.name === expected.name && item.category === expected.category &&
+          item.minecraft === expected.minecraft && item.icon === expected.icon &&
+          item.accent === expected.accent && item.description === expected.description &&
+          JSON.stringify(item.features || []) === JSON.stringify(expected.features || []) &&
+          (expected.image_url ? (typeof item.image === "string" && item.image.startsWith("assets/cms/")) : (!expected.image || item.image === expected.image));
       }
       case "delete_project":
         return (data.hiddenProjects || []).includes(payload.id) || !(data.projects || []).some(item => item.id === payload.id);
