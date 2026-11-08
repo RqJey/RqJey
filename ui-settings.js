@@ -69,7 +69,7 @@
       toggle.setAttribute('role','switch'); toggle.setAttribute('aria-label',item.title);
       toggle.addEventListener('click',()=>{
         settings[item.id]=!settings[item.id]; persist(); syncControls();
-        window.rqjeyNotify?.(item.title + (settings[item.id] ? ' включено' : ' выключено'));
+        if(settings.customNotifications) window.rqjeyNotify?.(item.title + (settings[item.id] ? ' включено' : ' выключено'));
       });
       row.append(copy,toggle); list.appendChild(row);
     });
