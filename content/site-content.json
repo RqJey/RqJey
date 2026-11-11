@@ -95,18 +95,18 @@
   ],
   "news": [
     {
+      "id": "news",
+      "title": "Проблема в работе API",
+      "body": "**Сейчас наблюдается проблема в работоспособности API GitHub. Этот сайт может не грузить Releases.**",
+      "date": "2026-11-08",
+      "image": "assets/cms/news-news.png"
+    },
+    {
       "id": "ad",
       "title": "Ванильный сервер - AmiVerse",
       "body": "**Приходи и играй вместе с дружелюбным комьюнити**\nЧтобы присоединиться оставь заявку на вход на сайте - https://www.amiverse.xyz/",
       "date": "2026-11-08",
       "image": "assets/cms/news-ad.png"
-    },
-    {
-      "id": "news",
-      "title": "Проблема в работе API",
-      "body": "**Сейчас наблюдается проблема в работаспособности API GitHub. Этот сайт может не грузить Releases.**",
-      "date": "2026-11-08",
-      "image": "assets/cms/news-news.png"
     }
   ],
   "hiddenProjects": [],
@@ -154,6 +154,10 @@
     {
       "at": "2026-11-08T14:39:52.769315+00:00",
       "action": "delete_news"
+    },
+    {
+      "at": "2026-11-11T17:28:57.081823+00:00",
+      "action": "publish_news"
     }
   ]
 }
