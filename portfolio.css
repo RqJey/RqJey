@@ -18,3 +18,44 @@
 @media(max-width:760px){.portfolio-page .page-shell{width:calc(100% - 36px)}.portfolio-page .topbar{height:72px}.portfolio-page .topbar .nav{top:65px;right:0;width:230px;padding:10px;border:1px solid var(--pf-line);border-radius:10px;background:#11171b;box-shadow:0 20px 50px #0008}.portfolio-page .intro-showcase{grid-template-columns:1fr;gap:38px;min-height:0;padding:65px 0 64px}.portfolio-page .portfolio-hero-overline{margin-top:32px}.portfolio-page .portfolio-hero h1{font-size:clamp(47px,10vw,70px)}.portfolio-page .intro-copy{font-size:14px}.portfolio-page .portfolio-hero-visual{min-height:320px}.portfolio-page .projects-section{padding-top:62px}.portfolio-page .project-grid{grid-template-columns:1fr}.portfolio-page .filter-bar{flex-wrap:wrap}.portfolio-page .search-box{flex-basis:100%}.portfolio-page .filter-select-wrap{flex:1}.portfolio-page .about-strip{margin-top:64px;padding:26px 22px;flex-wrap:wrap}}
 @media(max-width:440px){.portfolio-page .page-shell{width:calc(100% - 28px)}.portfolio-page .brand-name{font-size:12px}.portfolio-page .header-tools{gap:5px}.portfolio-page .header-tools .language-select{display:none}.portfolio-page .intro-showcase{padding-top:48px}.portfolio-page .portfolio-hero h1{font-size:clamp(42px,12vw,56px)}.portfolio-page .portfolio-hero-visual{padding:19px;min-height:295px}.portfolio-page .portfolio-visual-brand img{width:64px;height:64px}.portfolio-page .portfolio-visual-list strong{font-size:11px}.portfolio-page .section-heading{align-items:flex-start}.portfolio-page .section-heading h2,.portfolio-page .about-text h2{font-size:34px}.portfolio-page .filter-select-wrap{min-width:0}.portfolio-page .filter-select{width:100%;min-width:0}}
 @media(prefers-reduced-motion:reduce){.portfolio-page *,.portfolio-page *:before,.portfolio-page *:after{scroll-behavior:auto!important;animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important}}
+
+
+/* Hide the previous decorative scene in the default portfolio world; optional theme modes can still opt in. */
+html:not(.cosmic-mode):not(.aurora-mode):not(.sakura-mode) .portfolio-page .particle-canvas,
+html:not(.cosmic-mode):not(.aurora-mode):not(.sakura-mode) .portfolio-page .ambient-background,
+html:not(.cosmic-mode):not(.aurora-mode):not(.sakura-mode) .portfolio-page .aurora-ribbon,
+html:not(.cosmic-mode):not(.aurora-mode):not(.sakura-mode) .portfolio-page .cosmic-backdrop,
+html:not(.cosmic-mode):not(.aurora-mode):not(.sakura-mode) .portfolio-page .sakura-branch-scene { display:none!important; }
+.portfolio-page .portfolio-hero-visual { animation:none; }
+.portfolio-page .portfolio-hero-visual, .portfolio-page .project-card, .portfolio-page .about-strip { contain:layout paint; }
+.portfolio-page .project-card:focus-within { outline:2px solid var(--pf-accent); outline-offset:3px; }
+.portfolio-page :focus-visible { outline:2px solid var(--pf-accent); outline-offset:3px; }
+.portfolio-page .filter-bar, .portfolio-page .portfolio-hero-visual, .portfolio-page .about-strip { backdrop-filter:none; }
+html[data-theme="light"] .portfolio-page {
+  --pf-bg:#f3f5f2; --pf-panel:#fff; --pf-panel-raised:#f7f9f6; --pf-line:#d8dfd9;
+  --pf-text:#17201b; --pf-muted:#53605a; --pf-dim:#7b8981; --pf-accent:#557c19; --pf-blue:#416da8;
+  background:var(--pf-bg); color:var(--pf-text);
+}
+html[data-theme="light"] .portfolio-page .topbar { background:rgba(243,245,242,.9); }
+html[data-theme="light"] .portfolio-page .github-link,
+html[data-theme="light"] .portfolio-page .header-select,
+html[data-theme="light"] .portfolio-page .utility-button,
+html[data-theme="light"] .portfolio-page .social-nav-button,
+html[data-theme="light"] .portfolio-page .secondary-cta,
+html[data-theme="light"] .portfolio-page .mobile-menu { background:#fff; color:var(--pf-text); }
+html[data-theme="light"] .portfolio-page .portfolio-hero-visual { background:linear-gradient(145deg,#fff,#edf1ec 75%); border-color:#d1d9d2; box-shadow:0 22px 60px #263b2a12; }
+html[data-theme="light"] .portfolio-page .portfolio-visual-brand img { background:#e9efe7; border-color:#d2ddcf; }
+html[data-theme="light"] .portfolio-page .portfolio-visual-list strong { color:#26342a; }
+html[data-theme="light"] .portfolio-page .filter-bar { background:#fff; }
+html[data-theme="light"] .portfolio-page .search-box,
+html[data-theme="light"] .portfolio-page .filter-select { background:#f8faf7; color:var(--pf-text); border-color:#d8dfd9; }
+html[data-theme="light"] .portfolio-page .search-box input { color:var(--pf-text); }
+html[data-theme="light"] .portfolio-page .project-card { background:linear-gradient(145deg,#fff,#f5f8f4); border-color:#d8dfd9; }
+html[data-theme="light"] .portfolio-page .project-card:hover { background:#fff; border-color:#9aaf85; }
+html[data-theme="light"] .portfolio-page .project-icon { background:#edf2e9; border-color:#d7e0d2; }
+html[data-theme="light"] .portfolio-page .about-strip { background:#fff; border-color:#d8dfd9; }
+html[data-theme="light"] .portfolio-page .release-modal,
+html[data-theme="light"] .portfolio-page .social-choice-dialog,
+html[data-theme="light"] .portfolio-page .github-choice-dialog,
+html[data-theme="light"] .portfolio-page .tools-choice-dialog,
+html[data-theme="light"] .portfolio-page .theme-picker { background:#fff; color:var(--pf-text); }
