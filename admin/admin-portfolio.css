@@ -1,0 +1,42 @@
+/* RqJey CMS — portfolio design language */
+.portfolio-admin{--bg:#0a0d10;--panel:#11171b;--line:#29343a;--text:#f2f5f4;--muted:#a0aaa9;--accent:#c5f36a;--mint:#9bd3a1;background:var(--bg);color:var(--text);font-family:"DM Sans",sans-serif}
+.portfolio-admin .sidebar{background:#0e1317;border-color:var(--line)}
+.portfolio-admin .brand{color:var(--text)}
+.portfolio-admin .brand small{color:#718078}
+.portfolio-admin .side-label,.portfolio-admin .eyebrow{color:#8d9b8f}
+.portfolio-admin .nav-item{color:var(--muted);border-radius:8px}
+.portfolio-admin .nav-item span{color:var(--accent)}
+.portfolio-admin .nav-item:hover,.portfolio-admin .nav-item.active{border-color:#52634a;background:#c5f36a10;color:var(--text)}
+.portfolio-admin .sidebar-bottom{border-color:var(--line);color:var(--muted)}
+.portfolio-admin .status-dot{background:var(--accent);box-shadow:none}
+.portfolio-admin .main{max-width:1240px}
+.portfolio-admin .topbar h1{font-family:"Manrope";letter-spacing:-.06em}
+.portfolio-admin .site-link{border-color:#3a474d;background:#151d21;color:var(--accent)}
+.portfolio-admin .notice{border-color:#52634a;background:#c5f36a0c;color:var(--muted)}
+.portfolio-admin .notice b{color:var(--accent)}
+.portfolio-admin .welcome{border-color:#344149;border-radius:12px;background:linear-gradient(145deg,#151d22,#10161a)}
+.portfolio-admin .welcome h2{font-family:"Manrope";letter-spacing:-.06em}
+.portfolio-admin .welcome h2 span,.portfolio-admin .steps li::marker,.portfolio-admin .main footer span{color:var(--accent)}
+.portfolio-admin .orb{border-color:#52634a;color:var(--accent);box-shadow:none}
+.portfolio-admin .stats article,.portfolio-admin .panel{border-color:var(--line);border-radius:10px;background:var(--panel);box-shadow:none}
+.portfolio-admin .stats small,.portfolio-admin .record small,.portfolio-admin .hint{color:#8c9992}
+.portfolio-admin .panel-head h3{font-family:"Manrope"}
+.portfolio-admin .quick-actions button,.portfolio-admin .ghost,.portfolio-admin .secondary{border-color:#39464c;border-radius:7px;background:#172025;color:var(--muted)}
+.portfolio-admin .record,.portfolio-admin .content-record{border-color:#303b42;background:#151c20}
+.portfolio-admin .record-actions button{border-color:#39464c;background:#182126;color:var(--accent)}
+.portfolio-admin .form-grid label,.portfolio-admin form>label{color:var(--muted)}
+.portfolio-admin .form-grid input,.portfolio-admin .form-grid textarea,.portfolio-admin .form-grid select,.portfolio-admin form>label textarea,.portfolio-admin .login-card input,.portfolio-admin .payload{border-color:#354149;border-radius:7px;background:#0b1014;color:var(--text)}
+.portfolio-admin .form-grid input:focus,.portfolio-admin .form-grid textarea:focus,.portfolio-admin .form-grid select:focus,.portfolio-admin form>label textarea:focus,.portfolio-admin .login-card input:focus{border-color:var(--accent);box-shadow:0 0 0 3px #c5f36a12}
+.portfolio-admin .primary,.portfolio-admin .login-submit{border:1px solid var(--accent);border-radius:7px;background:var(--accent);color:#10150a}
+.portfolio-admin .tag{border-color:#3b484e;color:var(--muted)}
+.portfolio-admin .payload{color:#c8e1c1}
+.portfolio-admin .main footer{border-color:var(--line);color:#75827b}
+.portfolio-admin .toast{border-color:#435047;background:#182126;color:var(--text)}
+.portfolio-admin .login-screen{background:radial-gradient(ellipse at 50% 12%,#c5f36a0b,transparent 48%),var(--bg)}
+.portfolio-admin .login-card{border-color:#354149;border-radius:12px;background:#11171b;box-shadow:0 25px 90px #0008}
+.portfolio-admin .login-card>.eyebrow{color:var(--accent)}
+.portfolio-admin .login-card h1{font-family:"Manrope"}
+.portfolio-admin .login-card h1 span{color:var(--accent)}
+.portfolio-admin .login-card label{color:var(--muted)}
+.portfolio-admin .login-foot{color:#75827b}
+@media(max-width:800px){.portfolio-admin .sidebar{background:#0e1317}.portfolio-admin .sidebar nav{scrollbar-color:#3b484e transparent}}
