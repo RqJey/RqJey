@@ -132,3 +132,25 @@ html[data-theme="light"] .portfolio-subpage { --pf-bg:#f3f5f2; --pf-panel:#fff; 
 html[data-theme="light"] .portfolio-subpage #logText,html[data-theme="light"] .portfolio-subpage .mc-field input,html[data-theme="light"] .portfolio-subpage .mc-field select,html[data-theme="light"] .portfolio-subpage .mc-selected-book select { background:#f8faf7; color:#17201b; }
 html[data-theme="light"] .portfolio-subpage .mc-enchant-option,html[data-theme="light"] .portfolio-subpage .mc-enchant-pick,html[data-theme="light"] .portfolio-subpage .mc-list-row,html[data-theme="light"] .portfolio-subpage .mc-tree-row,html[data-theme="light"] .portfolio-subpage .mc-operation-card,html[data-theme="light"] .portfolio-subpage .mc-selected-book,html[data-theme="light"] .portfolio-subpage .mc-existing-details { background:#f7faf5; }
 @media(max-width:760px){.portfolio-subpage .page-shell{width:calc(100% - 36px)}.portfolio-subpage .analyzer-main,.portfolio-subpage .mc-tools-main,.portfolio-subpage .faq-main{padding-top:45px}.portfolio-subpage .analyzer-panel,.portfolio-subpage .mc-tool-panel{padding:16px}.portfolio-subpage .diagnostic-grid{grid-template-columns:1fr}.portfolio-subpage .faq-warning-card{padding:26px 18px}}
+
+
+/* Portfolio defaults: restrained backdrop and compact mobile controls. */
+.portfolio-page:before{background:radial-gradient(ellipse at 10% 5%,#c5f36a08,transparent 34%),radial-gradient(ellipse at 92% 65%,#8eb9ff06,transparent 32%)}
+html:not(.cosmic-mode):not(.aurora-mode):not(.sakura-mode) .portfolio-page:after{display:none}
+@media(max-width:760px){.portfolio-page .social-nav-button{width:34px;height:34px;padding:0;font-size:0}.portfolio-page .social-nav-button:after{content:"↗";font-size:14px}.portfolio-page .header-tools .analyzer-nav-button{width:34px;height:34px;flex-basis:34px}}
+@media(max-width:420px){.portfolio-page .social-nav-button{width:31px;height:31px}.portfolio-page .header-tools .analyzer-nav-button{width:31px;height:31px;flex-basis:31px}.portfolio-page .header-select{max-width:70px}}
+@media(prefers-color-scheme:light){
+  html[data-theme="system"] .portfolio-page{--pf-bg:#f3f5f2;--pf-panel:#fff;--pf-panel-raised:#f7f9f6;--pf-line:#d8dfd9;--pf-text:#17201b;--pf-muted:#53605a;--pf-dim:#7b8981;--pf-accent:#557c19;background:#f3f5f2;color:#17201b}
+  html[data-theme="system"] .portfolio-page .topbar{background:rgba(243,245,242,.9)}
+  html[data-theme="system"] .portfolio-page .github-link,html[data-theme="system"] .portfolio-page .header-select,html[data-theme="system"] .portfolio-page .social-nav-button,html[data-theme="system"] .portfolio-page .secondary-cta,html[data-theme="system"] .portfolio-page .mobile-menu{background:#fff;color:#17201b}
+  html[data-theme="system"] .portfolio-page .portfolio-hero-visual{background:linear-gradient(145deg,#fff,#edf1ec 75%);border-color:#d1d9d2}
+  html[data-theme="system"] .portfolio-page .portfolio-visual-brand img{background:#e9efe7;border-color:#d2ddcf}
+  html[data-theme="system"] .portfolio-page .portfolio-visual-list strong{color:#26342a}
+  html[data-theme="system"] .portfolio-page .filter-bar{background:#fff}
+  html[data-theme="system"] .portfolio-page .search-box,html[data-theme="system"] .portfolio-page .filter-select{background:#f8faf7;color:#17201b;border-color:#d8dfd9}
+  html[data-theme="system"] .portfolio-page .search-box input{color:#17201b}
+  html[data-theme="system"] .portfolio-page .project-card{background:linear-gradient(145deg,#fff,#f5f8f4);border-color:#d8dfd9}
+  html[data-theme="system"] .portfolio-page .project-icon{background:#edf2e9;border-color:#d7e0d2}
+  html[data-theme="system"] .portfolio-page .about-strip{background:#fff;border-color:#d8dfd9}
+  html[data-theme="system"] .portfolio-subpage #logText,html[data-theme="system"] .portfolio-subpage .mc-field input,html[data-theme="system"] .portfolio-subpage .mc-field select{background:#f8faf7;color:#17201b}
+}
