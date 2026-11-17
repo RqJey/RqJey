@@ -154,3 +154,5 @@ html:not(.cosmic-mode):not(.aurora-mode):not(.sakura-mode) .portfolio-page:after
   html[data-theme="system"] .portfolio-page .about-strip{background:#fff;border-color:#d8dfd9}
   html[data-theme="system"] .portfolio-subpage #logText,html[data-theme="system"] .portfolio-subpage .mc-field input,html[data-theme="system"] .portfolio-subpage .mc-field select{background:#f8faf7;color:#17201b}
 }
+
+.portfolio-page .portfolio-hero h1 span{background:none;-webkit-background-clip:initial;background-clip:initial;color:var(--pf-text);-webkit-text-fill-color:var(--pf-text)}
