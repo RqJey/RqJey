@@ -59,3 +59,76 @@ html[data-theme="light"] .portfolio-page .social-choice-dialog,
 html[data-theme="light"] .portfolio-page .github-choice-dialog,
 html[data-theme="light"] .portfolio-page .tools-choice-dialog,
 html[data-theme="light"] .portfolio-page .theme-picker { background:#fff; color:var(--pf-text); }
+
+
+/* Shared subpage treatment */
+.portfolio-subpage .page-shell { width:min(1120px,calc(100% - 56px)); }
+.portfolio-subpage .analyzer-topbar,.portfolio-subpage .faq-topbar {
+  height:82px; margin:0; padding:0; display:flex; align-items:center; justify-content:space-between;
+  border-bottom:1px solid var(--pf-line); background:transparent;
+}
+.portfolio-subpage .analyzer-back,.portfolio-subpage .faq-back-link,.portfolio-subpage .analyzer-footer a,.portfolio-subpage .mc-tools-footer a {
+  color:var(--pf-muted); font-size:11px; transition:color .2s ease;
+}
+.portfolio-subpage .analyzer-back:hover,.portfolio-subpage .faq-back-link:hover,.portfolio-subpage .analyzer-footer a:hover,.portfolio-subpage .mc-tools-footer a:hover { color:var(--pf-accent); }
+.portfolio-subpage .analyzer-main,.portfolio-subpage .mc-tools-main { width:min(980px,100%); margin:0 auto; padding:72px 0 36px; }
+.portfolio-subpage .analyzer-eyebrow,.portfolio-subpage .mc-tools-eyebrow,.portfolio-subpage .faq-kicker {
+  color:var(--pf-accent); font-size:9px; font-weight:800; letter-spacing:2px;
+}
+.portfolio-subpage .analyzer-eyebrow>span,.portfolio-subpage .mc-tools-eyebrow>span { background:var(--pf-accent); box-shadow:0 0 0 4px #c5f36a12; }
+.portfolio-subpage .analyzer-main h1,.portfolio-subpage .mc-tools-main>h1,.portfolio-subpage .faq-page-title {
+  margin:18px 0 12px; color:var(--pf-text); font:800 clamp(42px,6vw,66px)/1.02 "Manrope",sans-serif; letter-spacing:-.07em;
+}
+.portfolio-subpage .analyzer-main h1 em,.portfolio-subpage .mc-tools-main>h1 em,.portfolio-subpage .faq-page-title span { color:var(--pf-accent); font-style:normal; }
+.portfolio-subpage .analyzer-main h1>span,.portfolio-subpage .mc-tools-main>h1>span { color:var(--pf-accent); }
+.portfolio-subpage .analyzer-lead,.portfolio-subpage .mc-tools-lead,.portfolio-subpage .faq-lead {
+  max-width:680px; color:var(--pf-muted); font-size:14px; line-height:1.85;
+}
+.portfolio-subpage .analyzer-panel,.portfolio-subpage .summary-card,.portfolio-subpage .diagnostic-card,.portfolio-subpage .evidence-card,
+.portfolio-subpage .mc-tool-tabs,.portfolio-subpage .mc-tool-panel,.portfolio-subpage .faq-warning-card,.portfolio-subpage .faq-item {
+  border:1px solid var(--pf-line); border-radius:12px; background:var(--pf-panel); box-shadow:none;
+}
+.portfolio-subpage .analyzer-panel,.portfolio-subpage .mc-tool-panel { padding:clamp(18px,3vw,30px); }
+.portfolio-subpage .drop-zone { border:1px dashed #52634a; border-radius:9px; background:#c5f36a08; }
+.portfolio-subpage .drop-zone:hover,.portfolio-subpage .drop-zone.drag-over { border-color:var(--pf-accent); background:#c5f36a12; }
+.portfolio-subpage .drop-icon { border-color:#52634a; color:var(--pf-accent); }
+.portfolio-subpage #logText,.portfolio-subpage .mc-field input,.portfolio-subpage .mc-field select,.portfolio-subpage .mc-selected-book select {
+  border:1px solid #354149; border-radius:8px; background:#0b1014; color:var(--pf-text);
+}
+.portfolio-subpage #logText:focus,.portfolio-subpage .mc-field input:focus,.portfolio-subpage .mc-field select:focus { border-color:var(--pf-accent); outline:2px solid #c5f36a1a; }
+.portfolio-subpage .analyze-button,.portfolio-subpage .copy-button,.portfolio-subpage .mc-primary-button,.portfolio-subpage .mc-secondary-button {
+  min-height:42px; border:1px solid var(--pf-accent); border-radius:8px; background:var(--pf-accent); color:#10150a; box-shadow:none; font-weight:800;
+}
+.portfolio-subpage .copy-button,.portfolio-subpage .mc-secondary-button { border-color:#354149; background:#182126; color:var(--pf-text); }
+.portfolio-subpage .privacy-note>span:first-child,.portfolio-subpage .mc-live-dot { color:var(--pf-accent); background:var(--pf-accent); box-shadow:none; }
+.portfolio-subpage .summary-card,.portfolio-subpage .diagnostic-card,.portfolio-subpage .evidence-card { padding:18px; }
+.portfolio-subpage .diagnostic-card h3,.portfolio-subpage .evidence-card h3,.portfolio-subpage .summary-title { color:var(--pf-text); }
+.portfolio-subpage .diagnostic-card p,.portfolio-subpage .summary-meta,.portfolio-subpage .evidence-card pre { color:var(--pf-muted); }
+.portfolio-subpage .mc-tool-tabs { gap:8px; padding:8px; }
+.portfolio-subpage .mc-tool-tabs button { min-height:44px; border-radius:8px; color:var(--pf-muted); }
+.portfolio-subpage .mc-tool-tabs button[aria-selected="true"] { border-color:#52634a; background:#c5f36a12; color:var(--pf-accent); box-shadow:none; }
+.portfolio-subpage .mc-tool-heading h2 { color:var(--pf-text); font-family:"Manrope"; letter-spacing:-.04em; }
+.portfolio-subpage .mc-tool-heading p,.portfolio-subpage .mc-step-title small,.portfolio-subpage .mc-note { color:var(--pf-muted); }
+.portfolio-subpage .mc-anvil-section,.portfolio-subpage .mc-book-list-wrap { border-color:var(--pf-line); }
+.portfolio-subpage .mc-step-title>span,.portfolio-subpage .mc-tree-number { border-color:#52634a; background:#c5f36a12; color:var(--pf-accent); }
+.portfolio-subpage .mc-result-card { border-color:#52634a; background:#c5f36a0a; }
+.portfolio-subpage .mc-result-label,.portfolio-subpage .mc-result-card strong,.portfolio-subpage .mc-cost-total span { color:var(--pf-accent); }
+.portfolio-subpage .mc-enchant-option,.portfolio-subpage .mc-enchant-pick,.portfolio-subpage .mc-list-row,.portfolio-subpage .mc-tree-row,.portfolio-subpage .mc-operation-card,.portfolio-subpage .mc-selected-book,.portfolio-subpage .mc-existing-details {
+  border-color:#303b42; border-radius:8px; background:#151c21;
+}
+.portfolio-subpage .faq-shell { min-height:100vh; }
+.portfolio-subpage .faq-main { width:min(900px,100%); margin:0 auto; padding:72px 0 40px; }
+.portfolio-subpage .faq-content { max-width:780px; margin:0 auto; }
+.portfolio-subpage .faq-warning-card { max-width:620px; margin:0 auto; padding:36px; text-align:center; }
+.portfolio-subpage .faq-warning-card h1 { color:var(--pf-text); font:800 32px "Manrope"; letter-spacing:-.05em; }
+.portfolio-subpage .faq-warning-text { color:var(--pf-muted); }
+.portfolio-subpage .faq-page-title { font-size:clamp(36px,5vw,54px); }
+.portfolio-subpage .faq-item { margin:12px 0; padding:20px 22px; }
+.portfolio-subpage .faq-item h3 { margin:0 0 8px; color:var(--pf-text); font:700 15px "Manrope"; }
+.portfolio-subpage .faq-item p { margin:0; color:var(--pf-muted); font-size:12px; line-height:1.8; }
+.portfolio-subpage .faq-item a { color:var(--pf-accent); text-decoration:underline; text-underline-offset:3px; }
+.portfolio-subpage .faq-footer,.portfolio-subpage .analyzer-footer,.portfolio-subpage .mc-tools-footer { border-color:var(--pf-line); color:var(--pf-dim); }
+html[data-theme="light"] .portfolio-subpage { --pf-bg:#f3f5f2; --pf-panel:#fff; --pf-line:#d8dfd9; --pf-text:#17201b; --pf-muted:#53605a; --pf-dim:#7b8981; --pf-accent:#557c19; background:#f3f5f2; color:#17201b; }
+html[data-theme="light"] .portfolio-subpage #logText,html[data-theme="light"] .portfolio-subpage .mc-field input,html[data-theme="light"] .portfolio-subpage .mc-field select,html[data-theme="light"] .portfolio-subpage .mc-selected-book select { background:#f8faf7; color:#17201b; }
+html[data-theme="light"] .portfolio-subpage .mc-enchant-option,html[data-theme="light"] .portfolio-subpage .mc-enchant-pick,html[data-theme="light"] .portfolio-subpage .mc-list-row,html[data-theme="light"] .portfolio-subpage .mc-tree-row,html[data-theme="light"] .portfolio-subpage .mc-operation-card,html[data-theme="light"] .portfolio-subpage .mc-selected-book,html[data-theme="light"] .portfolio-subpage .mc-existing-details { background:#f7faf5; }
+@media(max-width:760px){.portfolio-subpage .page-shell{width:calc(100% - 36px)}.portfolio-subpage .analyzer-main,.portfolio-subpage .mc-tools-main,.portfolio-subpage .faq-main{padding-top:45px}.portfolio-subpage .analyzer-panel,.portfolio-subpage .mc-tool-panel{padding:16px}.portfolio-subpage .diagnostic-grid{grid-template-columns:1fr}.portfolio-subpage .faq-warning-card{padding:26px 18px}}
