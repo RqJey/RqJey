@@ -18,8 +18,11 @@ jobs:
       - name: Validate JavaScript syntax
         run: |
           node --check app.js
-          node --check admin/admin.js
           node --check aurora.js
+          node --check ui-settings.js
+          node --check minecraft-tools.js
+          node --check analyzer.js
+          node --check admin/admin.js
       - name: Validate Python syntax
         run: python3 -m py_compile scripts/cms_apply.py
       - name: Validate CMS content JSON
